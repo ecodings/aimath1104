@@ -17,6 +17,8 @@
 html,body{margin:0;height:100%;overflow:hidden;background:#E3EEF1;font-family:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:var(--text)}
 #stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;background:#fff;transform-origin:center center;overflow:hidden}
 button{font-family:inherit;cursor:pointer}
+#stage{-webkit-user-select:none;user-select:none}
+textarea,input{-webkit-user-select:text;user-select:text}
 .num{font-variant-numeric:tabular-nums}
 /* header */
 #hdr{position:absolute;left:0;top:0;width:1920px;height:96px;display:flex;align-items:center;padding:0 40px;border-bottom:1.5px solid var(--line)}
@@ -174,7 +176,7 @@ table.att tr.sum td{background:var(--panel);font-weight:700;color:var(--ink)}
 .srow .lb{font-size:24px;font-weight:800;color:var(--ink)}
 .srow.top .lb{color:var(--coral)}
 .ztrack{position:relative;height:46px;background:#fff;border:1.5px solid var(--line2);border-radius:11px;cursor:ew-resize;touch-action:none}
-.ztrack .zero{position:absolute;left:50%;top:6px;bottom:6px;width:1.5px;background:var(--muted)}
+.ztrack .zero{position:absolute;top:6px;bottom:6px;width:1.5px;background:var(--muted)}
 .ztrack .zb{position:absolute;top:13px;height:18px;border-radius:5px;background:var(--teal-b)}
 .ztrack .kn{position:absolute;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:var(--teal);border:3px solid #fff;box-shadow:0 1px 4px rgba(31,78,95,.35)}
 .ztrack .zv{position:absolute;top:-1px;font-size:15px;font-weight:800;color:var(--ink)}
@@ -207,20 +209,40 @@ table.att tr.sum td{background:var(--panel);font-weight:700;color:var(--ink)}
 #ctval{font-size:22px;font-weight:800;color:var(--teal);width:60px}
 #cnote{margin-left:auto;font-size:16px;color:var(--muted)}
 .mcard .tg.cls{border-color:var(--coral-b);color:#B5552F}
-/* missions */
-#mgrid{position:absolute;left:40px;top:0;width:1840px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.mcard{position:relative;height:390px;background:var(--panel);border:1.5px solid var(--line2);border-radius:16px;padding:24px 26px;display:flex;flex-direction:column}
-.mcard .no{font-size:44px;font-weight:800;color:var(--teal);line-height:1}
-.mcard .tg{position:absolute;right:24px;top:26px;font-size:15px;font-weight:700;padding:4px 12px;border-radius:14px;background:#fff;border:1.5px solid var(--teal-b);color:var(--teal)}
-.mcard .tg.att{border-color:#B5CDE6;color:var(--blue)}
-.mcard h3{margin:14px 0 8px;font-size:23px;color:var(--ink)}
-.mcard p{margin:0;font-size:18px;line-height:1.45;color:var(--text)}
-.mcard p.act{margin-top:12px;font-size:16px;color:var(--sub);background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:10px 14px}
-.mcard .go{margin-top:auto;height:54px;border-radius:12px;border:none;background:var(--teal);color:#fff;font-size:19px;font-weight:700}
-.mcard.done{border-color:var(--teal)}
-.mcard.done .go{background:#fff;color:var(--teal);border:1.5px solid var(--teal)}
-.mcard .st{position:absolute;right:24px;top:64px;font-size:15px;color:var(--teal);font-weight:700}
-</style>
+/* softmax modes */
+.clsbar{position:absolute;left:40px;top:0;width:1840px;height:48px;display:flex;align-items:center;gap:10px}
+.clsbar .seg{margin-left:0}
+#cpre{display:flex;gap:8px;align-items:center;margin-left:14px}
+#v-cls .card{top:60px;height:640px}
+#v-cls.manual #cam,#v-cls.manual #res{display:none}
+#v-cls.tm #cmp,#v-cls.tm #snap,#v-cls.tm .monly{display:none}
+#v-cls.manual #smx{left:40px}
+#cmp{left:940px;width:520px;padding:16px 22px}
+#snap{left:1480px;width:400px;padding:16px 20px}
+.crow{margin-top:14px}
+.crow .nm{font-size:19px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.cbar{display:flex;align-items:center;gap:8px;height:24px;font-size:16px}
+.cbar i{display:block;height:15px;border-radius:5px}
+.cbar span{width:84px;flex:none;white-space:nowrap;color:var(--sub);font-size:14px;font-weight:700}
+.cbar b{min-width:44px;color:var(--ink)}
+.lgd2{font-size:15px;color:var(--sub);margin-top:6px}.lgd2 i{display:inline-block;width:12px;height:12px;border-radius:3px;margin:0 5px 0 12px;vertical-align:-1px}
+.nobox{margin-top:12px;background:#fff;border:1.5px dashed var(--coral-b);border-radius:10px;padding:10px 14px;font-size:16px;color:#B5552F;line-height:1.45}
+.sgbox{margin-top:14px;background:#fff;border:1.5px solid var(--teal-b);border-radius:12px;padding:10px 14px;font-size:16.5px;line-height:1.55;color:var(--text)}
+.sgbox b{color:var(--ink)}
+.snapbtn{width:100%;height:52px;margin-top:12px;border-radius:12px;border:none;background:var(--teal);color:#fff;font-size:19px;font-weight:800}
+.snaps{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.sn{background:#fff;border:1.5px solid var(--line2);border-radius:12px;padding:8px 12px}
+.sn .h{display:flex;align-items:center;gap:8px;font-size:16px;color:var(--text)}
+.sn .h b{width:28px;height:28px;border-radius:8px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;flex:none}
+.sn .st2{display:flex;height:22px;border-radius:6px;overflow:hidden;margin-top:6px}
+.sn .st2 div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12.5px;font-weight:800;white-space:nowrap;overflow:hidden}
+.sn .rel{font-size:14px;color:var(--teal);font-weight:700;margin-top:4px}
+.sline{font-size:17px;color:var(--sub);margin-top:6px}.sline b{color:var(--ink)}
+/* tf-idf book */
+.rcard.book .rhead,.rcard.book .row{grid-template-columns:104px 36px 36px 52px 52px 1fr}
+.row.zero .bar{background:var(--muted)}
+.chip.sw{border-style:dotted}
+</style></style>
 </head>
 <body>
 <div id="stage">
@@ -228,9 +250,8 @@ table.att tr.sum td{background:var(--panel);font-weight:700;color:var(--ink)}
     <div class="bar"></div><h1>챗봇 수학 실험실</h1><div class="sub">AI 수학 교원 연수 · 1차시 챗봇과 수학</div>
     <div id="tabs">
       <button class="tab" data-tab="tfidf">TF-IDF <small>02 단어의 무게</small></button>
-      <button class="tab" data-tab="cls">분류 <small>05 소프트맥스</small></button>
+      <button class="tab" data-tab="cls">소프트맥스 <small>04 분류</small></button>
       <button class="tab" data-tab="att">어텐션 <small>05 문맥 계산</small></button>
-      <button class="tab" data-tab="mission">미션 <small id="mcount">0 / 8</small></button>
     </div>
   </div>
   <div id="strip"></div>
@@ -243,7 +264,9 @@ table.att tr.sum td{background:var(--panel);font-weight:700;color:var(--ink)}
       <select id="setsel" class="tog sel"></select>
       <div class="seg" id="sortseg"><span>막대·정렬</span><button data-k="tf">TF</button><button data-k="idf">IDF</button><button data-k="score">TF-IDF</button></div>
       <div style="margin-left:auto;display:flex;gap:8px">
-        <button class="tog" id="t-round">슬라이드처럼 반올림</button>
+        <button class="tog" id="t-stop">불용어 빼기</button>
+        <button class="tog" id="t-real">실제 구현 방식</button>
+        <button class="tog" id="t-round">반올림</button>
         <button class="tog" id="t-base">로그 밑 10</button>
         <button class="tog" id="t-hide">점수 가리기</button>
         <button class="tog" id="t-reset">처음으로</button>
@@ -255,28 +278,36 @@ table.att tr.sum td{background:var(--panel);font-weight:700;color:var(--ink)}
   </div>
 
   <!-- Classification -->
-  <div class="view" id="v-cls">
+  <div class="view manual" id="v-cls">
+    <div class="clsbar">
+      <div class="seg" id="cmode"><button data-m="manual">직접 해 보기</button><button data-m="tm">티처블 머신</button></div>
+      <div class="monly" id="cpre"></div>
+      <div class="seg monly" id="cnum" style="margin-left:auto"><span>항목 수</span><button data-n="2">2</button><button data-n="3">3</button><button data-n="4">4</button><button data-n="5">5</button></div>
+    </div>
     <div class="card" id="cam"><div class="plane-h"><div class="ctitle">① 손 모양 보여 주기 <span>티처블 머신 모델</span></div></div>
       <div class="livepill" id="livepill">실시간</div>
       <div id="camwin"></div>
       <div id="camctl"><button class="tog" id="c-freeze">멈추고 계산 보기</button><button class="tog" id="c-stop">카메라 끄기</button></div>
       <div id="camst"></div>
     </div>
-    <div class="card" id="smx"><div class="ctitle">② 점수 → e<sup>z</sup> → 확률 <span class="cnote" id="smsrc"></span></div>
-      <div class="shead"><div style="padding-left:6px">클래스</div><div>점수 z <span style="font-weight:600;color:var(--muted)">· 막대를 끌어 바꿔 보세요</span></div><div style="text-align:right">e<sup>z</sup></div><div>확률</div></div>
+    <div class="card" id="smx"><div class="ctitle"><span id="smno">①</span> 점수 → e<sup>z</sup> → 확률 <span class="cnote" id="smsrc"></span></div>
+      <div class="shead"><div style="padding-left:6px">항목</div><div>점수 <span style="font-weight:600;color:var(--muted)">· 막대를 끌어 바꿔 보세요</span></div><div style="text-align:right">e<sup>z</sup></div><div>확률</div></div>
       <div id="srows"></div>
       <div class="ssum num"><div>합</div><div></div><div id="esum" style="text-align:right"></div><div>1.00</div></div>
       <div id="smform" class="num"></div>
-      <div id="smbtns"><button class="tog" id="c-plus">모든 점수 +1</button><button class="tog" id="c-minus">모든 점수 −1</button><button class="tog" id="c-reset">점수 처음으로</button></div>
+      <div id="smbtns"><button class="tog" id="c-plus">모두 +1</button><button class="tog" id="c-minus">모두 −1</button><button class="tog monly" id="c-x2">모두 ×2</button><button class="tog" id="c-reset">점수 처음으로</button></div>
     </div>
+    <div class="card" id="cmp"><div class="ctitle">② 단순 비율과 비교</div><div id="cmpb"></div></div>
+    <div class="card" id="snap"><div class="ctitle">③ 결과 저장해 비교</div>
+      <button class="snapbtn" id="c-snap">지금 결과 저장</button><div class="snaps" id="snaps"></div></div>
     <div class="card" id="res"><div class="ctitle">③ 분류 결과</div>
       <div class="big" id="rbig"></div><div class="pr num" id="rpr"></div>
       <div class="mix"><div class="t">어텐션이라면?</div><div class="stack" id="rstack"></div><div class="lgd num" id="rlgd"></div>
         <p>분류는 1등 하나를 고르지만, 어텐션은 고르지 않고 <b style="color:var(--coral)">이 비율대로 섞어</b> 씁니다. 그래서 어텐션에서는 이 확률을 ‘가중치’라고 부릅니다.</p></div>
       <div class="mix" style="margin-top:16px;background:var(--panel)"><div class="t">두 개 중 하나라면?</div>
-        <p style="margin-top:6px">클래스가 둘뿐이면 소프트맥스는 <b>시그모이드</b> σ(z) = 1 ÷ (1 + e<sup>−z</sup>)와 같아집니다. 스팸/정상, 합격/불합격 같은 분류에 씁니다.</p></div>
+        <p style="margin-top:6px">클래스가 둘뿐이면 소프트맥스는 <b>시그모이드</b> σ(z₁ − z₂)와 같아집니다. ‘직접 해 보기’에서 항목 수를 2로 바꿔 확인해 보세요.</p></div>
     </div>
-    <div class="card" id="cctrl">
+    <div class="card" id="cctrl" style="top:716px;height:86px">
       <label>온도 T</label><input type="range" id="ctemp" min="0.2" max="3" step="0.1" value="1"><div id="ctval" class="num">1.0</div>
       <div id="cnote">점수를 T로 나눈 뒤 소프트맥스를 합니다 · T가 작을수록 1등이 더 강조됩니다 (어텐션·문장 생성의 온도와 같은 장치)</div>
     </div>
@@ -297,16 +328,16 @@ table.att tr.sum td{background:var(--panel);font-weight:700;color:var(--ink)}
     </div>
   </div>
 
-  <!-- Missions -->
-  <div class="view" id="v-mission"><div id="mgrid"></div></div>
 </div>
 <script>
 // ===== 챗봇 수학 실험실 · 공통 로직 =====
 const PRESET_DOCS = [
-  { name: '리뷰 1', text: '이 영화는 스릴러 장르다. 스릴러 특유의 긴장감이 끝까지 대단하다. 스릴러를 좋아한다면 주말에 혼자 꼭 봐라.' },
-  { name: '리뷰 2', text: '로맨스 영화로 감동적이다. 로맨스 장면마다 눈물이 났다. 사랑 이야기가 아름다운 영화를 오랜만에 봤다.' },
-  { name: '리뷰 3', text: '코미디 영화인데 처음부터 정말 웃겼다. 코미디 요소가 풍부하고 배우들 연기도 좋다. 강력 추천!' }
+  { name: '리뷰 1', text: '이 영화는 스릴러 장르다. 스릴러 특유의 긴장감이 대단하다. 스릴러를 좋아한다면 꼭 봐라.' },
+  { name: '리뷰 2', text: '로맨스 영화로 감동적이다. 로맨스 영화답게 눈물이 났다. 사랑 이야기가 아름답다.' },
+  { name: '리뷰 3', text: '코미디 영화인데 정말 웃겼다. 코미디 요소가 풍부하고 배우들 연기가 좋다.' }
 ];
+// 불용어: 어느 문서에나 흔히 나오는 말 (기본으로 뺍니다)
+const STOPWORDS = ['이','그','저','것','수','등','꼭','정말','너무','아주','더','또','좀','참','다','잘','매우','진짜'];
 // 예제 세트: 리뷰 3편씩
 const SETS = [
  { key:'movie', label:'영화 리뷰 · 슬라이드 예제', docs: PRESET_DOCS },
@@ -340,11 +371,11 @@ const SETS = [
   {name:'수강생 C', text:'이 강의는 분량이 짧아서 좋다. 한 편 분량이 10분 정도다. 분량 부담 없이 매일 듣는다. 추천한다.'} ]}
 ];
 
-function topWord(docs){ const r = computeTFIDF(docs, {}, {round:true, base:'10'}).res[0].rows; return r.length ? r[0].w : ''; }
+function topWord(docs, opt){ const r = computeTFIDF(docs, {}, opt || {mode:'book', stop:true}).res[0].rows; return r.length ? r[0].w : ''; }
 // [조사, 남아야 하는 최소 글자 수] — 긴 것부터 검사
 const PARTICLES = [
   ['에서는',1],['에서도',1],['으로는',1],['으로도',1],['이라도',2],['에게서',1],['에는',1],['에도',1],
-  ['에서',1],['에게',1],['까지',1],['부터',1],['처럼',1],['보다',1],['마다',1],['으로',1],['이다',2],['인데',2],['이고',2],
+  ['에서',1],['에게',1],['까지',1],['부터',1],['처럼',1],['보다',1],['마다',1],['답게',1],['으로',1],['이다',2],['인데',2],['이고',2],
   ['은',1],['는',1],['을',1],['를',1],['에',1],['이',2],['가',2],['의',2],['도',2],['로',2],['와',2],['과',2],['만',2]
 ];
 function cleanWord(w){ return w.replace(/[.,!?·"“”‘’'()\[\]…:;~]/g,''); }
@@ -361,10 +392,11 @@ function autoSplit(w){
   return { stem: w, part: '' };
 }
 // overrides: { surface: {token:string|null} }
-function tokenizeDoc(text, overrides){
+function tokenizeDoc(text, overrides, stop){
   const words = text.split(/\s+/).map(cleanWord).filter(Boolean);
   return words.map((w,i)=>{
     const o = overrides[w];
+    if (!o && stop && STOPWORDS.includes(w)) return { surface:w, token:null, part:'', edited:false, excluded:true, stop:true };
     if (o){
       if (o.token === null) return { surface:w, token:null, part:'', edited:true, excluded:true };
       const part = w.startsWith(o.token) ? w.slice(o.token.length) : '';
@@ -377,31 +409,43 @@ function tokenizeDoc(text, overrides){
 function round2(x){ return Math.round((x + 1e-9) * 100) / 100; }
 function round3(x){ return Math.round((x + 1e-9) * 1000) / 1000; }
 function logb(x, base){ return base === 'e' ? Math.log(x) : Math.log10(x); }
+function gcd(a,b){ return b ? gcd(b, a % b) : a; }
+function frac(n, d){ const g = gcd(n, d); n /= g; d /= g; return d === 1 ? String(n) : `${n}/${d}`; }
+// opt.mode: 'book' = 교과서 (TF = 횟수, IDF = n/DF) · 'real' = 실제 구현 (TF = 횟수/토큰 수, IDF = log(n/DF))
 function computeTFIDF(docs, overrides, opt){
-  const toks = docs.map(d => tokenizeDoc(d.text, overrides));
+  const toks = docs.map(d => tokenizeDoc(d.text, overrides, opt.stop));
   const lists = toks.map(t => t.filter(x => !x.excluded).map(x => x.token));
   const N = docs.length;
   const df = {};
   lists.forEach(l => new Set(l).forEach(w => df[w] = (df[w]||0) + 1));
+  const book = opt.mode !== 'real';
   const res = lists.map((l, di) => {
     const cnt = {}; l.forEach(w => cnt[w] = (cnt[w]||0) + 1);
     const len = l.length;
     const rows = Object.keys(cnt).map(w => {
-      let tf = len ? cnt[w] / len : 0;
-      let idf = logb(N / df[w], opt.base);
+      const c = cnt[w], D = df[w];
+      if (book){
+        const idf = N / D, score = c * N / D;
+        return { w, count:c, len, df:D, common: D === N, tf:c, idf, tfR:c, idfR:idf, score,
+                 tfS:String(c), dfnS:frac(D,N), idfS:frac(N,D), scoreS:frac(c*N,D) };
+      }
+      let tf = len ? c / len : 0;
+      let idf = logb(N / D, opt.base);
       let tfR = opt.round ? round2(tf) : tf, idfR = opt.round ? round2(idf) : idf;
-      let score = tfR * idfR;
-      return { w, count: cnt[w], len, tf, idf, tfR, idfR, df: df[w], score: opt.round ? round3(score) : score };
+      let score = tfR * idfR; if (opt.round) score = round3(score);
+      const dg = opt.round ? 2 : 3;
+      return { w, count:c, len, df:D, common: D === N, tf, idf, tfR, idfR, score,
+               tfS:fmt(tfR,dg), dfnS:frac(D,N), idfS:fmt(idfR,dg), scoreS:fmt(score,3) };
     });
     rows.sort((a,b) => b.score - a.score || b.count - a.count || a.w.localeCompare(b.w,'ko'));
-    return { tokens: toks[di], len, rows };
+    return { tokens: toks[di], len, words: toks[di].length, rows };
   });
-  return { res, df, N };
+  return { res, df, N, book };
 }
 // 칸이 모자랄 때: 점수 높은 단어 + 선택한 단어 + 0점 단어(모든 문서 공통)를 꼭 보여 줍니다
 function pickRows(rows, cap, selW){
   if (rows.length <= cap) return { list: rows, more: 0 };
-  const zeros = rows.filter(r => r.score === 0), non = rows.filter(r => r.score !== 0);
+  const zeros = rows.filter(r => r.common), non = rows.filter(r => !r.common);
   let room = Math.max(1, cap - zeros.length - 1);
   let head = non.slice(0, room);
   const sel = non.find(r => r.w === selW);
@@ -459,55 +503,17 @@ function attCompute(st, T, scaleSqrt){
 }
 function bankVerdict(c){ const d = c[0]-c[1]; if (d > 0.2) return ['금융 쪽 ‘은행’','fin']; if (d < -0.2) return ['열매 쪽 ‘은행’','nat']; return ['아직 애매한 ‘은행’','mid']; }
 
-// ===== 미션 =====
-const MISSIONS = [
-  { id:1, tab:'tfidf', tag:'TF-IDF', title:'예상 먼저!',
-    q:'리뷰 1에서 TF-IDF 점수가 가장 높은 단어는 무엇일까요?',
-    opts:['영화','스릴러','긴장감','대단하다'], ans:1,
-    act:'점수를 가려 두었습니다. 하나를 고르면 점수가 공개됩니다.',
-    explain:'스릴러는 리뷰 1에 3번(TF 0.20), 다른 리뷰에는 없어서(IDF 0.48) 0.096으로 가장 높습니다. ‘영화’는 세 리뷰에 모두 있어 0입니다.' },
-  { id:2, tab:'tfidf', tag:'TF-IDF', title:'남의 문서가 내 점수를 바꾼다',
-    q:'리뷰 2에 ‘스릴러’를 한 번 넣으면, 리뷰 1의 ‘스릴러’ 점수는 어떻게 될까요?',
-    opts:['커진다','그대로다','작아진다'], ans:2,
-    act:'리뷰 2 문장 끝에 ‘스릴러’를 직접 넣어 확인해 보세요.',
-    explain:'리뷰 1은 그대로인데 ‘스릴러’가 나온 문서가 1개 → 2개가 되어 IDF가 0.48 → 0.18로 줄었습니다. 그래서 0.096 → 0.036이 됩니다.' },
-  { id:3, tab:'tfidf', tag:'TF-IDF', title:'조사의 힘',
-    q:'‘스릴러를’을 ‘스릴러’와 다른 단어로 세면 리뷰 1의 ‘스릴러’ 점수는 어떻게 될까요?',
-    opts:['커진다','그대로다','작아진다'], ans:2,
-    act:'리뷰 1의 ‘스릴러를’ 칩을 눌러 ‘어절 그대로’를 선택해 보세요.',
-    explain:'‘스릴러’가 3번 → 2번이 되어 TF가 0.20 → 0.13, 점수는 0.062로 줄었습니다. 토큰을 어떻게 자르느냐가 결과를 바꿉니다.' },
-  { id:4, tab:'cls', tag:'소프트맥스', title:'모든 점수에 1을 더하면',
-    q:'네 클래스의 점수에 모두 1을 더하면 ‘가위’의 확률은 어떻게 될까요?',
-    opts:['커진다','그대로다','작아진다'], ans:1,
-    act:'‘모든 점수 +1’ 버튼을 눌러 확인해 보세요.',
-    explain:'e^(z+1) = e × e^z라서 분자와 분모가 똑같이 e배가 됩니다. 확률을 정하는 것은 점수의 크기가 아니라 점수의 차이입니다.' },
-  { id:5, tab:'cls', tag:'소프트맥스', title:'점수가 같아지면',
-    q:'‘주먹’ 점수를 ‘가위’와 같은 2.0으로 올리면 두 클래스의 확률은 어떻게 될까요?',
-    opts:['똑같아진다','주먹이 더 커진다','가위가 여전히 크다'], ans:0,
-    act:'‘주먹’의 점수 막대를 끌어 가위와 같은 2.0에 맞춰 보세요.',
-    explain:'점수가 같으면 e^z도 같아서 확률도 0.45씩 똑같습니다. 대신 ‘보’와 ‘준비’의 몫은 더 줄어듭니다.' },
-  { id:6, tab:'att', tag:'어텐션', title:'참고할 단어 바꾸기',
-    q:'‘민지가’가 ‘모두가’를 가장 많이 참고하도록 쿼리를 움직여 볼까요? 문맥 벡터는 어디로 갈까요?',
-    opts:['피아노·치자 쪽','모두가·조용해졌다 쪽'], ans:1,
-    act:'쿼리 평면에서 청록색 끝점을 끌어 ‘모두가’ 가중치를 1등으로 만들어 보세요.',
-    explain:'쿼리가 ‘모두가’의 키와 같은 방향일수록 내적이 커져 가중치가 커지고, 문맥 벡터도 ‘모두가’의 밸류 쪽으로 끌려갑니다.' },
-  { id:7, tab:'att', tag:'어텐션', title:'모두 똑같이 0.25',
-    q:'네 단어의 가중치가 모두 0.25가 되는 쿼리는 어디일까요?',
-    opts:['[1, 1]','[0, 0]','[1, 0]'], ans:1,
-    act:'쿼리 끝점을 직접 옮겨 네 가중치를 모두 0.25로 만들어 보세요.',
-    explain:'쿼리가 [0, 0]이면 모든 내적이 0이고 e⁰ = 1이라 가중치가 똑같이 나뉩니다. 문맥 벡터는 밸류들의 평균이 됩니다.' },
-  { id:8, tab:'att', tag:'어텐션', title:'온도를 낮추면',
-    q:'온도를 1에서 0.5로 낮추면 ‘치자’의 가중치는 어떻게 될까요?',
-    opts:['커진다','작아진다'], ans:0,
-    act:'온도 T 슬라이더를 0.5로 맞춰 보세요.',
-    explain:'점수 차이가 2배로 벌어져 큰 점수가 더 강조됩니다. ‘치자’는 0.33 → 0.40, ‘조용해졌다’는 0.15 → 0.09가 됩니다.' }
-];
-
 /* ---------- 분류 · 소프트맥스 ---------- */
-const TM_MODEL_URL = 'https://teachablemachine.withgoogle.com/models/JggJkRGC7/';
-const CLS_LABELS = ['주먹','가위','보','준비'];
-const CLS_DEFAULT = [1.0, 2.0, 0.1, -0.5];
-const ZR = { min:-4, max:4 };
+const TM_MODEL_URL = 'https://teachablemachine.withgoogle.com/models/B--lasqRj/';
+const CLS_LABELS = ['주먹','가위','보'];          // 모델을 불러오면 모델 안의 클래스 이름으로 바뀝니다
+const CLS_DEFAULT = [2.0, 1.0, 0.1];             // 슬라이드 예시: 확률 0.66, 0.24, 0.10
+const XYZ_NAMES = ['x','y','z','u','v'];
+const SM_PRESETS = [ { label:'주먹·가위·보 (2, 1, 0.1)', z:[2.0, 1.0, 0.1], names:['주먹','가위','보'] },
+                     { label:'점수 (1, 2, 3)', z:[1, 2, 3], names:null } ];
+const ZR = { min:-6, max:6 };
+// 단순 비율: 점수 ÷ 점수의 합 (점수 중 0 이하가 있으면 확률로 쓸 수 없음)
+function simpleRatio(z){ if (z.some(v => v <= 0)) return null; const s = z.reduce((a,b)=>a+b,0); return z.map(v => v/s); }
+function sigmoid(t){ return 1 / (1 + Math.exp(-t)); }
 function softmaxT(z, T){
   const e = z.map(v => Math.exp(v / T)), sum = e.reduce((a,b)=>a+b,0);
   return { e, sum, p: e.map(v => v / sum) };
@@ -530,6 +536,7 @@ async function tmStart(onPred, onStatus){
       await loadScript('https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js');
     }
     if (!TM.model) TM.model = await tmImage.load(TM_MODEL_URL + 'model.json', TM_MODEL_URL + 'metadata.json');
+    try{ const ls = TM.model.getClassLabels(); if (ls && ls.length){ CLS_LABELS.splice(0, CLS_LABELS.length, ...ls); } }catch(e){}
     onStatus('카메라를 준비하는 중…');
     TM.webcam = new tmImage.Webcam(224, 224, true);
     await TM.webcam.setup({ facingMode:'user' });
@@ -542,7 +549,7 @@ async function tmStart(onPred, onStatus){
         TM.last = t;
         try{
           const pred = await TM.model.predict(TM.webcam.canvas);
-          const p = CLS_LABELS.map(l => { const f = pred.find(x => x.className === l); return f ? f.probability : 0; });
+          const p = CLS_LABELS.map((l,i) => { const f = pred.find(x => x.className === l) || pred[i]; return f ? f.probability : 0; });
           onPred(p);
         }catch(e){}
       }
@@ -563,91 +570,32 @@ function tmStop(){ TM.running = false; try{ TM.webcam && TM.webcam.stop(); }catc
 const $ = s => document.querySelector(s);
 const S = {
   tab:'tfidf',
-  set:'movie', docs: PRESET_DOCS.map(d => ({...d})), ov:{}, opt:{round:true, base:'10', hide:false}, sel:{d:0, w:'스릴러'}, sortBy:'score',
+  set:'movie', docs: PRESET_DOCS.map(d => ({...d})), ov:{}, opt:{mode:'book', stop:true, round:true, base:'10', hide:false}, sel:{d:0, w:'스릴러'}, sortBy:'score',
   att:null, attKey:'minji', T:1, sqrt:false,
-  cls:{ z:CLS_DEFAULT.slice(), T:1, frozen:false, shift:0, src:'manual', status:'' },
-  m:{ active:null, choice:null, solved:{}, base:null }
+  cls:{ mode:'manual', z:CLS_DEFAULT.slice(), names:SM_PRESETS[0].names.slice(), preset:0, T:1, frozen:false, src:'manual', status:'', snaps:[], tmz:null }
 };
 function fit(){ const s = Math.min(innerWidth/1920, innerHeight/1080); $('#stage').style.transform = `translate(-50%,-50%) scale(${s})`; }
 addEventListener('resize', fit); fit();
 
 /* ---------- tabs ---------- */
-document.querySelectorAll('.tab').forEach(b => b.onclick = () => { S.tab = b.dataset.tab; if (S.tab==='mission') S.m.active = null; if (S.tab!=='cls') camOff(); renderAll(); });
+document.querySelectorAll('.tab').forEach(b => b.onclick = () => { S.tab = b.dataset.tab; if (S.tab!=='cls') camOff(); renderAll(); });
 function renderTabs(){
   document.querySelectorAll('.tab').forEach(b => b.classList.toggle('on', b.dataset.tab === S.tab));
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === 'v-'+S.tab));
-  $('#mcount').textContent = Object.keys(S.m.solved).length + ' / ' + MISSIONS.length;
 }
 
-/* ---------- strip (guide / mission) ---------- */
+/* ---------- strip (guide) ---------- */
 const GUIDE = {
-  tfidf: [['1','문장을 고쳐 보세요'],['2','칩을 눌러 토큰을 손보세요'],['3','점수를 눌러 계산을 펼쳐 보세요']],
-  cls: [['1','카메라를 켜거나, 점수 막대를 직접 끌어 보세요'],['2','eᶻ와 확률이 어떻게 바뀌는지 보세요'],['3','온도를 바꿔 1등이 얼마나 강조되는지 보세요']],
-  att: [['1','문장을 고르세요'],['2','쿼리 끝점을 끌어 보세요'],['3','가중치와 문맥 벡터가 어떻게 바뀌는지 보세요']],
-  mission: [['✓','웹앱을 도구로 풀어 보는 미션 8개입니다 · 먼저 예상하고, 앱으로 확인해 봅니다']]
+  tfidf: [['1','문장을 고쳐 보세요'],['2','칩을 눌러 토큰을 손보세요 (점선 칩 = 불용어)'],['3','점수를 눌러 계산을 펼쳐 보세요']],
+  manual: [['1','점수 막대를 끌어 x, y, z를 바꿔 보세요'],['2','단순 비율과 소프트맥스를 비교하세요'],['3','결과를 저장해 +1 · ×2 · 온도의 효과를 나란히 보세요']],
+  tm: [['1','카메라를 켜고 손 모양을 보여 주세요'],['2','확률의 합이 1인지 확인하세요'],['3','‘멈추고 계산 보기’ 후 점수를 바꿔 보세요']],
+  att: [['1','문장을 고르세요'],['2','쿼리 끝점을 끌어 보세요'],['3','가중치와 문맥 벡터가 어떻게 바뀌는지 보세요']]
 };
 function renderStrip(){
-  const el = $('#strip'); const m = S.m.active ? MISSIONS[S.m.active-1] : null;
-  if (!m || m.tab !== S.tab){
-    el.className = '';
-    el.innerHTML = '<div class="guide">' + GUIDE[S.tab].map(([n,t]) => `<div class="step"><div class="dot">${n}</div>${t}</div>`).join('<span style="color:var(--line2)">›</span>') + '</div>';
-    return;
-  }
-  const r = missionStatus(m);
-  el.className = 'mission';
-  const optHtml = m.opts.map((o,i) => {
-    let c = 'opt';
-    if (S.m.choice === i) c += r.done ? (i === m.ans ? ' right' : ' wrong') : ' pick';
-    else if (r.done && i === m.ans) c += ' right';
-    return `<button class="${c}" data-o="${i}">${o}</button>`;
-  }).join('');
-  let a;
-  if (r.done && S.m.choice !== null) a = `<div class="a ok">${S.m.choice===m.ans?'예상 적중! ':'결과는 예상과 달랐어요. '}${m.explain}${r.extra?' '+r.extra:''}</div>`;
-  else if (r.done) a = `<div class="a warn">조건을 만들었어요. 오른쪽에서 먼저 예상을 골라 주세요.</div>`;
-  else if (S.m.choice === null) a = `<div class="a">먼저 예상을 골라 주세요 → 그다음 ${m.act}</div>`;
-  else a = `<div class="a">${m.act}${r.hint?' · '+r.hint:''}</div>`;
-  el.innerHTML = `<div class="mbadge"><b>${m.id}</b><span>미션 · ${m.tag}</span></div>
-    <div class="mq"><div class="q">${m.q}</div>${a}</div>
-    <div class="opts">${optHtml}</div>
-    <div class="mside"><button class="ghost" id="m-next">${m.id<MISSIONS.length?'다음 미션 ›':'미션 목록'}</button><button class="ghost" id="m-close">닫기</button></div>`;
-  el.querySelectorAll('.opt').forEach(b => b.onclick = () => { if (S.m.choice !== null && missionStatus(m).done) return; S.m.choice = +b.dataset.o; if (m.id===1){ S.opt.hide=false; } renderAll(); });
-  $('#m-next').onclick = () => { if (m.id < MISSIONS.length) startMission(m.id+1); else { S.m.active=null; S.tab='mission'; renderAll(); } };
-  $('#m-close').onclick = () => { S.m.active = null; renderAll(); };
+  const k = S.tab === 'cls' ? S.cls.mode : S.tab;
+  $('#strip').innerHTML = '<div class="guide">' + GUIDE[k].map(([n,t]) => `<div class="step"><div class="dot">${n}</div>${t}</div>`).join('<span style="color:var(--line2)">›</span>') + '</div>';
 }
-function missionStatus(m){
-  if (m.id === 1){ return { done: S.m.choice !== null }; }
-  if (m.id === 2){
-    const r = computeTFIDF(S.docs, S.ov, S.opt).res;
-    const has = r[1].tokens.some(t => !t.excluded && t.token === '스릴러');
-    const row = r[0].rows.find(x => x.w === '스릴러');
-    return { done: has, extra: has && row ? `(지금 값 ${fmt(row.score,3)})` : '' };
-  }
-  if (m.id === 3){
-    const r = computeTFIDF(S.docs, S.ov, S.opt).res;
-    const has = r[0].tokens.some(t => !t.excluded && t.token === '스릴러를');
-    const row = r[0].rows.find(x => x.w === '스릴러');
-    return { done: has, extra: has && row ? `(지금 값 ${fmt(row.score,3)})` : '' };
-  }
-  if (m.id === 4) return { done: S.cls.shift !== 0, extra: S.cls.shift ? `(지금 가위 ${fmt(softmaxT(S.cls.z,S.cls.T).p[1],2)})` : '' };
-  if (m.id === 5) return { done: Math.abs(S.cls.z[0]-S.cls.z[1]) < 0.051 && S.cls.T === 1, hint: S.cls.T!==1 ? '온도를 1로 맞춰 주세요' : '' };
-  const a = attCompute(S.att, S.T, S.sqrt);
-  if (S.attKey !== 'minji') return { done:false, hint:'‘민지 문장’에서 해 보세요' };
-  if (m.id === 6){ const mi = a.w.indexOf(Math.max(...a.w)); return { done: S.att.items[mi].w === '모두가' }; }
-  if (m.id === 7){ return { done: a.w.every(x => Math.abs(x - 0.25) < 0.01) }; }
-  if (m.id === 8){
-    const same = Math.abs(S.att.q[0]-S.att.q0[0]) < 1e-6 && Math.abs(S.att.q[1]-S.att.q0[1]) < 1e-6;
-    return { done: Math.abs(S.T - 0.5) < 0.051 && same && !S.sqrt, hint: same ? '' : '쿼리를 처음 값으로 되돌려 주세요' };
-  }
-}
-function startMission(id){
-  const m = MISSIONS[id-1];
-  S.m.active = id; S.m.choice = null; S.tab = m.tab;
-  if (m.tab === 'tfidf'){ S.set = 'movie'; S.docs = PRESET_DOCS.map(d=>({...d})); S.ov = {}; buildDocs(); S.opt.round = true; S.opt.base='10'; S.opt.hide = (id===1); S.sel = {d:0, w:'스릴러'}; syncTextareas(); }
-  else if (m.tab === 'cls'){ S.cls.z = CLS_DEFAULT.slice(); S.cls.T = 1; S.cls.shift = 0; S.cls.frozen = TM.running; $('#ctemp').value = 1; }
-  else { setPreset('minji'); S.T = 1; S.sqrt = false; $('#temp').value = 1; }
-  if (m.tab !== 'cls') camOff();
-  renderAll();
-}
+function updM(){}
 
 /* ---------- TF-IDF ---------- */
 function buildDocs(){
@@ -662,64 +610,80 @@ function buildDocs(){
 }
 function syncTextareas(){ S.docs.forEach((d,i)=>{ const t = $('#ta'+i); if (t) t.value = d.text; }); }
 function renderTF(){
-  const R = computeTFIDF(S.docs, S.ov, S.opt);
-  const maxS = Math.max(0.001, ...R.res.flatMap(d => d.rows.map(r => r.score)));
+  const R = computeTFIDF(S.docs, S.ov, S.opt), B = R.book;
   R.res.forEach((d,i) => {
-    $('#cnt'+i).textContent = '토큰 ' + d.len + '개';
+    $('#cnt'+i).textContent = `${d.words}단어 · 토큰 ${d.len}개`;
     const cnt = d.tokens.filter(t => !t.excluded && t.token === S.sel.w).length;
     const tag = $('#has'+i); if (tag){ tag.innerHTML = cnt ? `‘${S.sel.w}’ ${cnt}번` : ''; tag.classList.toggle('me', i===S.sel.d); }
     $('#ch'+i).innerHTML = d.tokens.map((t,j) => {
-      let c = 'chip' + (t.edited?' ed':'') + (t.excluded?' ex':'') + (!t.excluded && t.token===S.sel.w ? (i===S.sel.d ? ' hl' : ' hl2') : '');
+      let c = 'chip' + (t.edited?' ed':'') + (t.excluded?' ex':'') + (t.stop?' sw':'') + (!t.excluded && t.token===S.sel.w ? (i===S.sel.d ? ' hl' : ' hl2') : '');
       const label = t.excluded ? t.surface : (t.part ? `${t.token}<span class="pt">${t.part}</span>` : t.token);
       return `<button class="${c}" data-d="${i}" data-j="${j}">${label}</button>`;
     }).join('');
   });
   document.querySelectorAll('.chips .chip').forEach(b => b.onclick = e => openPop(+b.dataset.d, +b.dataset.j, b));
-  const key = S.sortBy, mxK = Math.max(1e-9, ...R.res.flatMap(d => d.rows.map(r => key==='tf' ? (S.opt.round?r.tfR:r.tf) : key==='idf' ? (S.opt.round?r.idfR:r.idf) : r.score)));
-  const val = r => key==='tf' ? (S.opt.round?r.tfR:r.tf) : key==='idf' ? (S.opt.round?r.idfR:r.idf) : r.score;
+  const key = S.sortBy;
+  const val = r => key==='tf' ? r.tfR : key==='idf' ? r.idfR : r.score;
+  const mxK = Math.max(1e-9, ...R.res.flatMap(d => d.rows.map(val)));
   const H = S.opt.hide;
+  const nm = {tf:'TF',idf:'IDF',score:'TF-IDF'}[key];
   R.res.forEach((d,i) => {
     const rows = d.rows.slice().sort((a,b) => (H?0:val(b)-val(a)) || b.count-a.count || a.w.localeCompare(b.w,'ko'));
     const pk = pickRows(rows, 11, S.sel.w);
-    const topW = !H && rows.length && val(rows[0]) > 0 ? rows[0].w : null;
-    const nf = (x,dg) => H ? '?' : fmt(x,dg);
-    $('#rc'+i).innerHTML = `<div class="rhead"><div>단어</div><div>횟수</div><div class="${key==='tf'?'hot':''}">TF</div><div class="${key==='idf'?'hot':''}">IDF</div><div><span class="hot" style="font-weight:600;margin-right:6px">${H?'':'막대: '+({tf:'TF',idf:'IDF',score:'TF-IDF'})[key]}</span>TF-IDF</div></div>` +
+    const topW = !H && rows.length && !rows[0].common ? rows[0].w : null;
+    const q = x => H ? '?' : x;
+    const rc = $('#rc'+i); rc.classList.toggle('book', B);
+    const head = B ? `<div>단어</div><div class="${key==='tf'?'hot':''}">TF</div><div>DF</div><div>DF/n</div><div class="${key==='idf'?'hot':''}">IDF</div>`
+                   : `<div>단어</div><div>횟수</div><div class="${key==='tf'?'hot':''}">TF</div><div class="${key==='idf'?'hot':''}">IDF</div>`;
+    rc.innerHTML = `<div class="rhead">${head}<div><span class="hot" style="font-weight:600;margin-right:6px">${H?'':'막대: '+nm}</span>TF-IDF</div></div>` +
       pk.list.map((r,k) => (pk.more && k===pk.at ? `<div class="rmore">⋯ 외 ${pk.more}개</div>` : '') +
-      `<div class="row ${r.score===0?'zero':''} ${S.sel.w===r.w?(S.sel.d===i?'sel':'sel2'):''}" data-d="${i}" data-w="${r.w}">
-        <div class="w">${r.w}</div><div class="n num">${r.count}</div>
-        <div class="n num ${key==='tf'?'hot':''}">${nf(S.opt.round?r.tfR:r.tf, S.opt.round?2:3)}</div>
-        <div class="n num ${key==='idf'?'hot':''}">${nf(S.opt.round?r.idfR:r.idf, S.opt.round?2:3)}</div>
-        <div class="bx">${H?'':`<div class="bar ${r.w===topW?'top':''}" style="width:${Math.max(2, val(r)/mxK*110)}px"></div>`}<b class="num">${H?'?':fmt(r.score,3)}</b></div></div>`).join('');
+      `<div class="row ${r.common?'zero':''} ${S.sel.w===r.w?(S.sel.d===i?'sel':'sel2'):''}" data-d="${i}" data-w="${r.w}">
+        <div class="w">${r.w}</div>` + (B
+        ? `<div class="n num ${key==='tf'?'hot':''}">${r.count}</div><div class="n num">${r.df}</div><div class="n num">${r.dfnS}</div><div class="n num ${key==='idf'?'hot':''}">${q(r.idfS)}</div>`
+        : `<div class="n num">${r.count}</div><div class="n num ${key==='tf'?'hot':''}">${q(r.tfS)}</div><div class="n num ${key==='idf'?'hot':''}">${q(r.idfS)}</div>`) +
+        `<div class="bx">${H?'':`<div class="bar ${r.w===topW?'top':''}" style="width:${Math.max(2, val(r)/mxK*110)}px"></div>`}<b class="num">${q(r.scoreS)}</b></div></div>`).join('') +
+      (B && rows.some(r=>r.common) ? `<div class="rmore" style="margin-top:4px">회색 = 모든 리뷰에 나온 단어 · IDF = 1이라 TF-IDF = TF</div>` : '');
   });
   document.querySelectorAll('#sortseg button').forEach(b => b.classList.toggle('on', b.dataset.k === key));
   document.querySelectorAll('.rcard .row').forEach(r => r.onclick = () => { S.sel = {d:+r.dataset.d, w:r.dataset.w}; renderTF(); });
-  // calc bar
   const d = R.res[S.sel.d]; const r = d && d.rows.find(x => x.w === S.sel.w);
   const lg = S.opt.base === 'e' ? 'ln' : 'log';
   if (!r){ $('#calc').innerHTML = `<div class="k w0" style="grid-column:1/-1"><div style="color:var(--muted);font-size:18px;font-weight:600">아래 점수표나 위의 칩에서 단어를 눌러 보세요.</div></div>`; }
   else {
-    const tfS = S.opt.round ? fmt(r.tfR,2) : fmt(r.tf,3), idfS = S.opt.round ? fmt(r.idfR,2) : fmt(r.idf,3);
     const dots = S.docs.map((x,i)=>`<i class="${R.res[i].rows.some(y=>y.w===r.w)?'on':''}"></i>${x.name}`).join('');
-    $('#calc').innerHTML = `<div class="k w0"><small>${S.docs[S.sel.d].name}</small><div>‘${r.w}’</div></div>
-      <div class="k"><small>TF · 이 리뷰 안에서 얼마나 자주</small><div>${r.count}번 ÷ 토큰 ${r.len}개 = <b class="num">${H?'?':tfS}</b></div></div>
-      <div class="k"><small>IDF · 다른 리뷰에는 얼마나 드물게 <span class="dfdots">${dots}</span></small><div>${lg}(리뷰 ${R.N}개 ÷ 나온 리뷰 ${r.df}개) = <b class="num">${H?'?':idfS}</b></div></div>
-      <div class="k fin"><small>TF-IDF = TF × IDF${S.opt.round?' · 소수 둘째 자리로 반올림해 곱함':''}</small><div>${H?'예상을 고른 뒤에 공개됩니다':`${tfS} × ${idfS} = <span class="hi num">${fmt(r.score,3)}</span>`}</div></div>`;
+    const q = x => H ? '?' : x;
+    if (B){
+      $('#calc').innerHTML = `<div class="k w0"><small>${S.docs[S.sel.d].name}</small><div>‘${r.w}’</div></div>
+      <div class="k"><small>TF · 이 리뷰에 나온 횟수</small><div>‘${r.w}’ ${r.count}번 → TF = <b class="num">${r.count}</b></div></div>
+      <div class="k"><small>DF · 나온 리뷰 수 <span class="dfdots">${dots}</span></small><div>DF = ${r.df} · DF/n = ${r.dfnS} → IDF = n/DF = ${R.N}/${r.df} = <b class="num">${q(r.idfS)}</b></div></div>
+      <div class="k fin"><small>TF-IDF = TF × IDF${r.common?' · 모든 리뷰에 나와 IDF = 1':''}</small><div>${H?'예상한 뒤에 ‘점수 가리기’를 꺼 보세요':`${r.count} × ${r.idfS} = <span class="hi num">${r.scoreS}</span>`}</div></div>`;
+    } else {
+      $('#calc').innerHTML = `<div class="k w0"><small>${S.docs[S.sel.d].name} · 실제 구현 방식</small><div>‘${r.w}’</div></div>
+      <div class="k"><small>TF · 횟수 ÷ 토큰 수</small><div>${r.count}번 ÷ 토큰 ${r.len}개 = <b class="num">${q(r.tfS)}</b></div></div>
+      <div class="k"><small>IDF · 로그를 씌운 n/DF <span class="dfdots">${dots}</span></small><div>${lg}(${R.N} ÷ ${r.df}) = <b class="num">${q(r.idfS)}</b></div></div>
+      <div class="k fin"><small>TF-IDF = TF × IDF${S.opt.round?' · 소수 둘째 자리로 반올림해 곱함':''}</small><div>${H?'예상한 뒤에 ‘점수 가리기’를 꺼 보세요':`${r.tfS} × ${r.idfS} = <span class="hi num">${r.scoreS}</span>`}</div></div>`;
+    }
   }
+  $('#t-stop').classList.toggle('on', S.opt.stop);
+  $('#t-real').classList.toggle('on', !B);
+  $('#t-round').style.display = $('#t-base').style.display = B ? 'none' : '';
   $('#t-round').classList.toggle('on', S.opt.round);
   $('#t-base').textContent = S.opt.base==='e' ? '로그 밑 e' : '로그 밑 10'; $('#t-base').classList.toggle('on', S.opt.base==='e');
   $('#t-hide').classList.toggle('on', S.opt.hide);
   $('#setsel').value = S.set;
 }
+$('#t-stop').onclick = () => { S.opt.stop = !S.opt.stop; renderTF(); };
+$('#t-real').onclick = () => { S.opt.mode = S.opt.mode === 'book' ? 'real' : 'book'; renderTF(); };
 $('#t-round').onclick = () => { S.opt.round = !S.opt.round; renderTF(); renderStrip(); };
 $('#t-base').onclick = () => { S.opt.base = S.opt.base==='e' ? '10' : 'e'; renderTF(); renderStrip(); };
 $('#t-hide').onclick = () => { S.opt.hide = !S.opt.hide; renderTF(); };
 document.querySelectorAll('#sortseg button').forEach(b => b.onclick = () => { S.sortBy = b.dataset.k; renderTF(); });
-function loadSet(key){ const st = SETS.find(x=>x.key===key); S.set = key; S.docs = st.docs.map(d=>({...d})); S.ov = {}; S.sel = {d:0, w:topWord(S.docs)}; closePop(); buildDocs(); renderTF(); renderStrip(); updM(); }
+function loadSet(key){ const st = SETS.find(x=>x.key===key); S.set = key; S.docs = st.docs.map(d=>({...d})); S.ov = {}; S.sel = {d:0, w:topWord(S.docs, S.opt)}; closePop(); buildDocs(); renderTF(); renderStrip(); updM(); }
 $('#setsel').innerHTML = SETS.map(s=>`<option value="${s.key}">예제: ${s.label}</option>`).join('');
 $('#setsel').onchange = e => loadSet(e.target.value);
 $('#t-reset').onclick = () => loadSet(S.set);
 function openPop(di, j, btn){
-  const t = tokenizeDoc(S.docs[di].text, S.ov)[j];
+  const t = tokenizeDoc(S.docs[di].text, S.ov, S.opt.stop)[j];
   const pop = $('#pop'); const st = $('#stage').getBoundingClientRect(), sc = st.width/1920;
   const b = btn.getBoundingClientRect();
   let x = (b.left - st.left)/sc, y = (b.bottom - st.top)/sc - 206 + 8;
@@ -727,13 +691,13 @@ function openPop(di, j, btn){
   pop.style.left = Math.min(x, 1500) + 'px'; pop.style.top = y + 'px'; pop.style.display = 'block';
   pop.innerHTML = `<h4>어절 ‘${t.surface}’</h4><input id="pin" value="${t.excluded? t.surface : t.token}">
     <div class="btns"><button class="pri" id="p-ok">이 토큰으로</button><button id="p-whole">어절 그대로</button><button id="p-auto">자동으로</button><button id="p-ex">${t.excluded?'다시 넣기':'빼기'}</button><button id="p-x">닫기</button></div>
-    <p>같은 어절은 모든 문서에 함께 적용됩니다</p>`;
+    <p>${t.stop?'불용어라서 빠져 있습니다 · ':''}같은 어절은 모든 문서에 함께 적용됩니다</p>`;
   const set = v => { if (v === undefined) delete S.ov[t.surface]; else S.ov[t.surface] = {token:v}; closePop(); renderTF(); renderStrip(); updM(); };
   $('#p-ok').onclick = () => { const v = $('#pin').value.trim(); set(v ? v : null); };
   $('#pin').onkeydown = e => { if (e.key === 'Enter') $('#p-ok').click(); };
   $('#p-whole').onclick = () => set(t.surface);
   $('#p-auto').onclick = () => set(undefined);
-  $('#p-ex').onclick = () => set(t.excluded ? undefined : null);
+  $('#p-ex').onclick = () => set(t.stop ? t.surface : (t.excluded ? undefined : null));
   $('#p-x').onclick = closePop;
 }
 function closePop(){ $('#pop').style.display = 'none'; }
@@ -746,7 +710,7 @@ function buildPresets(){
   $('#presets').innerHTML = Object.entries(ATT_PRESETS).map(([k,p]) => `<button class="pbtn ${k===S.attKey?'on':''}" data-k="${k}">${p.label}</button>`).join('');
   document.querySelectorAll('.pbtn').forEach(b => b.onclick = () => { setPreset(b.dataset.k); renderAtt(); renderStrip(); });
   const pal = $('#palette');
-  if (S.attKey === 'build' && !(S.m.active && MISSIONS[S.m.active-1].tab==='att')){
+  if (S.attKey === 'build'){
     pal.style.display = 'block';
     const g = {fin:'금융',nat:'자연',mid:'은행',etc:'기타'};
     pal.innerHTML = '<div class="ttl">단어 칩을 눌러 문장에 넣어 보세요 (최대 6개) · 문장의 단어를 누르면 쿼리가 바뀝니다 · × 로 빼기</div><div style="display:flex;flex-wrap:wrap;gap:4px 26px">' + ['mid','fin','nat','etc'].map(k => `<div class="grp"><span>${g[k]}</span>${Object.keys(VOCAB).filter(w=>VOCAB[w].g===k).map(w=>`<button class="${k}" data-w="${w}">${w}</button>`).join('')}</div>`).join('') + '</div>';
@@ -807,21 +771,21 @@ function renderAtt(){
   $('#qname').textContent = `쿼리: ${st.words[st.qi]} = [${fmt(st.q[0],2)}, ${fmt(st.q[1],2)}]`;
   // QK plane
   let g = grid(pxQ, pyQ, QK, 0.5);
-  const ky = placeLabels(st.items.map(it => ({x:pxQ(it.k[0])+8, y:pyQ(it.k[1])-8})));
+  const ky = placeLabels([{x:pxQ(st.q[0])+(pxQ(st.q[0])>380?-160:22), y:pyQ(st.q[1])+30}].concat(st.items.map(it => ({x:pxQ(it.k[0])+8, y:pyQ(it.k[1])-8})))).slice(1);
   st.items.forEach((it,i) => {
     const col = i === top ? '#E07A55' : '#5FB3BA';
     g += arrow(pxQ(0),pyQ(0),pxQ(it.k[0]),pyQ(it.k[1]), col, 2 + a.w[i]*8);
-    g += `<text x="${pxQ(it.k[0])+8}" y="${ky[i]}" font-size="17" font-weight="700" fill="#1F4E5F">${it.w}</text>`;
+    g += `<text x="${pxQ(it.k[0])+8}" y="${ky[i]}" font-size="17" font-weight="700" fill="#1F4E5F" paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round">${it.w}</text>`;
   });
   g += arrow(pxQ(0),pyQ(0),pxQ(st.q[0]),pyQ(st.q[1]),'#1F4E5F',5);
   g += `<circle cx="${pxQ(st.q[0])}" cy="${pyQ(st.q[1])}" r="15" fill="#1B8691" stroke="#fff" stroke-width="3" style="cursor:grab"/>`;
   { const qx = pxQ(st.q[0]), qy = pyQ(st.q[1]); const lx = qx > 380 ? qx - 22 : qx + 22, anc = qx > 380 ? 'end' : 'start';
-    g += `<text x="${lx}" y="${qy + 30}" font-size="17" font-weight="800" fill="#1B8691" text-anchor="${anc}">쿼리 [${fmt(st.q[0],2)}, ${fmt(st.q[1],2)}]</text>`; }
+    g += `<text x="${lx}" y="${qy + 30}" font-size="17" font-weight="800" fill="#1B8691" text-anchor="${anc}" paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round">쿼리 [${fmt(st.q[0],2)}, ${fmt(st.q[1],2)}]</text>`; }
   if (P.axes) g += `<text x="515" y="${pyQ(0)-8}" font-size="14" fill="#8FA3AB" text-anchor="end">x</text>`;
   $('#svgqk').innerHTML = g;
   // table
   const hide = false;
-  $('#attt').innerHTML = `<table class="att num"><tr><th>단어</th><th>키 k</th><th>점수 s</th><th>eˢ</th><th style="width:210px">가중치</th></tr>
+  $('#attt').innerHTML = `<div class="sline">문장 · <b>${st.words.join(' ')}.</b></div><table class="att num"><tr><th>단어</th><th>키 k</th><th>점수 s</th><th>eˢ</th><th style="width:210px">가중치</th></tr>
     ${st.items.map((it,i)=>`<tr><td class="w">${it.w}</td><td>[${fmt(it.k[0],1)}, ${fmt(it.k[1],1)}]</td><td>${fmt(a.s[i],2)}</td><td>${fmt(a.e[i],2)}</td>
       <td><div class="wbar"><div class="${i===top?'top':''}" style="width:${Math.max(3,a.w[i]*150)}px"></div><b style="color:${i===top?'var(--coral)':'var(--ink)'}">${fmt(a.w[i],2)}</b></div></td></tr>`).join('')}
     <tr class="sum"><td class="w">합</td><td></td><td></td><td>${fmt(a.sumE,2)}</td><td>1.00</td></tr></table>
@@ -840,9 +804,15 @@ function renderAtt(){
   });
   const vy = placeLabels(st.items.map(it => ({x:pxV(it.v[0])+12, y:pyV(it.v[1])-10})));
   st.items.forEach((it,i) => {
-    h += `<circle cx="${pxV(it.v[0])}" cy="${pyV(it.v[1])}" r="9" fill="#2F78B0"/><text x="${pxV(it.v[0])+12}" y="${vy[i]}" font-size="17" font-weight="700" fill="#1F4E5F">${it.w}</text>`;
+    h += `<circle cx="${pxV(it.v[0])}" cy="${pyV(it.v[1])}" r="9" fill="#2F78B0"/><text x="${pxV(it.v[0])+12}" y="${vy[i]}" font-size="17" font-weight="700" fill="#1F4E5F" paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round">${it.w}</text>`;
   });
+  if (S.attKey === 'bank1' || S.attKey === 'bank2'){
+    const ok = S.attKey === 'bank1' ? 'bank2' : 'bank1', oa = attCompute(attSetup(ok), S.T, S.sqrt);
+    h += `<circle cx="${pxV(oa.c[0])}" cy="${pyV(oa.c[1])}" r="12" fill="#fff" stroke="#8FA3AB" stroke-width="3" stroke-dasharray="4 3"/>`;
+    h += `<text x="${pxV(oa.c[0])+18}" y="${pyV(oa.c[1])+6}" font-size="15" font-weight="700" fill="#5B7480" ${'paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round"'}>${ATT_PRESETS[ok].label}의 ‘은행’ [${fmt(oa.c[0],2)}, ${fmt(oa.c[1],2)}]</text>`;
+  }
   h += `<circle cx="${pxV(a.c[0])}" cy="${pyV(a.c[1])}" r="14" fill="#E07A55" stroke="#fff" stroke-width="3"/>`;
+  h += `<text x="${pxV(a.c[0])+18}" y="${pyV(a.c[1])-12}" font-size="16" font-weight="800" fill="#B5552F" ${'paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round"'}>문맥 벡터 [${fmt(a.c[0],2)}, ${fmt(a.c[1],2)}]</text>`;
 
   $('#svgv').innerHTML = h;
   if (S.attKey !== 'minji'){ const [t,c] = bankVerdict(a.c); $('#verdict').innerHTML = st.words[st.qi].startsWith('은행') ? `<span class="verdict ${c}">${t}</span>` : ''; } else $('#verdict').innerHTML = '';
@@ -856,7 +826,7 @@ function dragPlane(svgId){
     let x = QK.min + (q.x - 20)/500*(QK.max-QK.min), y = QK.min + (520 - q.y)/500*(QK.max-QK.min);
     x = Math.max(QK.min, Math.min(QK.max, Math.round(x/0.05)*0.05)); y = Math.max(QK.min, Math.min(QK.max, Math.round(y/0.05)*0.05));
     return [Math.round(x*100)/100, Math.round(y*100)/100]; };
-  svg.addEventListener('pointerdown', e => { on = true; svg.setPointerCapture(e.pointerId); S.att.q = toVal(e); renderAtt(); renderStrip(); updM(); });
+  svg.addEventListener('pointerdown', e => { e.preventDefault(); on = true; svg.setPointerCapture(e.pointerId); S.att.q = toVal(e); renderAtt(); renderStrip(); updM(); });
   svg.addEventListener('pointermove', e => { if (!on) return; S.att.q = toVal(e); renderAtt(); renderStrip(); updM(); });
   svg.addEventListener('pointerup', () => on = false); svg.addEventListener('pointercancel', () => on = false);
 }
@@ -866,93 +836,141 @@ $('#t-sqrt').onclick = () => { S.sqrt = !S.sqrt; renderAtt(); renderStrip(); upd
 $('#t-qreset').onclick = () => { S.att.q = S.att.q0.slice(); renderAtt(); renderStrip(); updM(); };
 
 /* ---------- 분류 · 소프트맥스 ---------- */
-const CLS_COL = ['#1F4E5F','#1B8691','#5FB3BA','#9FCFD5'];
+const CLS_COL = ['#1F4E5F','#1B8691','#5FB3BA','#9FCFD5','#C5DCE0'];
+const SNAP_L = ['A','B','C','D'];
 function camPlaceholder(){
   $('#camwin').className = '';
-  $('#camwin').innerHTML = `<div class="ph">미리 학습해 둔 <b>주먹 · 가위 · 보 · 준비</b> 모델로<br>손 모양을 분류합니다</div><button class="bigbtn" id="c-start">카메라 켜기</button><div class="ph" style="font-size:16px;color:var(--muted)">카메라가 없어도 오른쪽 점수 막대를 끌어<br>소프트맥스를 실험할 수 있어요</div>`;
+  $('#camwin').innerHTML = `<div class="ph">미리 학습해 둔 <b>${CLS_LABELS.join(' · ')}</b> 모델로<br>손 모양을 분류합니다</div><button class="bigbtn" id="c-start">카메라 켜기</button><div class="ph" style="font-size:16px;color:var(--muted)">카메라가 없어도 오른쪽 점수 막대를 끌어<br>소프트맥스를 실험할 수 있어요</div>`;
   $('#c-start').onclick = camOn;
   $('#livepill').style.display = 'none';
 }
 async function camOn(){
-  const cv = await tmStart(p => { if (S.cls.frozen) return; S.cls.z = scoresFromProbs(p); S.cls.src = 'cam'; if (S.tab === 'cls') renderCls(); },
-                           s => { S.cls.status = s; $('#camst').textContent = s; });
-  if (cv){ $('#camwin').className = 'live'; $('#camwin').innerHTML = ''; $('#camwin').appendChild(cv); S.cls.frozen = false; S.cls.src = 'cam'; S.cls.T = 1; $('#ctemp').value = 1; renderCls(); }
+  const cv = await tmStart(p => { if (S.cls.frozen || S.cls.mode !== 'tm') return;
+      if (p.length !== S.cls.z.length){ S.cls.names = CLS_LABELS.slice(); S.cls.z = p.map(()=>0); buildRows(); }
+      S.cls.z = scoresFromProbs(p); S.cls.src = 'cam'; if (S.tab === 'cls') renderCls(); },
+    s => { S.cls.status = s; $('#camst').textContent = s; });
+  if (cv){ $('#camwin').className = 'live'; $('#camwin').innerHTML = ''; $('#camwin').appendChild(cv); S.cls.frozen = false; S.cls.src = 'cam'; S.cls.T = 1; $('#ctemp').value = 1;
+    S.cls.names = CLS_LABELS.slice(); if (S.cls.z.length !== CLS_LABELS.length){ S.cls.z = CLS_LABELS.map(()=>0); } buildRows(); renderCls(); }
 }
 function camOff(){ if (TM.running || TM.webcam){ tmStop(); } S.cls.frozen = false; if ($('#camwin')) camPlaceholder(); }
-function buildCls(){
-  $('#srows').innerHTML = CLS_LABELS.map((l,i) => `<div class="srow" id="sr${i}"><div class="lb">${l}</div>
+function setClsMode(m){
+  const c = S.cls; if (c.mode === m) return;
+  if (m === 'tm'){ c.manual = { z:c.z.slice(), names:c.names.slice(), preset:c.preset }; c.z = c.tmz ? c.tmz.slice() : CLS_DEFAULT.slice(); c.names = CLS_LABELS.slice(); c.src = 'manual'; }
+  else { camOff(); c.tmz = c.z.slice(); const b = c.manual || { z:CLS_DEFAULT.slice(), names:SM_PRESETS[0].names.slice(), preset:0 }; c.z = b.z; c.names = b.names; c.preset = b.preset; c.src = 'manual'; }
+  c.mode = m; buildRows(); renderAll();
+}
+function setPresetZ(k){ const P = SM_PRESETS[k]; const c = S.cls; c.preset = k; c.z = P.z.slice(); c.names = P.names ? P.names.slice() : XYZ_NAMES.slice(0, P.z.length); buildRows(); renderCls(); }
+function setCount(n){ const c = S.cls; const z = c.z.slice(0, n); while (z.length < n) z.push(Math.round((z.length ? z[z.length-1] - 1 : 1) * 10) / 10);
+  c.z = z; c.names = XYZ_NAMES.slice(0, n); c.preset = -1; buildRows(); renderCls(); }
+function buildRows(){
+  const n = S.cls.z.length, h = n <= 3 ? 88 : 64;
+  $('#srows').innerHTML = S.cls.z.map((_,i) => `<div class="srow" id="sr${i}" style="height:${h}px"><div class="lb"></div>
     <div class="ztrack" data-i="${i}"><div class="zero"></div><div class="zb"></div><div class="kn"></div><div class="zv num"></div></div>
     <div class="ev num"></div><div class="pcell"><div class="pb"></div><b class="num"></b></div></div>`).join('');
   document.querySelectorAll('.ztrack').forEach(t => {
     let on = false;
     const set = e => { const r = t.getBoundingClientRect(); let v = ZR.min + (e.clientX - r.left) / r.width * (ZR.max - ZR.min);
       v = Math.max(ZR.min, Math.min(ZR.max, Math.round(v * 10) / 10)); if (TM.running) S.cls.frozen = true;
-      S.cls.z[+t.dataset.i] = v; renderCls(); renderStrip(); updM(); };
-    t.addEventListener('pointerdown', e => { on = true; t.setPointerCapture(e.pointerId); set(e); });
+      S.cls.z[+t.dataset.i] = v; if (S.cls.mode === 'tm') S.cls.src = S.cls.src === 'cam' ? 'cam' : 'manual'; renderCls(); };
+    t.addEventListener('pointerdown', e => { e.preventDefault(); on = true; t.setPointerCapture(e.pointerId); set(e); });
     t.addEventListener('pointermove', e => { if (on) set(e); });
     t.addEventListener('pointerup', () => on = false); t.addEventListener('pointercancel', () => on = false);
   });
-  camPlaceholder();
+}
+function buildCls(){
+  $('#cpre').innerHTML = SM_PRESETS.map((p,k) => `<button class="tog" data-p="${k}">${p.label}</button>`).join('');
+  document.querySelectorAll('#cpre button').forEach(b => b.onclick = () => setPresetZ(+b.dataset.p));
+  document.querySelectorAll('#cnum button').forEach(b => b.onclick = () => setCount(+b.dataset.n));
+  document.querySelectorAll('#cmode button').forEach(b => b.onclick = () => setClsMode(b.dataset.m));
+  buildRows(); camPlaceholder();
 }
 const zx = v => (Math.max(ZR.min, Math.min(ZR.max, v)) - ZR.min) / (ZR.max - ZR.min) * 100;
+const tup = z => '(' + z.map(v => fmt(v,1).replace('.0','') === '-0' ? '0' : String(+v.toFixed(2))).join(', ') + ')';
+function relation(a, b, L){
+  if (a.T !== b.T) return `온도만 ${fmt(a.T,1)} → ${fmt(b.T,1)}`;
+  const d = b.z.map((v,i) => v - a.z[i]);
+  if (d.every(x => Math.abs(x) < 1e-9)) return '';
+  if (d.every(x => Math.abs(x - d[0]) < 1e-9)) return `${L}에 모두 ${d[0] > 0 ? '+' : ''}${+d[0].toFixed(2)} → 확률은 그대로`;
+  const nz = a.z.findIndex(v => Math.abs(v) > 1e-9);
+  if (nz >= 0){ const k = b.z[nz] / a.z[nz]; if (k > 0 && b.z.every((v,i) => Math.abs(v - k*a.z[i]) < 1e-9)) return `${L}의 ${+k.toFixed(2)}배 → ${k > 1 ? '1등이 더 강조됨' : '차이가 줄어 고르게'}`; }
+  return '';
+}
 function renderCls(){
-  const c = S.cls, sm = softmaxT(c.z, c.T), top = sm.p.indexOf(Math.max(...sm.p));
-  CLS_LABELS.forEach((l,i) => {
-    const row = $('#sr'+i); row.classList.toggle('top', i === top);
-    const x0 = zx(0), x1 = zx(c.z[i]);
+  const c = S.cls, M = c.mode === 'manual', sm = softmaxT(c.z, c.T), top = sm.p.indexOf(Math.max(...sm.p));
+  $('#v-cls').className = 'view on ' + c.mode;
+  document.querySelectorAll('#cmode button').forEach(b => b.classList.toggle('on', b.dataset.m === c.mode));
+  document.querySelectorAll('#cpre button').forEach(b => b.classList.toggle('on', +b.dataset.p === c.preset));
+  document.querySelectorAll('#cnum button').forEach(b => b.classList.toggle('on', +b.dataset.n === c.z.length));
+  $('#smno').textContent = M ? '①' : '②';
+  const x0 = zx(0);
+  c.z.forEach((v,i) => {
+    const row = $('#sr'+i); if (!row) return; row.classList.toggle('top', i === top);
+    const nm = c.names[i] || XYZ_NAMES[i];
+    row.querySelector('.lb').innerHTML = M && c.preset === 0 ? `${XYZ_NAMES[i]} <span style="font-size:15px;color:var(--muted);font-weight:700">${nm}</span>` : nm;
+    const x1 = zx(v);
+    row.querySelector('.zero').style.left = x0 + '%';
     const zb = row.querySelector('.zb'); zb.style.left = Math.min(x0,x1)+'%'; zb.style.width = Math.abs(x1-x0)+'%';
     row.querySelector('.kn').style.left = x1+'%';
-    const zv = row.querySelector('.zv'); zv.textContent = fmt(c.z[i],2); zv.style.left = (c.z[i] >= 0 ? Math.min(x1+3, 84) : Math.max(x1-15, 2))+'%';
+    const zv = row.querySelector('.zv'); zv.textContent = fmt(v,2); zv.style.left = (v >= 0 ? Math.min(x1+3, 86) : Math.max(x1-14, 1))+'%';
     row.querySelector('.ev').textContent = fmt(sm.e[i],2);
-    row.querySelector('.pb').style.width = Math.max(3, sm.p[i]*230)+'px';
+    row.querySelector('.pb').style.width = Math.max(3, sm.p[i]*160)+'px';
     row.querySelector('b').textContent = fmt(sm.p[i],2);
   });
   $('#esum').textContent = fmt(sm.sum,2);
-  const L = CLS_LABELS[top], Tt = c.T !== 1 ? `/${fmt(c.T,1)}` : '';
+  const L = c.names[top] || XYZ_NAMES[top], Tt = c.T !== 1 ? `/${fmt(c.T,1)}` : '';
   $('#smform').innerHTML = `‘${L}’ 확률 = e<sup>${fmt(c.z[top],2)}${Tt}</sup> ÷ (${c.z.map(v=>`e<sup>${fmt(v,2)}${Tt}</sup>`).join(' + ')})<br>= <b>${fmt(sm.e[top],2)}</b> ÷ <b>${fmt(sm.sum,2)}</b> = <span class="hi">${fmt(sm.p[top],2)}</span>`;
-  $('#smsrc').textContent = c.src === 'cam' ? (c.frozen ? '· 멈춘 순간의 점수 (모델 확률에서 거꾸로 구한 값)' : '· 카메라 실시간 (모델 확률에서 거꾸로 구한 점수)') : '· 직접 정한 점수';
-  $('#rbig').textContent = L;
-  $('#rpr').innerHTML = `확률 <b>${fmt(sm.p[top],2)}</b> · 가장 큰 확률 하나를 고릅니다`;
-  $('#rstack').innerHTML = sm.p.map((p,i) => `<div style="width:${p*100}%;background:${CLS_COL[i]}">${p>0.12?Math.round(p*100)+'%':''}</div>`).join('');
-  $('#rlgd').innerHTML = CLS_LABELS.map((l,i) => `<span style="margin-right:9px;white-space:nowrap"><i style="background:${CLS_COL[i]}"></i>${l} ${fmt(sm.p[i],2)}</span>`).join('');
+  $('#smsrc').textContent = M ? '· 직접 정한 점수' : (c.src === 'cam' ? (c.frozen ? '· 멈춘 순간의 점수 (모델 확률에서 거꾸로 구한 값)' : '· 카메라 실시간 (모델 확률에서 거꾸로 구한 점수)') : '· 직접 정한 점수');
   $('#ctval').textContent = c.T.toFixed(1);
-  const live = TM.running;
-  $('#camctl').style.display = live ? 'flex' : 'none';
-  $('#livepill').style.display = live && !c.frozen ? 'block' : 'none';
-  $('#c-freeze').textContent = c.frozen ? '다시 실시간으로' : '멈추고 계산 보기';
-  $('#c-freeze').classList.toggle('on', c.frozen);
-  if (!TM.loading) $('#camst').textContent = live ? (c.frozen ? '멈췄습니다. 점수 막대를 끌거나 +1 버튼으로 실험해 보세요.' : '손을 화면 가운데에 보여 주세요. 확률이 실시간으로 바뀝니다.') : (c.status || '');
+  if (M){
+    const sr = simpleRatio(c.z);
+    let h = c.z.map((v,i) => `<div class="crow"><div class="nm">${c.names[i]||XYZ_NAMES[i]} <span class="cnote">점수 ${fmt(v,2)}</span></div>
+      <div class="cbar"><span>단순 비율</span>${sr ? `<i style="width:${Math.max(2,sr[i]*250)}px;background:#C9BDB2"></i><b class="num">${fmt(sr[i],2)}</b>` : '<b style="color:var(--muted)">계산 불가</b>'}</div>
+      <div class="cbar"><span>소프트맥스</span><i style="width:${Math.max(2,sm.p[i]*250)}px;background:${i===top?'var(--coral)':'var(--teal)'}"></i><b class="num">${fmt(sm.p[i],2)}</b></div></div>`).join('');
+    if (!sr) h += `<div class="nobox">점수에 0 이하가 있으면 단순 비율(점수 ÷ 합)은 확률이 될 수 없습니다. e<sup>z</sup>는 항상 양수라 소프트맥스는 계산됩니다.</div>`;
+    else if (c.z.length > 2) h += `<div class="lgd2">단순 비율보다 소프트맥스가 1등을 더 크게 키웁니다.</div>`;
+    if (c.z.length === 2){
+      const dd = (c.z[0] - c.z[1]) / c.T, sg = sigmoid(dd);
+      h += `<div class="sgbox"><b>항목이 두 개라면 = 시그모이드</b><br>σ(${c.T!==1?'(x − y) ÷ T':'x − y'}) = σ(${fmt(dd,2)}) = 1 ÷ (1 + e<sup>${fmt(-dd,2)}</sup>) = <b class="num">${fmt(sg,2)}</b><br>소프트맥스의 x 확률 ${fmt(sm.p[0],2)}와 같습니다.</div>`;
+    }
+    $('#cmpb').innerHTML = h;
+    const base = c.snaps[0];
+    $('#snaps').innerHTML = c.snaps.length ? c.snaps.map((s,k) => { const p = softmaxT(s.z, s.T).p; const tp = p.indexOf(Math.max(...p));
+      return `<div class="sn"><div class="h num"><b>${SNAP_L[k]}</b>${tup(s.z)}${s.T!==1?` · T ${fmt(s.T,1)}`:''}<span style="margin-left:auto;color:var(--coral);font-weight:800">${s.names[tp]||XYZ_NAMES[tp]} ${fmt(p[tp],2)}</span></div>
+        <div class="st2">${p.map((v,i)=>`<div style="width:${v*100}%;background:${CLS_COL[i]}">${v>0.14?(s.names[i]||XYZ_NAMES[i])+' '+fmt(v,2):''}</div>`).join('')}</div>
+        ${k && c.snaps[k-1].z.length === s.z.length ? `<div class="rel">${relation(c.snaps[k-1], s, SNAP_L[k-1])}</div>` : ''}</div>`; }).join('') + `<button class="tog" id="c-snapclr" style="height:36px;align-self:flex-start">모두 지우기</button>`
+      : `<div class="cnote" style="line-height:1.5;font-size:16px">지금 결과를 A로 저장한 뒤 ‘모두 +1’, ‘모두 ×2’, 온도를 바꿔 B, C로 저장해 보세요.<br>더하기는 확률이 그대로, 곱하기는 1등이 더 강조됩니다.</div>`;
+    const clr = $('#c-snapclr'); if (clr) clr.onclick = () => { c.snaps = []; renderCls(); };
+    $('#c-snap').disabled = c.snaps.length >= SNAP_L.length;
+    $('#c-snap').textContent = c.snaps.length >= SNAP_L.length ? '4개까지 저장됩니다' : `지금 결과 저장 → ${SNAP_L[c.snaps.length]}`;
+  } else {
+    $('#rbig').textContent = L;
+    $('#rpr').innerHTML = `확률 <b>${fmt(sm.p[top],2)}</b> · 가장 큰 확률 하나를 고릅니다`;
+    $('#rstack').innerHTML = sm.p.map((p,i) => `<div style="width:${p*100}%;background:${CLS_COL[i]}">${p>0.12?Math.round(p*100)+'%':''}</div>`).join('');
+    $('#rlgd').innerHTML = c.names.map((l,i) => `<span style="margin-right:9px;white-space:nowrap"><i style="background:${CLS_COL[i]}"></i>${l} ${fmt(sm.p[i],2)}</span>`).join('');
+    const live = TM.running;
+    $('#camctl').style.display = live ? 'flex' : 'none';
+    $('#livepill').style.display = live && !c.frozen ? 'block' : 'none';
+    $('#c-freeze').textContent = c.frozen ? '다시 실시간으로' : '멈추고 계산 보기';
+    $('#c-freeze').classList.toggle('on', c.frozen);
+    if (!TM.loading) $('#camst').textContent = live ? (c.frozen ? '멈췄습니다. 점수 막대를 끌거나 +1 버튼으로 실험해 보세요.' : '손을 화면 가운데에 보여 주세요. 확률이 실시간으로 바뀝니다.') : (c.status || '');
+  }
 }
-$('#ctemp').oninput = e => { S.cls.T = +e.target.value; renderCls(); renderStrip(); updM(); };
-const bump = d => { S.cls.z = S.cls.z.map(v => Math.round((v + d) * 100) / 100); S.cls.shift += d; if (TM.running) S.cls.frozen = true; renderCls(); renderStrip(); updM(); };
-$('#c-plus').onclick = () => bump(1); $('#c-minus').onclick = () => bump(-1);
-$('#c-reset').onclick = () => { S.cls.z = CLS_DEFAULT.slice(); S.cls.shift = 0; S.cls.src = 'manual'; if (TM.running) S.cls.frozen = true; renderCls(); renderStrip(); updM(); };
+$('#ctemp').oninput = e => { S.cls.T = +e.target.value; renderCls(); };
+const bump = (d, mul) => { S.cls.z = S.cls.z.map(v => Math.max(ZR.min, Math.min(ZR.max, Math.round((mul ? v * d : v + d) * 100) / 100))); if (TM.running) S.cls.frozen = true; renderCls(); };
+$('#c-plus').onclick = () => bump(1); $('#c-minus').onclick = () => bump(-1); $('#c-x2').onclick = () => bump(2, true);
+$('#c-reset').onclick = () => { if (S.cls.mode === 'manual'){ setPresetZ(S.cls.preset >= 0 ? S.cls.preset : 0); return; } S.cls.z = CLS_LABELS.map((_,i) => CLS_DEFAULT[i] ?? 0); S.cls.src = 'manual'; if (TM.running) S.cls.frozen = true; renderCls(); };
+$('#c-snap').onclick = () => { const c = S.cls; if (c.snaps.length >= SNAP_L.length) return; c.snaps.push({ z:c.z.slice(), T:c.T, names:c.names.slice() }); renderCls(); };
 $('#c-freeze').onclick = () => { S.cls.frozen = !S.cls.frozen; renderCls(); };
 $('#c-stop').onclick = () => { camOff(); S.cls.src = 'manual'; renderCls(); };
 buildCls();
-
-/* ---------- missions ---------- */
-function updM(){
-  const m = S.m.active ? MISSIONS[S.m.active-1] : null;
-  if (m && S.m.choice !== null && missionStatus(m).done && !S.m.solved[m.id]){ S.m.solved[m.id] = true; try{ localStorage.setItem('chatlab_solved', JSON.stringify(S.m.solved)); }catch(e){} }
-  $('#mcount').textContent = Object.keys(S.m.solved).length + ' / ' + MISSIONS.length;
-}
-function renderMissions(){
-  $('#mgrid').innerHTML = MISSIONS.map(m => `<div class="mcard ${S.m.solved[m.id]?'done':''}">
-    <div class="no">${String(m.id).padStart(2,'0')}</div><div class="tg ${m.tab}">${m.tag}</div>${S.m.solved[m.id]?'<div class="st">완료 ✓</div>':''}
-    <h3>${m.title}</h3><p>${m.q}</p><p class="act">${m.act}</p><button class="go" data-id="${m.id}">${S.m.solved[m.id]?'다시 해 보기':'시작하기'}</button></div>`).join('');
-  document.querySelectorAll('.mcard .go').forEach(b => b.onclick = () => startMission(+b.dataset.id));
-}
 
 function renderAll(){
   renderTabs(); closePop();
   if (S.tab === 'tfidf') renderTF();
   if (S.tab === 'att') renderAtt();
   if (S.tab === 'cls') renderCls();
-  if (S.tab === 'mission') renderMissions();
   updM(); renderStrip();
 }
-try{ S.m.solved = JSON.parse(localStorage.getItem('chatlab_solved')||'{}') || {}; }catch(e){}
 buildDocs(); renderAll();
 </script>
 </body>
