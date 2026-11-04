@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>챗봇 수학 실험실</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#EEF4F6; --bg-grid:#E1EBEE;
+  --surface:#fff; --surface-2:#F4F7F8;
+  --ink:#1F4E5F; --text:#2C3E46; --sub:#5B7480; --muted:#8FA3AB;
+  --teal:#1B8691; --teal-l:#D3EEF0; --teal-b:#9FCFD5; --teal-xl:#EAF6F7;
+  --line:#DCE7EA; --line2:#B8D6DA;
+  --coral:#E07A55; --coral-l:#FBEAE3; --coral-b:#F0BFAE; --blue:#2F78B0; --blue-l:#E4EEF7;
+  --beige:#C9BDB2;
+  --r-lg:20px;
+  --shadow:0 14px 34px -16px rgba(20,60,72,.22), 0 2px 8px -3px rgba(20,60,72,.10);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);background-image:linear-gradient(var(--bg-grid) 1px,transparent 1px),linear-gradient(90deg,var(--bg-grid) 1px,transparent 1px);background-size:28px 28px;
+  font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;
+  -webkit-user-select:none;user-select:none;overscroll-behavior-y:none}
+textarea,input{-webkit-user-select:text;user-select:text}
+button,select,textarea,input{font-family:inherit}
+button{cursor:pointer}
+h1,h2,h3,p{margin:0}
+.num{font-variant-numeric:tabular-nums}
+#app{max-width:560px;margin:0 auto;min-height:100dvh;padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+/* ---------- home ---------- */
+.hero{padding:calc(env(safe-area-inset-top) + 26px) 20px 6px}
+.hero h1{font-size:24px;font-weight:800;color:var(--ink);line-height:1.35;display:flex;align-items:center;gap:8px}
+.hero h1 .lg{width:32px;height:32px;border-radius:10px;background:var(--teal);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px -8px rgba(20,60,72,.4)}
+.hero p{font-size:14px;color:var(--sub);line-height:1.6;margin-top:6px}
+.hero .tag{display:inline-block;margin-top:10px;font-size:12px;font-weight:700;color:var(--ink);background:var(--teal-l);border-radius:99px;padding:4px 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 16px 0}
+.pcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:16px 14px;display:flex;flex-direction:column;gap:10px;text-align:left;min-height:178px;color:inherit}
+.pcard:active{transform:scale(.98)}
+.pcard .ic{width:42px;height:42px;border-radius:12px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800}
+.pcard .st{font-size:10.5px;font-weight:800;color:var(--muted);letter-spacing:.04em}
+.pcard .t{font-size:15px;font-weight:800;color:var(--ink);line-height:1.35}
+.pcard .d{font-size:12px;color:var(--sub);line-height:1.45}
+.pcard .ft{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);font-weight:700}
+.pcard .ft b{font-size:17px;color:var(--muted)}
+.foot{text-align:center;color:var(--muted);font-size:12.5px;margin:28px 0 10px;line-height:1.6}
+.foot .e{font-size:34px;display:block;margin-bottom:4px}
+/* ---------- topbar ---------- */
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;background:linear-gradient(180deg,var(--bg) 80%,rgba(238,244,246,0))}
+.top .home{flex:none;height:34px;padding:0 12px;border-radius:10px;border:1.5px solid var(--line2);background:#fff;color:var(--ink);font-size:13px;font-weight:800;display:flex;align-items:center;gap:5px}
+.top .ttl{min-width:0}
+.top .ttl b{display:block;font-size:15.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .ttl span{font-size:11.5px;color:var(--muted);font-weight:700}
+.top .nav{margin-left:auto;display:flex;gap:6px;flex:none}
+.top .nav button{width:34px;height:34px;border-radius:10px;border:1.5px solid var(--line2);background:#fff;color:var(--sub);font-size:16px;font-weight:800}
+.top .nav button:disabled{opacity:.3}
+.page{padding:4px 14px 0;display:flex;flex-direction:column;gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:16px 15px;display:flex;flex-direction:column;gap:11px}
+.eyebrow{display:inline-flex;width:fit-content;font-size:11.5px;font-weight:800;color:var(--ink);background:var(--teal-l);padding:4px 10px;border-radius:99px}
+.eyebrow.c{color:#B5552F;background:var(--coral-l)}
+.ct{font-size:16.5px;font-weight:800;color:var(--ink);line-height:1.4}
+.cd{font-size:13px;color:var(--sub);line-height:1.6}
+.cd b{color:var(--ink)}
+.steps{display:flex;flex-direction:column;gap:6px}
+.steps div{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.45;color:var(--text)}
+.steps i{flex:none;width:20px;height:20px;border-radius:50%;background:var(--ink);color:#fff;font-style:normal;font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:-1px}
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.btn{height:36px;border-radius:99px;border:1.5px solid var(--line2);background:#fff;color:var(--sub);font-size:13px;font-weight:700;padding:0 13px;white-space:nowrap}
+.btn.on{background:var(--teal-l);border-color:var(--teal);color:var(--ink)}
+.btn.pri{background:var(--teal);border-color:var(--teal);color:#fff}
+.btn:disabled{opacity:.45}
+.btn.sq{border-radius:10px}
+select.sel{width:100%;height:42px;border-radius:12px;border:1.5px solid var(--teal-b);background:#fff;color:var(--ink);font-size:14.5px;font-weight:700;padding:0 10px}
+.seg{display:flex;background:var(--surface-2);border:1.5px solid var(--line2);border-radius:12px;padding:3px;gap:2px}
+.seg button{flex:1;height:34px;border:none;border-radius:9px;background:transparent;color:var(--sub);font-size:13.5px;font-weight:800;white-space:nowrap;padding:0 6px}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(31,78,95,.18)}
+.seg span{align-self:center;font-size:12px;color:var(--muted);font-weight:700;padding:0 4px}
+.note{font-size:12px;color:var(--muted);line-height:1.5}
+/* ---------- tf-idf ---------- */
+textarea.doc{width:100%;height:84px;border:1.5px solid var(--line2);border-radius:12px;padding:9px 11px;font-size:15.5px;line-height:1.5;color:var(--text);resize:none;background:#fff}
+textarea.doc:focus{outline:none;border-color:var(--teal)}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{height:32px;padding:0 9px;border-radius:8px;border:1.5px solid var(--line2);background:#fff;font-size:14.5px;font-weight:700;color:var(--ink);display:flex;align-items:center}
+.chip .pt{font-weight:500;font-size:12px;color:var(--muted)}
+.chip.ed{border-color:var(--coral);border-style:dashed}
+.chip.ex{color:var(--muted);text-decoration:line-through;background:var(--surface-2)}
+.chip.sw{border-style:dotted}
+.chip.hl{background:var(--teal-l);border-color:var(--teal)}
+.pill{font-size:12px;font-weight:700;color:var(--teal);background:#fff;border:1.5px solid var(--teal-b);border-radius:99px;padding:2px 9px}
+table.tf{width:100%;border-collapse:collapse;font-size:14px}
+table.tf th{font-size:11.5px;font-weight:800;color:var(--sub);text-align:right;padding:6px 4px;border-bottom:1.5px solid var(--line)}
+table.tf th:first-child,table.tf td:first-child{text-align:left}
+table.tf th.hot{color:var(--teal)}
+table.tf td{padding:0 4px;height:36px;border-bottom:1px solid var(--line);text-align:right;color:var(--sub)}
+table.tf td.w{font-weight:800;color:var(--ink);max-width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+table.tf td.s{font-weight:800;color:var(--ink);width:92px}
+table.tf td.s .b{display:inline-block;height:9px;border-radius:5px;background:var(--teal);vertical-align:1px;margin-right:6px}
+table.tf td.s .b.top{background:var(--coral)}
+table.tf tr.sel td{background:var(--teal-l)}
+table.tf tr.zero td,table.tf tr.zero td.w,table.tf tr.zero td.s{color:var(--muted)} table.tf tr.zero .b{background:var(--muted)}
+.dots i{display:inline-block;width:10px;height:10px;border-radius:50%;border:2px solid var(--teal);margin:0 3px 0 7px;vertical-align:-1px}
+.dots i.on{background:var(--teal)}
+.calc{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom));z-index:10;background:#fff;border:1.5px solid var(--coral-b);border-radius:16px;padding:11px 14px;box-shadow:0 10px 30px -10px rgba(20,60,72,.35);font-size:13.5px;line-height:1.65}
+.calc .h{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--sub);font-weight:700;flex-wrap:wrap}
+.calc .h b{font-size:15px;color:var(--ink)}
+.calc .hi{color:var(--coral);font-weight:800;font-size:18px}
+.calc b{color:var(--ink)}
+/* ---------- softmax ---------- */
+.srow{display:grid;grid-template-columns:52px 1fr 74px;gap:9px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.srow .lb{font-size:16px;font-weight:800;color:var(--ink);line-height:1.1}
+.srow .lb small{display:block;font-size:11px;color:var(--muted);font-weight:700}
+.srow.top .lb{color:var(--coral)}
+.ztrack{position:relative;height:40px;background:#fff;border:1.5px solid var(--line2);border-radius:10px;touch-action:none}
+.ztrack .zero{position:absolute;top:6px;bottom:6px;width:1.5px;background:var(--muted)}
+.ztrack .zb{position:absolute;top:14px;height:12px;border-radius:4px;background:var(--teal-b)}
+.ztrack .kn{position:absolute;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:var(--teal);border:3px solid #fff;box-shadow:0 1px 4px rgba(31,78,95,.35)}
+.ztrack .zv{position:absolute;top:-1px;font-size:11px;font-weight:800;color:var(--ink)}
+.pc{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
+.pc b{font-size:18px;color:var(--ink)}
+.srow.top .pc b{color:var(--coral)}
+.pc s{text-decoration:none;font-size:11px;color:var(--muted);font-weight:700}
+.sum{display:flex;justify-content:space-between;font-size:13.5px;font-weight:800;color:var(--ink);background:var(--teal-xl);border-radius:10px;padding:8px 10px}
+.form{background:var(--surface-2);border:1.5px solid var(--teal-b);border-radius:12px;padding:9px 11px;font-size:13.5px;line-height:1.7;word-break:keep-all}
+.form b{color:var(--ink)} .form .hi{color:var(--coral);font-weight:800;font-size:16px}
+.trow{display:flex;align-items:center;gap:10px}
+.trow label{font-size:13.5px;font-weight:800;color:var(--ink);flex:none}
+.trow input{flex:1;accent-color:var(--teal)}
+.trow .tv{font-size:16px;font-weight:800;color:var(--teal);width:34px;text-align:right}
+.cmp .nm{font-size:14.5px;font-weight:800;color:var(--ink);margin-top:2px}
+.cmp .nm span{font-size:11.5px;color:var(--muted);font-weight:700;margin-left:4px}
+.cbar{display:flex;align-items:center;gap:8px;height:22px;font-size:13px}
+.cbar span{width:68px;flex:none;color:var(--sub);font-size:12px;font-weight:700}
+.cbar i{display:block;height:12px;border-radius:5px}
+.cbar b{color:var(--ink)}
+.box{border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.6}
+.box.no{background:#fff;border:1.5px dashed var(--coral-b);color:#B5552F}
+.box.sg{background:var(--surface-2);border:1.5px solid var(--teal-b)}
+.box.sg b{color:var(--ink)}
+.sn{border:1.5px solid var(--line2);border-radius:12px;padding:8px 10px}
+.sn .h{display:flex;align-items:center;gap:8px;font-size:13.5px}
+.sn .h b{width:24px;height:24px;border-radius:7px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none}
+.sn .h em{margin-left:auto;font-style:normal;font-weight:800;color:var(--coral)}
+.st2{display:flex;height:20px;border-radius:6px;overflow:hidden;margin-top:6px}
+.st2 div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden}
+.sn .rel{font-size:12px;color:var(--teal);font-weight:800;margin-top:4px}
+#camwin{width:100%;aspect-ratio:1/1;max-height:340px;border-radius:16px;background:var(--surface-2);border:1.5px dashed var(--line2);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:16px;position:relative}
+#camwin.live{border-style:solid;border-color:var(--teal);padding:0}
+#camwin canvas{width:100%;height:100%;display:block}
+#camwin .ph{font-size:13.5px;color:var(--sub);line-height:1.55}
+#camwin .lp{position:absolute;left:10px;top:10px;background:var(--coral);color:#fff;font-size:11.5px;font-weight:800;border-radius:99px;padding:2px 9px}
+.big{font-size:40px;font-weight:800;color:var(--coral);line-height:1.1}
+/* ---------- attention ---------- */
+.wchips{display:flex;flex-wrap:wrap;gap:8px 6px}
+.wc{display:flex;flex-direction:column;align-items:center;gap:2px}
+.wc b{height:38px;padding:0 11px;border-radius:10px;border:1.5px solid var(--line2);background:#fff;font-size:16px;color:var(--ink);display:flex;align-items:center}
+.wc.q b{background:var(--teal);border-color:var(--teal);color:#fff}
+.wc span{font-size:11.5px;font-weight:800;color:var(--sub);height:15px}
+.wc.add b{border-style:dashed;color:var(--teal)}
+svg.plane{width:100%;aspect-ratio:1/1;display:block;touch-action:none;background:#fff;border:1.5px solid var(--line);border-radius:14px}
+table.att{width:100%;border-collapse:collapse;font-size:13.5px}
+table.att th{background:var(--ink);color:#fff;font-weight:700;height:34px;font-size:12px}
+table.att th:first-child{border-radius:9px 0 0 0}table.att th:last-child{border-radius:0 9px 0 0}
+table.att td{height:38px;border-bottom:1px solid var(--line);text-align:center}
+table.att td.w{font-weight:800;color:var(--ink);text-align:left;padding-left:8px}
+table.att tr.tot td{background:var(--surface-2);font-weight:800;color:var(--ink)}
+.wbar{display:flex;align-items:center;gap:5px;justify-content:flex-start;padding-left:4px}
+.wbar i{display:block;height:11px;border-radius:5px;background:var(--teal)}
+.wbar i.top{background:var(--coral)}
+.ctx{background:var(--coral-l);border:1.5px solid var(--coral-b);border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.65;word-break:keep-all}
+.ctx span{font-weight:800;color:#B5552F}.ctx b{color:#B5552F}
+.verdict{font-size:11px;font-weight:800;padding:3px 10px;border-radius:99px;width:fit-content}
+.verdict.fin{background:var(--blue-l);color:var(--blue)}.verdict.nat{background:var(--teal-l);color:var(--teal)}.verdict.mid{background:var(--surface-2);color:var(--sub);border:1px solid var(--line2)}
+/* ---------- sheet ---------- */
+#dim{position:fixed;inset:0;background:rgba(31,78,95,.25);display:none;z-index:40}
+#dim.on{display:block}
+#sheet{position:fixed;left:0;right:0;bottom:0;max-width:560px;margin:0 auto;background:#fff;border-radius:20px 20px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .2s;z-index:41;box-shadow:0 -8px 30px rgba(31,78,95,.2);max-height:86dvh;overflow:auto}
+#sheet.on{transform:none}
+#sheet h4{margin:0 0 10px;font-size:16px;color:var(--ink);display:flex;align-items:center}
+#sheet h4 button{margin-left:auto}
+#sheet input{width:100%;height:44px;border:1.5px solid var(--line2);border-radius:10px;padding:0 12px;font-size:16px}
+#sheet .bs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+#sheet .bs button{height:42px;border-radius:10px;border:1.5px solid var(--line2);background:#fff;font-size:14px;font-weight:700;color:var(--ink)}
+#sheet .bs button.pri{background:var(--teal);border-color:var(--teal);color:#fff}
+#sheet .pal{display:flex;flex-wrap:wrap;gap:6px}
+#sheet .pal span{width:100%;font-size:12px;color:var(--sub);font-weight:800;margin-top:6px}
+#sheet .pal button{height:36px;padding:0 11px;border-radius:9px;border:1.5px solid var(--line2);background:#fff;font-size:14.5px;font-weight:700;color:var(--ink)}
+/* v6 */
+.dbox{border:1.5px solid var(--line);border-radius:14px;padding:9px 11px;background:var(--surface-2)}
+.dbox.me{border-color:var(--teal);background:#fff}
+.dh{display:flex;align-items:center;gap:8px}
+.dh b{font-size:14px;color:var(--ink)}
+.dh .ed{margin-left:auto;height:28px;border-radius:8px;border:1.5px solid var(--line2);background:#fff;color:var(--teal);font-size:12px;font-weight:800;padding:0 9px}
+.dt{font-size:14.5px;line-height:1.75;color:var(--text);margin-top:4px;word-break:keep-all}
+.tw{border-radius:5px;padding:1px 1px}
+.tw.wx{color:var(--muted);text-decoration:line-through}
+.tw.wtop{color:#B5552F;font-weight:800}
+.tw.wsel{background:var(--teal-l);box-shadow:0 0 0 1.5px var(--teal);font-weight:800;color:var(--ink)}
+.tw.wsel2{background:var(--coral-l);box-shadow:0 0 0 1.5px var(--coral-b)}
+.faces{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.face{border:1.5px solid var(--line2);border-radius:12px;background:#fff;padding:7px 8px;text-align:left;display:flex;flex-direction:column;gap:2px;min-width:0}
+.face.me{border-color:var(--teal);background:var(--teal-xl)}
+.face span{font-size:11.5px;color:var(--sub);font-weight:800}
+.face b{font-size:14.5px;color:#B5552F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.face b.s2{font-size:12.5px;color:var(--ink)}
+.face em{font-style:normal;font-size:11px;color:var(--muted)}
+.cols{display:grid;grid-template-columns:repeat(var(--n,3),1fr);gap:8px}
+.cols:has(.col:nth-child(2):last-child){--n:2}
+.col{display:flex;flex-direction:column;align-items:center;gap:4px}
+.bars{display:flex;gap:6px;align-items:flex-end;height:118px;border-bottom:1.5px solid var(--line2);padding:0 4px}
+.bw2{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;width:30px}
+.bw2 em{font-style:normal;font-size:11.5px;font-weight:800;color:var(--sub)}
+.bw2 i{display:block;width:26px;border-radius:5px 5px 0 0}
+.col .cl{font-size:13px;font-weight:800;color:var(--ink)}
+.col .cl span{font-size:11px;color:var(--muted)}
+i.lg{display:inline-block;width:10px;height:10px;border-radius:3px;margin:0 3px 0 8px;vertical-align:-1px}
+.camrow{display:flex;gap:10px}
+.camrow #camwin{width:46%;flex:none;aspect-ratio:1/1;padding:8px;gap:8px}
+.camrow #camwin .ph{font-size:12px}
+.cres{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.cres .big{font-size:34px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pt2{font-size:13px;font-weight:800;color:var(--ink);margin-bottom:4px;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.pt2 span{font-size:11px;color:var(--muted);font-weight:700}
+.pt2 em{font-style:normal}
+.pair svg.plane{border-radius:12px}
+.srow{padding:5px 0}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="dim"></div><div id="sheet"></div>
+<script>
+// ===== 챗봇 수학 실험실 · 공통 로직 =====
+const PRESET_DOCS = [
+  { name: '리뷰 1', text: '이 영화는 스릴러 장르다. 스릴러 특유의 긴장감이 대단하다. 스릴러를 좋아한다면 꼭 봐라.' },
+  { name: '리뷰 2', text: '로맨스 영화로 감동적이다. 로맨스 영화답게 눈물이 났다. 사랑 이야기가 아름답다.' },
+  { name: '리뷰 3', text: '코미디 영화인데 정말 웃겼다. 코미디 요소가 풍부하고 배우들 연기가 좋다.' }
+];
+// 불용어: 어느 문서에나 흔히 나오는 말 (기본으로 뺍니다)
+const STOPWORDS = ['이','그','저','것','수','등','꼭','정말','너무','아주','더','또','좀','참','다','잘','매우','진짜'];
+// 예제 세트: 리뷰 3편씩
+const SETS = [
+ { key:'movie', label:'영화 리뷰 · 슬라이드 예제', docs: PRESET_DOCS },
+ { key:'movie2', label:'한 영화 · 세 관객', docs:[
+  {name:'관객 A', text:'이 영화는 음악이 정말 좋다. 장면마다 음악이 감정을 끌어올린다. 영화관을 나와서도 음악이 계속 맴돈다. 배우들도 좋다.'},
+  {name:'관객 B', text:'이 영화는 배우들 연기가 정말 좋다. 주인공의 눈빛 연기가 감정을 전한다. 조연 연기도 탄탄하다. 결말도 좋다.'},
+  {name:'관객 C', text:'이 영화는 영상이 정말 아름답다. 바다 장면의 영상은 그림 같다. 영상만 보러 다시 영화관에 가고 싶다. 배우들도 좋다.'} ]},
+ { key:'food', label:'한 국밥집 · 세 손님', docs:[
+  {name:'손님 A', text:'이 국밥집은 국물이 진하다. 국물을 한 숟가락 먹으면 속이 풀린다. 마지막까지 국물을 다 마셨다. 또 오고 싶다.'},
+  {name:'손님 B', text:'이 국밥집은 가격이 착하다. 이 가격에 고기가 듬뿍 들었다. 요즘 이 가격은 찾기 어렵다. 또 오고 싶다.'},
+  {name:'손님 C', text:'이 국밥집은 사장님이 친절하다. 사장님이 반찬을 더 챙겨 주셨다. 사장님 덕분에 기분이 좋았다. 고기도 맛있다.'} ]},
+ { key:'cafe', label:'한 카페 · 세 손님', docs:[
+  {name:'손님 A', text:'이 카페는 창밖 바다가 정말 예쁘다. 해 질 녘 바다를 보며 쉬었다. 바다 보러 다시 오고 싶다. 커피도 괜찮다.'},
+  {name:'손님 B', text:'이 카페는 케이크가 정말 맛있다. 딸기 케이크는 금방 품절된다. 케이크 때문에 다시 오고 싶다. 커피도 괜찮다.'},
+  {name:'손님 C', text:'이 카페는 조용해서 작업이 잘 된다. 콘센트가 많아 노트북 작업을 오래 했다. 평일 작업 장소로 딱이다. 커피도 괜찮다.'} ]},
+ { key:'book', label:'한 소설 · 세 독자', docs:[
+  {name:'독자 A', text:'이 책은 이야기가 정말 흥미롭다. 이야기 속 반전에 깜짝 놀랐다. 다음 이야기가 궁금해서 밤새 읽었다. 추천한다.'},
+  {name:'독자 B', text:'이 책은 문장이 정말 아름답다. 한 문장 한 문장을 천천히 읽었다. 좋은 문장은 공책에 옮겨 적었다. 추천한다.'},
+  {name:'독자 C', text:'이 책은 주인공이 정말 매력적이다. 주인공의 선택에 깊이 공감했다. 주인공처럼 용기를 내고 싶어졌다. 밤새 읽었다.'} ]},
+ { key:'song', label:'한 노래 · 세 청취자', docs:[
+  {name:'청취자 A', text:'이 노래는 가사가 정말 좋다. 이별 가사가 꼭 내 이야기 같다. 가사를 곱씹을수록 마음이 아프다. 자꾸 듣게 된다.'},
+  {name:'청취자 B', text:'이 노래는 가수 목소리가 정말 좋다. 고음에서도 목소리가 흔들리지 않는다. 담담한 목소리 덕분에 더 슬프다. 자꾸 듣게 된다.'},
+  {name:'청취자 C', text:'이 노래는 피아노 반주가 정말 좋다. 후반에는 현악기 반주가 더해진다. 반주만 들어도 장면이 그려진다. 마음이 아프다.'} ]},
+ { key:'jeans', label:'한 청바지 · 세 구매자', docs:[
+  {name:'구매자 A', text:'이 청바지는 사이즈가 작게 나왔다. 평소 사이즈보다 한 치수 크게 사세요. 사이즈만 맞으면 만족한다. 가격도 착하다.'},
+  {name:'구매자 B', text:'이 청바지는 색감이 사진과 똑같다. 진한 색감 덕분에 어디에나 어울린다. 세탁 후에도 색감이 그대로다. 만족한다.'},
+  {name:'구매자 C', text:'이 청바지는 배송이 정말 빠르다. 주문 다음 날 바로 배송이 왔다. 배송 포장도 깔끔하다. 가격도 착하다.'} ]},
+ { key:'lecture', label:'한 인강 · 세 수강생', docs:[
+  {name:'수강생 A', text:'이 강의는 선생님 설명이 정말 쉽다. 그래프로 하는 설명이 머리에 쏙 들어온다. 어려운 개념도 설명 한 번에 이해된다. 추천한다.'},
+  {name:'수강생 B', text:'이 강의는 연습 문제가 정말 좋다. 문제가 쉬운 것부터 어려운 것까지 있다. 문제 풀이 영상도 따로 있다. 추천한다.'},
+  {name:'수강생 C', text:'이 강의는 분량이 짧아서 좋다. 한 편 분량이 10분 정도다. 분량 부담 없이 매일 듣는다. 추천한다.'} ]}
+];
+
+function topWord(docs, opt){ const r = computeTFIDF(docs, {}, opt || {mode:'book', stop:true}).res[0].rows; return r.length ? r[0].w : ''; }
+// [조사, 남아야 하는 최소 글자 수] — 긴 것부터 검사
+const PARTICLES = [
+  ['에서는',1],['에서도',1],['으로는',1],['으로도',1],['이라도',2],['에게서',1],['에는',1],['에도',1],
+  ['에서',1],['에게',1],['까지',1],['부터',1],['처럼',1],['보다',1],['마다',1],['답게',1],['으로',1],['이다',2],['인데',2],['이고',2],
+  ['은',1],['는',1],['을',1],['를',1],['에',1],['이',2],['가',2],['의',2],['도',2],['로',2],['와',2],['과',2],['만',2]
+];
+function cleanWord(w){ return w.replace(/[.,!?·"“”‘’'()\[\]…:;~]/g,''); }
+// '좋은, 맛있는, 읽을'처럼 동사·형용사가 꾸미는 꼴은 조사로 보지 않습니다
+const VERB_END = ['하','있','없','었','겠','되','이','르','우','오','좋','나','싶','담','읽','주','보','쉽','같','많'];
+function autoSplit(w){
+  for (const [p,m] of PARTICLES){
+    if (w.endsWith(p) && w.length - p.length >= m){
+      const stem = w.slice(0, -p.length);
+      if (['은','는','을'].includes(p) && VERB_END.some(e => stem.endsWith(e))) continue;
+      return { stem, part: p };
+    }
+  }
+  return { stem: w, part: '' };
+}
+// overrides: { surface: {token:string|null} }
+function tokenizeDoc(text, overrides, stop){
+  const words = text.split(/\s+/).map(cleanWord).filter(Boolean);
+  return words.map((w,i)=>{
+    const o = overrides[w];
+    if (!o && stop && STOPWORDS.includes(w)) return { surface:w, token:null, part:'', edited:false, excluded:true, stop:true };
+    if (o){
+      if (o.token === null) return { surface:w, token:null, part:'', edited:true, excluded:true };
+      const part = w.startsWith(o.token) ? w.slice(o.token.length) : '';
+      return { surface:w, token:o.token, part, edited:true, excluded:false };
+    }
+    const s = autoSplit(w);
+    return { surface:w, token:s.stem, part:s.part, edited:false, excluded:false };
+  });
+}
+function round2(x){ return Math.round((x + 1e-9) * 100) / 100; }
+function round3(x){ return Math.round((x + 1e-9) * 1000) / 1000; }
+function logb(x, base){ return base === 'e' ? Math.log(x) : Math.log10(x); }
+function gcd(a,b){ return b ? gcd(b, a % b) : a; }
+function frac(n, d){ const g = gcd(n, d); n /= g; d /= g; return d === 1 ? String(n) : `${n}/${d}`; }
+// opt.mode: 'book' = 교과서 (TF = 횟수, IDF = n/DF) · 'real' = 실제 구현 (TF = 횟수/토큰 수, IDF = log(n/DF))
+function computeTFIDF(docs, overrides, opt){
+  const toks = docs.map(d => tokenizeDoc(d.text, overrides, opt.stop));
+  const lists = toks.map(t => t.filter(x => !x.excluded).map(x => x.token));
+  const N = docs.length;
+  const df = {};
+  lists.forEach(l => new Set(l).forEach(w => df[w] = (df[w]||0) + 1));
+  const book = opt.mode !== 'real';
+  const res = lists.map((l, di) => {
+    const cnt = {}; l.forEach(w => cnt[w] = (cnt[w]||0) + 1);
+    const len = l.length;
+    const rows = Object.keys(cnt).map(w => {
+      const c = cnt[w], D = df[w];
+      if (book){
+        const idf = N / D, score = c * N / D;
+        return { w, count:c, len, df:D, common: D === N, tf:c, idf, tfR:c, idfR:idf, score,
+                 tfS:String(c), dfnS:frac(D,N), idfS:frac(N,D), scoreS:frac(c*N,D) };
+      }
+      let tf = len ? c / len : 0;
+      let idf = logb(N / D, opt.base);
+      let tfR = opt.round ? round2(tf) : tf, idfR = opt.round ? round2(idf) : idf;
+      let score = tfR * idfR; if (opt.round) score = round3(score);
+      const dg = opt.round ? 2 : 3;
+      return { w, count:c, len, df:D, common: D === N, tf, idf, tfR, idfR, score,
+               tfS:fmt(tfR,dg), dfnS:frac(D,N), idfS:fmt(idfR,dg), scoreS:fmt(score,3) };
+    });
+    rows.sort((a,b) => b.score - a.score || b.count - a.count || a.w.localeCompare(b.w,'ko'));
+    return { tokens: toks[di], len, words: toks[di].length, rows };
+  });
+  return { res, df, N, book };
+}
+// 칸이 모자랄 때: 점수 높은 단어 + 선택한 단어 + 0점 단어(모든 문서 공통)를 꼭 보여 줍니다
+function pickRows(rows, cap, selW){
+  if (rows.length <= cap) return { list: rows, more: 0 };
+  const zeros = rows.filter(r => r.common), non = rows.filter(r => !r.common);
+  let room = Math.max(1, cap - zeros.length - 1);
+  let head = non.slice(0, room);
+  const sel = non.find(r => r.w === selW);
+  if (sel && !head.includes(sel)) head[head.length-1] = sel;
+  return { list: head.concat(zeros), more: rows.length - head.length - zeros.length, at: head.length };
+}
+function fmt(x, d){ if (Math.abs(x) < 1e-12) return '0'; return x.toFixed(d); }
+
+// ===== 어텐션 =====
+// 은행 문장과 '직접 만들기'에 쓰는 설명용 2차원 단어 벡터 (x: 금융·돈, y: 자연·계절)
+const VOCAB = {
+  '은행에':{k:[.5,.5],v:[.5,.5],q:[1,1],g:'mid'}, '은행을':{k:[.5,.5],v:[.5,.5],q:[1,1],g:'mid'}, '은행은':{k:[.5,.5],v:[.5,.5],q:[1,1],g:'mid'},
+  '돈을':{k:[1.5,.3],v:[.95,.05],g:'fin'}, '통장을':{k:[1.3,.2],v:[.9,.1],g:'fin'}, '대출을':{k:[1.3,.2],v:[.9,.05],g:'fin'},
+  '찾았다':{k:[.8,.2],v:[.7,.1],g:'fin'}, '점심시간에':{k:[.3,.2],v:[.4,.2],g:'fin'}, '들러':{k:[.2,.1],v:[.3,.2],g:'fin'},
+  '월급':{k:[1.2,.2],v:[.85,.1],g:'fin'},
+  '가을':{k:[.3,1.2],v:[.1,.8],g:'nat'}, '노란':{k:[.2,1.5],v:[.1,.9],g:'nat'}, '열매를':{k:[.2,1.4],v:[.05,.95],g:'nat'},
+  '나무':{k:[.2,1.2],v:[.1,.85],g:'nat'}, '주웠다':{k:[.2,.8],v:[.15,.7],g:'nat'}, '산책길에':{k:[.2,.5],v:[.1,.6],g:'nat'},
+  '공원에서':{k:[.2,.7],v:[.2,.7],g:'nat'},
+  '오늘':{k:[.25,.1],v:[.38,.26],g:'etc'}, '친구와':{k:[.1,.25],v:[.26,.38],g:'etc'}, '갔다':{k:[.2,.15],v:[.42,.32],g:'etc'},
+  '많이':{k:[.15,.2],v:[.32,.44],g:'etc'}, '그':{k:[.1,.1],v:[.3,.3],g:'etc'}
+};
+function vocabQ(w){ const e = VOCAB[w]; if (e.q) return e.q.slice(); const n = Math.hypot(e.v[0], e.v[1]) || 1; return [e.v[0]/n*1.2, e.v[1]/n*1.2]; }
+const ATT_PRESETS = {
+  minji: { label:'민지 문장', words:['민지가','피아노를','치자','모두가','조용해졌다'], qi:0, self:false, fixedQuery:true,
+    K:{'피아노를':[1,.2],'치자':[.9,.5],'모두가':[.1,1],'조용해졌다':[0,.8]},
+    V:{'피아노를':[.8,.1],'치자':[.9,.3],'모두가':[.2,.9],'조용해졌다':[.1,.8]},
+    q0:[1,.4], axes:['요인 1','요인 2'], note:'슬라이드와 같은 값 · 자기 자신은 빼고 계산합니다' },
+  bank1: { label:'은행 ① 돈', words:['점심시간에','은행에','들러','돈을','찾았다'], qi:1, self:true, axes:['금융·돈','자연·계절'], note:'설명용 2차원 단어 벡터 · 실제 모델은 수천 차원입니다' },
+  bank2: { label:'은행 ② 열매', words:['가을','산책길에','노란','은행을','주웠다'], qi:3, self:true, axes:['금융·돈','자연·계절'], note:'설명용 2차원 단어 벡터 · 실제 모델은 수천 차원입니다' },
+  build: { label:'직접 만들기', words:['오늘','친구와','은행에','갔다'], qi:2, self:true, axes:['금융·돈','자연·계절'], note:'단어 칩을 눌러 문장을 만들고, 단어를 눌러 쿼리를 바꿔 보세요' }
+};
+function attSetup(key, words, qi){
+  const P = ATT_PRESETS[key];
+  words = words || P.words.slice(); qi = (qi === undefined) ? P.qi : qi;
+  const items = [];
+  words.forEach((w,i)=>{
+    if (!P.self && i === qi) return;
+    const k = P.K ? P.K[w] : VOCAB[w].k, v = P.V ? P.V[w] : VOCAB[w].v;
+    items.push({ w, i, k:k.slice(), v:v.slice() });
+  });
+  const q = P.q0 ? P.q0.slice() : vocabQ(words[qi]);
+  return { key, words, qi, items, q, q0:q.slice() };
+}
+function attCompute(st, T, scaleSqrt){
+  const div = (scaleSqrt ? Math.SQRT2 : 1) * T;
+  const raw = st.items.map(it => it.k[0]*st.q[0] + it.k[1]*st.q[1]);
+  const s = raw.map(x => x / div);
+  const mx = Math.max(...s);
+  const e = s.map(x => Math.exp(x - mx));
+  const e1 = s.map(x => Math.exp(x));
+  const sum = e.reduce((a,b)=>a+b,0);
+  const w = e.map(x => x/sum);
+  const c = [0,0]; st.items.forEach((it,i)=>{ c[0] += w[i]*it.v[0]; c[1] += w[i]*it.v[1]; });
+  return { raw, s, e: e1, sumE: e1.reduce((a,b)=>a+b,0), w, c };
+}
+function bankVerdict(c){ const d = c[0]-c[1]; if (d > 0.2) return ['금융 쪽 ‘은행’','fin']; if (d < -0.2) return ['열매 쪽 ‘은행’','nat']; return ['아직 애매한 ‘은행’','mid']; }
+
+/* ---------- 분류 · 소프트맥스 ---------- */
+const TM_MODEL_URL = 'https://teachablemachine.withgoogle.com/models/B--lasqRj/';
+const CLS_LABELS = ['주먹','가위','보'];          // 모델을 불러오면 모델 안의 클래스 이름으로 바뀝니다
+const CLS_DEFAULT = [2.0, 1.0, 0.1];             // 슬라이드 예시: 확률 0.66, 0.24, 0.10
+const XYZ_NAMES = ['x','y','z','u','v'];
+const SM_PRESETS = [ { label:'주먹·가위·보 (2, 1, 0.1)', z:[2.0, 1.0, 0.1], names:['주먹','가위','보'] },
+                     { label:'점수 (1, 2, 3)', z:[1, 2, 3], names:null } ];
+const ZR = { min:-6, max:6 };
+// 단순 비율: 점수 ÷ 점수의 합 (점수 중 0 이하가 있으면 확률로 쓸 수 없음)
+function simpleRatio(z){ if (z.some(v => v <= 0)) return null; const s = z.reduce((a,b)=>a+b,0); return z.map(v => v/s); }
+function sigmoid(t){ return 1 / (1 + Math.exp(-t)); }
+function softmaxT(z, T){
+  const e = z.map(v => Math.exp(v / T)), sum = e.reduce((a,b)=>a+b,0);
+  return { e, sum, p: e.map(v => v / sum) };
+}
+// 모델이 준 확률에서 점수를 거꾸로 구합니다: z = ln p (모든 점수에 같은 수를 더해도 확률은 같으므로 평균을 0으로 맞춥니다)
+function scoresFromProbs(p){
+  const l = p.map(v => Math.log(Math.max(v, 1e-3)));
+  const m = l.reduce((a,b)=>a+b,0) / l.length;
+  return l.map(v => Math.round((v - m) * 100) / 100);
+}
+const TM = { model:null, webcam:null, running:false, loading:false, last:0 };
+function loadScript(src){ return new Promise((ok, no) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); }); }
+async function tmStart(onPred, onStatus){
+  if (TM.running || TM.loading) return;
+  TM.loading = true;
+  try{
+    onStatus('모델을 불러오는 중…');
+    if (typeof tmImage === 'undefined'){
+      await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.7.4/dist/tf.min.js');
+      await loadScript('https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js');
+    }
+    if (!TM.model) TM.model = await tmImage.load(TM_MODEL_URL + 'model.json', TM_MODEL_URL + 'metadata.json');
+    try{ const ls = TM.model.getClassLabels(); if (ls && ls.length){ CLS_LABELS.splice(0, CLS_LABELS.length, ...ls); } }catch(e){}
+    onStatus('카메라를 준비하는 중…');
+    TM.webcam = new tmImage.Webcam(224, 224, true);
+    await TM.webcam.setup({ facingMode:'user' });
+    await TM.webcam.play();
+    TM.running = true; TM.loading = false; onStatus('');
+    const loop = async t => {
+      if (!TM.running) return;
+      TM.webcam.update();
+      if (t - TM.last > 120){
+        TM.last = t;
+        try{
+          const pred = await TM.model.predict(TM.webcam.canvas);
+          const p = CLS_LABELS.map((l,i) => { const f = pred.find(x => x.className === l) || pred[i]; return f ? f.probability : 0; });
+          onPred(p);
+        }catch(e){}
+      }
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+    return TM.webcam.canvas;
+  }catch(e){
+    TM.loading = false; TM.running = false;
+    onStatus('카메라를 쓸 수 없어요. 인터넷 연결과 카메라 권한을 확인해 주세요. 카메라 없이 점수 막대를 끌어 실험할 수 있습니다.');
+    return null;
+  }
+}
+function tmStop(){ TM.running = false; try{ TM.webcam && TM.webcam.stop(); }catch(e){} TM.webcam = null; }
+
+</script>
+<script>
+const $ = s => document.querySelector(s);
+const app = $('#app');
+const PAGES = [
+  { key:'tfidf', ic:'T', st:'STEP 1 · 02 부호화 ①', t:'TF-IDF로 단어의 무게 재기', d:'이 리뷰에만 자주 나오는 단어는 무엇일까요?', ref:'슬라이드 17~20' },
+  { key:'sm',    ic:'e', st:'STEP 2 · 04 분류', t:'소프트맥스 직접 해 보기', d:'점수 x, y, z를 바꾸며 확률이 어떻게 달라지는지 비교해요.', ref:'슬라이드 32~35' },
+  { key:'tm',    ic:'✋', st:'STEP 3 · 04 분류', t:'티처블 머신 손 모양 분류', d:'주먹·가위·보를 카메라로 분류하고 확률을 확인해요.', ref:'슬라이드 36' },
+  { key:'att',   ic:'Q', st:'STEP 4 · 05 문맥과 어텐션', t:'어텐션으로 문맥 계산하기', d:'쿼리와 키의 내적으로 가중치를 정하고 밸류를 섞어요.', ref:'슬라이드 50~57' }
+];
+const S = { page:null,
+  set:'movie', docs: PRESET_DOCS.map(d=>({...d})), ov:{}, opt:{mode:'book', stop:true, round:true, base:'10', hide:false}, sel:{d:0, w:'스릴러'}, sortBy:'score', di:0,
+  att:null, attKey:'minji', T:1, sqrt:false,
+  sm:{ z:CLS_DEFAULT.slice(), names:SM_PRESETS[0].names.slice(), preset:0, T:1, snaps:[] },
+  tm:{ z:CLS_DEFAULT.slice(), T:1, frozen:false, src:'manual', status:'' } };
+const XYZ = XYZ_NAMES, SNAP_L = ['A','B','C','D'], COL = ['#1F4E5F','#1B8691','#5FB3BA','#9FCFD5','#C5DCE0'];
+const HALO = 'paint-order="stroke" stroke="#fff" stroke-width="8" stroke-linejoin="round"';
+
+function go(key){ if (S.page === 'tm' && key !== 'tm') camOff(); S.page = key; closeSheet(); render(); scrollTo(0,0); }
+function openSheet(html){ $('#sheet').innerHTML = html; $('#sheet').classList.add('on'); $('#dim').classList.add('on'); }
+function closeSheet(){ $('#sheet').classList.remove('on'); $('#dim').classList.remove('on'); }
+$('#dim').onclick = closeSheet;
+
+function render(){
+  if (!S.page) return renderHome();
+  const i = PAGES.findIndex(p => p.key === S.page), P = PAGES[i];
+  app.innerHTML = `<div class="top"><button class="home" id="home">⌂ 홈</button><div class="ttl"><b>${P.t}</b><span>${P.st.replace(/^STEP \d · /,'')} · ${P.ref}</span></div>
+    <div class="nav"><button id="prev" ${i===0?'disabled':''}>‹</button><button id="next" ${i===PAGES.length-1?'disabled':''}>›</button></div></div><div class="page" id="pg"></div>`;
+  $('#home').onclick = () => go(null);
+  $('#prev').onclick = () => i > 0 && go(PAGES[i-1].key);
+  $('#next').onclick = () => i < PAGES.length-1 && go(PAGES[i+1].key);
+  ({tfidf:pageTF, sm:pageSM, tm:pageTM, att:pageAtt})[S.page]();
+}
+function renderHome(){
+  app.innerHTML = `<div class="hero"><h1><span class="lg">∑</span>챗봇 수학 실험실</h1>
+    <p>한 문장이 숫자가 되었다가 다시 문장이 되기까지, 챗봇 속 수학을 네 단계로 직접 만져 봅니다.</p><span class="tag">AI 수학 교원 연수 · 챗봇과 수학</span></div>
+    <div class="grid">${PAGES.map(p => `<button class="pcard" data-k="${p.key}"><div class="ic">${p.ic}</div><div><div class="st">${p.st}</div><div class="t">${p.t}</div></div><div class="d">${p.d}</div><div class="ft"><span>${p.ref}</span><b>›</b></div></button>`).join('')}</div>
+    <div class="foot"><span class="e">💬</span>숫자로 바뀐 단어가 어떻게 의미와 문맥을 갖게 되는지 따라가 봅시다</div>`;
+  document.querySelectorAll('.pcard').forEach(b => b.onclick = () => go(b.dataset.k));
+}
+const intro = (eb, title, steps) => `<div class="card"><span class="eyebrow">${eb}</span><div class="ct">${title}</div><div class="steps">${steps.map((s,i)=>`<div><i>${i+1}</i><span>${s}</span></div>`).join('')}</div></div>`;
+
+/* ===================== TF-IDF ===================== */
+function pageTF(){
+  $('#pg').innerHTML = `<div class="card"><select class="sel" id="setsel">${SETS.map(s=>`<option value="${s.key}">예제: ${s.label}</option>`).join('')}</select>
+      <div class="row"><button class="btn" id="t-stop">불용어 빼기</button><button class="btn" id="t-real">실제 구현 방식</button><button class="btn" id="t-round">반올림</button><button class="btn" id="t-base">로그 밑 10</button><button class="btn" id="t-hide">점수 가리기</button><button class="btn" id="t-reset">↺ 처음으로</button></div></div>
+    <div class="card" style="gap:8px"><div class="row" style="justify-content:space-between"><div class="ct">리뷰 3편</div><span class="note">단어를 누르면 점수표가 바뀝니다</span></div><div id="docs" style="display:flex;flex-direction:column;gap:8px"></div></div>
+    <div class="card"><div class="row" style="justify-content:space-between"><div class="ct">해석 · 리뷰마다 ‘얼굴’이 되는 단어</div></div>
+      <div class="faces" id="faces"></div>
+      <div class="row" style="justify-content:space-between"><b id="tname" style="font-size:14px;color:var(--ink)"></b><div class="seg" id="sortseg" style="flex:none"><span>정렬</span><button data-k="tf">TF</button><button data-k="idf">IDF</button><button data-k="score">TF-IDF</button></div></div>
+      <div id="tbl"></div></div>
+    <div class="calc" id="calc"></div>`;
+  $('#setsel').onchange = e => loadSet(e.target.value);
+  $('#t-stop').onclick = () => { S.opt.stop = !S.opt.stop; renderTF(); };
+  $('#t-real').onclick = () => { S.opt.mode = S.opt.mode==='book' ? 'real' : 'book'; renderTF(); };
+  $('#t-round').onclick = () => { S.opt.round = !S.opt.round; renderTF(); };
+  $('#t-base').onclick = () => { S.opt.base = S.opt.base==='e' ? '10' : 'e'; renderTF(); };
+  $('#t-hide').onclick = () => { S.opt.hide = !S.opt.hide; renderTF(); };
+  $('#t-reset').onclick = () => loadSet(S.set);
+  document.querySelectorAll('#sortseg button').forEach(b => b.onclick = () => { S.sortBy = b.dataset.k; renderTF(); });
+  renderTF();
+}
+function loadSet(key){ const st = SETS.find(x=>x.key===key); S.set = key; S.docs = st.docs.map(d=>({...d})); S.ov = {}; S.di = 0; S.sel = {d:0, w:topWord(S.docs, S.opt)}; renderTF(); }
+function pickDoc(i){ S.di = i; const rr = computeTFIDF(S.docs, S.ov, S.opt).res[i].rows; if (!rr.some(r=>r.w===S.sel.w)) S.sel = {d:i, w: rr.length ? rr[0].w : ''}; else S.sel.d = i; renderTF(); }
+// 원문 그대로 보여 주되, 어절마다 토큰 정보를 붙입니다
+function docHTML(text, toks, di, topW){
+  let k = 0;
+  return text.split(/(\s+)/).map(ch => {
+    if (/^\s*$/.test(ch)) return ch;
+    if (!cleanWord(ch)) return ch;
+    const t = toks[k++]; if (!t) return ch;
+    const c = t.excluded ? 'wx' : (t.token === S.sel.w ? (di === S.di ? 'wsel' : 'wsel2') : (t.token === topW ? 'wtop' : ''));
+    return `<span class="tw ${c}" data-d="${di}" data-t="${t.excluded?'':t.token}">${ch}</span>`;
+  }).join('');
+}
+function renderTF(){
+  const R = computeTFIDF(S.docs, S.ov, S.opt), B = R.book, H = S.opt.hide, di = S.di, d = R.res[di];
+  const tops = R.res.map(x => { const r = x.rows.find(y => !y.common); return H ? null : (r ? r.w : null); });
+  $('#docs').innerHTML = R.res.map((x,i) => `<div class="dbox ${i===di?'me':''}" data-i="${i}"><div class="dh"><b>${S.docs[i].name}</b><span class="note num">${x.words}단어 · 토큰 ${x.len}</span><button class="ed" data-e="${i}">✎ 고치기</button></div>
+      <div class="dt">${docHTML(S.docs[i].text, x.tokens, i, tops[i])}</div></div>`).join('');
+  document.querySelectorAll('#docs .tw').forEach(s => s.onclick = e => { e.stopPropagation(); const w = s.dataset.t, i = +s.dataset.d; if (!w) return; S.di = i; S.sel = {d:i, w}; renderTF(); });
+  document.querySelectorAll('#docs .dbox').forEach(b => b.onclick = () => pickDoc(+b.dataset.i));
+  document.querySelectorAll('#docs .ed').forEach(b => b.onclick = e => { e.stopPropagation(); editSheet(+b.dataset.e); });
+  $('#faces').innerHTML = R.res.map((x,i) => { const rs = x.rows.filter(r => !r.common).slice(0,2);
+    return `<button class="face ${i===di?'me':''}" data-i="${i}"><span>${S.docs[i].name}</span>${H ? '<b>?</b>' : rs.map((r,k)=>`<b class="${k?'s2':''}">${r.w} <em class="num">${r.scoreS}</em></b>`).join('')}</button>`; }).join('');
+  document.querySelectorAll('#faces .face').forEach(b => b.onclick = () => pickDoc(+b.dataset.i));
+  $('#tname').textContent = S.docs[di].name + ' 점수표';
+  const key = S.sortBy, val = r => key==='tf' ? r.tfR : key==='idf' ? r.idfR : r.score;
+  const mxK = Math.max(1e-9, ...R.res.flatMap(x => x.rows.map(val)));
+  const rows = d.rows.slice().sort((a,b) => (a.common?1:0) - (b.common?1:0) || (H?0:val(b)-val(a)) || b.count-a.count || a.w.localeCompare(b.w,'ko'));
+  const topW = !H && rows.length && !rows[0].common ? rows[0].w : null, q = x => H ? '?' : x;
+  const hot = k => key===k ? ' class="hot"' : '';
+  $('#tbl').innerHTML = `<table class="tf num"><tr><th>단어</th>${B ? `<th${hot('tf')}>TF</th><th>DF</th><th>DF/n</th><th${hot('idf')}>IDF</th>` : `<th>횟수</th><th${hot('tf')}>TF</th><th${hot('idf')}>IDF</th>`}<th${hot('score')}>TF-IDF</th></tr>` +
+    rows.map(r => `<tr class="${r.common?'zero':''} ${r.w===S.sel.w?'sel':''}" data-w="${r.w}"><td class="w">${r.w}</td>` +
+      (B ? `<td>${r.count}</td><td>${r.df}</td><td>${r.dfnS}</td><td>${q(r.idfS)}</td>` : `<td>${r.count}</td><td>${q(r.tfS)}</td><td>${q(r.idfS)}</td>`) +
+      `<td class="s">${H?'':`<span class="b ${r.w===topW?'top':''}" style="width:${Math.max(2, val(r)/mxK*40)}px"></span>`}${q(r.scoreS)}</td></tr>`).join('') + `</table>` +
+    (rows.some(r=>r.common) ? `<div class="note" style="margin-top:6px">회색 = 모든 리뷰에 나온 단어 · ${B?'IDF = 1이라 TF-IDF = TF':'IDF = log 1 = 0'}</div>` : '');
+  document.querySelectorAll('#tbl tr[data-w]').forEach(tr => tr.onclick = () => { S.sel = {d:di, w:tr.dataset.w}; renderTF(); });
+  document.querySelectorAll('#sortseg button').forEach(b => b.classList.toggle('on', b.dataset.k === key));
+  const r = d.rows.find(x => x.w === S.sel.w), lg = S.opt.base==='e' ? 'ln' : 'log';
+  const dots = r ? `<span class="dots">${S.docs.map((x,i)=>`<i class="${R.res[i].rows.some(y=>y.w===r.w)?'on':''}"></i>${i+1}`).join('')}</span>` : '';
+  $('#calc').innerHTML = !r ? `<div class="note">리뷰 속 단어나 점수표를 눌러 보세요.</div>` : B
+    ? `<div class="h"><b>‘${r.w}’</b> · ${S.docs[di].name} · 나온 리뷰 ${dots}</div>TF = 나온 횟수 <b>${r.count}</b> · DF = <b>${r.df}</b> (DF/n = ${r.dfnS})<br>IDF = n/DF = ${R.N}/${r.df} = <b>${q(r.idfS)}</b> &nbsp;→&nbsp; TF-IDF = ${r.count} × ${q(r.idfS)} = <span class="hi num">${q(r.scoreS)}</span>`
+    : `<div class="h"><b>‘${r.w}’</b> · ${S.docs[di].name} · 실제 구현 방식 ${dots}</div>TF = ${r.count} ÷ ${r.len} = <b>${q(r.tfS)}</b> · IDF = ${lg}(${R.N} ÷ ${r.df}) = <b>${q(r.idfS)}</b><br>TF-IDF = ${q(r.tfS)} × ${q(r.idfS)} = <span class="hi num">${q(r.scoreS)}</span>${S.opt.round?' <span class="note">(반올림해 곱함)</span>':''}`;
+  $('#t-stop').classList.toggle('on', S.opt.stop); $('#t-real').classList.toggle('on', !B);
+  $('#t-round').style.display = $('#t-base').style.display = B ? 'none' : '';
+  $('#t-round').classList.toggle('on', S.opt.round); $('#t-base').textContent = S.opt.base==='e' ? '로그 밑 e' : '로그 밑 10';
+  $('#t-hide').classList.toggle('on', H); $('#setsel').value = S.set;
+}
+function editSheet(di, j){
+  const doc = S.docs[di];
+  openSheet(`<h4>${doc.name} 손보기<button class="btn pri sq" id="sx">완료</button></h4>
+    <textarea class="doc" id="sta" spellcheck="false">${doc.text}</textarea>
+    <div class="note" style="margin:6px 0">조사는 흐리게, 불용어는 점선 칩 · 칩을 눌러 토큰을 고칠 수 있어요</div>
+    <div class="chips" id="schips"></div><div id="stok"></div>`);
+  $('#sx').onclick = () => { closeSheet(); renderTF(); };
+  $('#sta').oninput = e => { S.docs[di].text = e.target.value; chipsIn(di, null); renderTF(); };
+  chipsIn(di, j === undefined ? null : j);
+}
+function chipsIn(di, j){
+  const toks = tokenizeDoc(S.docs[di].text, S.ov, S.opt.stop);
+  $('#schips').innerHTML = toks.map((t,k) => `<button class="chip${t.edited?' ed':''}${t.excluded?' ex':''}${t.stop?' sw':''}${k===j?' hl':''}" data-k="${k}">${t.excluded?t.surface:(t.part?`${t.token}<span class="pt">${t.part}</span>`:t.token)}</button>`).join('');
+  document.querySelectorAll('#schips .chip').forEach(b => b.onclick = () => chipsIn(di, +b.dataset.k));
+  if (j === null || !toks[j]){ $('#stok').innerHTML = ''; return; }
+  const t = toks[j];
+  $('#stok').innerHTML = `<div style="margin-top:10px;background:var(--surface-2);border:1.5px solid var(--line2);border-radius:12px;padding:10px"><div class="note" style="margin-bottom:6px">어절 ‘${t.surface}’ → 토큰${t.stop?' · 불용어라서 빠져 있습니다':''}</div><input id="pin" value="${t.excluded?t.surface:t.token}">
+    <div class="bs"><button class="pri" id="p-ok">이 토큰으로</button><button id="p-whole">어절 그대로</button><button id="p-auto">자동으로</button><button id="p-ex">${t.excluded?'다시 넣기':'빼기'}</button></div></div>`;
+  const set = v => { if (v===undefined) delete S.ov[t.surface]; else S.ov[t.surface] = {token:v}; chipsIn(di, null); renderTF(); };
+  $('#p-ok').onclick = () => { const v = $('#pin').value.trim(); set(v ? v : null); };
+  $('#p-whole').onclick = () => set(t.surface); $('#p-auto').onclick = () => set(undefined);
+  $('#p-ex').onclick = () => set(t.stop ? t.surface : (t.excluded ? undefined : null));
+}
+
+/* ===================== softmax (shared) ===================== */
+const zx = v => (Math.max(ZR.min, Math.min(ZR.max, v)) - ZR.min) / (ZR.max - ZR.min) * 100;
+function rowsHTML(n){ return Array.from({length:n},(_,i)=>`<div class="srow" id="sr${i}"><div class="lb"></div><div class="ztrack" data-i="${i}"><div class="zero"></div><div class="zb"></div><div class="kn"></div><div class="zv num"></div></div><div class="pc"><b class="num"></b><s class="num"></s></div></div>`).join(''); }
+function bindTracks(st, after){
+  document.querySelectorAll('.ztrack').forEach(t => { let on = false;
+    const set = e => { const r = t.getBoundingClientRect(); let v = ZR.min + (e.clientX - r.left) / r.width * (ZR.max - ZR.min);
+      st.z[+t.dataset.i] = Math.max(ZR.min, Math.min(ZR.max, Math.round(v*10)/10)); after(); };
+    t.addEventListener('pointerdown', e => { e.preventDefault(); on = true; t.setPointerCapture(e.pointerId); set(e); });
+    t.addEventListener('pointermove', e => { if (on) set(e); });
+    t.addEventListener('pointerup', () => on = false); t.addEventListener('pointercancel', () => on = false); });
+}
+function paintRows(z, names, sm, top, sub){
+  const x0 = zx(0);
+  z.forEach((v,i) => { const row = $('#sr'+i); if (!row) return; row.classList.toggle('top', i===top);
+    row.querySelector('.lb').innerHTML = sub ? `${XYZ[i]}<small>${names[i]}</small>` : (names[i] || XYZ[i]);
+    const x1 = zx(v); row.querySelector('.zero').style.left = x0+'%';
+    const zb = row.querySelector('.zb'); zb.style.left = Math.min(x0,x1)+'%'; zb.style.width = Math.abs(x1-x0)+'%';
+    row.querySelector('.kn').style.left = x1+'%';
+    const zv = row.querySelector('.zv'); zv.textContent = fmt(v,1); zv.style.left = (v >= 0 ? Math.min(x1+5, 84) : Math.max(x1-16, 1))+'%';
+    row.querySelector('b').textContent = fmt(sm.p[i],2); row.querySelector('s').textContent = 'eᶻ ' + fmt(sm.e[i],2); });
+}
+const formula = (z, T, L, sm, top) => { const Tt = T !== 1 ? `/${fmt(T,1)}` : '';
+  return `‘${L}’ 확률 = e<sup>${fmt(z[top],2)}${Tt}</sup> ÷ (${z.map(v=>`e<sup>${fmt(v,2)}${Tt}</sup>`).join(' + ')})<br>= <b>${fmt(sm.e[top],2)}</b> ÷ <b>${fmt(sm.sum,2)}</b> = <span class="hi">${fmt(sm.p[top],2)}</span>`; };
+const tup = z => '(' + z.map(v => String(+v.toFixed(2))).join(', ') + ')';
+function relation(a, b, L){
+  if (a.T !== b.T) return `${L}에서 온도만 ${fmt(a.T,1)} → ${fmt(b.T,1)}`;
+  const d = b.z.map((v,i) => v - a.z[i]); if (d.every(x => Math.abs(x) < 1e-9)) return '';
+  if (d.every(x => Math.abs(x - d[0]) < 1e-9)) return `${L}에 모두 ${d[0] > 0 ? '+' : ''}${+d[0].toFixed(2)} → 확률은 그대로`;
+  const nz = a.z.findIndex(v => Math.abs(v) > 1e-9);
+  if (nz >= 0){ const k = b.z[nz]/a.z[nz]; if (k > 0 && b.z.every((v,i) => Math.abs(v - k*a.z[i]) < 1e-9)) return `${L}의 ${+k.toFixed(2)}배 → ${k > 1 ? '1등이 더 강조됨' : '차이가 줄어 고르게'}`; }
+  return '';
+}
+const clampZ = v => Math.max(ZR.min, Math.min(ZR.max, Math.round(v*100)/100));
+
+/* ===================== STEP 2 소프트맥스 직접 ===================== */
+function pageSM(){
+  if (S.sm.z.length > 3){ S.sm.z = S.sm.z.slice(0,3); S.sm.names = S.sm.names.slice(0,3); }
+  $('#pg').innerHTML = `<div class="card" style="gap:9px">
+     <div class="row"><span id="cpre" style="display:flex;gap:6px"></span><div class="seg" id="cnum" style="margin-left:auto"><span>항목</span><button data-n="2">2</button><button data-n="3">3</button></div></div>
+     <div id="srows"></div><div class="form num" id="form"></div>
+     <div class="row"><button class="btn" id="c-plus">모두 +1</button><button class="btn" id="c-minus">모두 −1</button><button class="btn" id="c-x2">모두 ×2</button><button class="btn" id="c-reset">↺</button></div>
+     <div class="trow"><label>온도 T</label><input type="range" id="temp" min="0.2" max="3" step="0.1"><div class="tv num" id="tv"></div></div></div>
+   <div class="card" style="gap:8px"><div class="row" style="justify-content:space-between"><div class="ct">단순 비율과 비교</div><span class="note"><i class="lg" style="background:var(--beige)"></i>단순 비율 <i class="lg" style="background:var(--teal)"></i>소프트맥스</span></div><div id="cmp"></div></div>`;
+  $('#cpre').innerHTML = SM_PRESETS.map((p,k)=>`<button class="btn" data-p="${k}">${k===0?'주먹·가위·보':'(1, 2, 3)'}</button>`).join('');
+  document.querySelectorAll('#cpre button').forEach(b => b.onclick = () => { const P = SM_PRESETS[+b.dataset.p]; S.sm.preset = +b.dataset.p; S.sm.z = P.z.slice(); S.sm.names = P.names ? P.names.slice() : XYZ.slice(0, P.z.length); buildSM(); });
+  document.querySelectorAll('#cnum button').forEach(b => b.onclick = () => { const n = +b.dataset.n, z = S.sm.z.slice(0,n); while (z.length < n) z.push(Math.round((z[z.length-1]-1)*10)/10); S.sm.z = z; S.sm.names = XYZ.slice(0,n); S.sm.preset = -1; buildSM(); });
+  const bump = f => { S.sm.z = S.sm.z.map(f).map(clampZ); renderSM(); };
+  $('#c-plus').onclick = () => bump(v => v+1); $('#c-minus').onclick = () => bump(v => v-1); $('#c-x2').onclick = () => bump(v => v*2);
+  $('#c-reset').onclick = () => { const k = S.sm.preset >= 0 ? S.sm.preset : 0, P = SM_PRESETS[k]; S.sm.preset = k; S.sm.z = P.z.slice(); S.sm.names = P.names ? P.names.slice() : XYZ.slice(0,P.z.length); buildSM(); };
+  $('#temp').value = S.sm.T; $('#temp').oninput = e => { S.sm.T = +e.target.value; renderSM(); };
+  buildSM();
+}
+function buildSM(){ $('#srows').innerHTML = rowsHTML(S.sm.z.length); bindTracks(S.sm, renderSM); renderSM(); }
+function renderSM(){
+  const c = S.sm, sm = softmaxT(c.z, c.T), top = sm.p.indexOf(Math.max(...sm.p)), sr = simpleRatio(c.z), nm = i => c.names[i] || XYZ[i];
+  document.querySelectorAll('#cpre button').forEach(b => b.classList.toggle('on', +b.dataset.p === c.preset));
+  document.querySelectorAll('#cnum button').forEach(b => b.classList.toggle('on', +b.dataset.n === c.z.length));
+  paintRows(c.z, c.names, sm, top, c.preset === 0);
+  $('#form').innerHTML = formula(c.z, c.T, nm(top), sm, top) + ` <span class="note">(합 ${fmt(sm.sum,2)} · 확률 합 1)</span>`; $('#tv').textContent = c.T.toFixed(1);
+  const H = 92;
+  let h = `<div class="cols">` + c.z.map((v,i) => `<div class="col"><div class="bars">
+      <div class="bw2">${sr ? `<em class="num">${fmt(sr[i],2)}</em><i style="height:${Math.max(2,sr[i]*H)}px;background:var(--beige)"></i>` : '<em style="color:var(--muted)">불가</em><i style="height:2px;background:var(--line2)"></i>'}</div>
+      <div class="bw2"><em class="num" style="color:${i===top?'var(--coral)':'var(--ink)'}">${fmt(sm.p[i],2)}</em><i style="height:${Math.max(2,sm.p[i]*H)}px;background:${i===top?'var(--coral)':'var(--teal)'}"></i></div></div>
+      <div class="cl">${nm(i)} <span class="num">${fmt(v,1)}</span></div></div>`).join('') + `</div>`;
+  if (c.z.length === 2){ const dd = (c.z[0]-c.z[1])/c.T; h += `<div class="box sg">두 개라면 <b>시그모이드</b> · σ(${c.T!==1?'(x − y) ÷ T':'x − y'}) = σ(${fmt(dd,2)}) = <b class="num">${fmt(sigmoid(dd),2)}</b> = 소프트맥스의 ${nm(0)} 확률</div>`; }
+  else if (!sr) h += `<div class="box no">0 이하 점수가 있으면 단순 비율은 확률이 될 수 없습니다 · e<sup>z</sup>는 항상 양수</div>`;
+  else h += `<div class="note">단순 비율보다 소프트맥스가 1등을 더 크게 키웁니다.</div>`;
+  $('#cmp').innerHTML = h;
+}
+
+/* ===================== STEP 3 티처블 머신 ===================== */
+function pageTM(){
+  $('#pg').innerHTML = `<div class="card" style="gap:9px"><div class="camrow"><div id="camwin"></div>
+       <div class="cres"><div class="note">분류 결과</div><div class="big" id="rbig"></div><div class="cd num" id="rpr"></div><div class="st2" id="rstack"></div>
+         <div class="note">분류는 1등 하나를 고르고, 어텐션은 이 비율대로 섞습니다</div>
+         <div class="row" id="camctl" style="margin-top:auto"><button class="btn" id="c-freeze">멈추기</button><button class="btn" id="c-stop">끄기</button></div></div></div>
+     <div class="note" id="camst"></div></div>
+   <div class="card" style="gap:9px"><div class="row" style="justify-content:space-between"><div class="ct">점수 → e<sup>z</sup> → 확률</div></div><div class="note" id="src"></div>
+     <div id="srows"></div><div class="form num" id="form"></div>
+     <div class="row"><button class="btn" id="c-plus">모두 +1</button><button class="btn" id="c-minus">모두 −1</button><button class="btn" id="c-reset">↺ 처음 점수</button></div>
+     <div class="trow"><label>온도 T</label><input type="range" id="temp" min="0.2" max="3" step="0.1"><div class="tv num" id="tv"></div></div></div>`;
+  $('#temp').value = S.tm.T; $('#temp').oninput = e => { S.tm.T = +e.target.value; renderTM(); };
+  const bump = d => { S.tm.z = S.tm.z.map(v => clampZ(v+d)); if (TM.running) S.tm.frozen = true; renderTM(); };
+  $('#c-plus').onclick = () => bump(1); $('#c-minus').onclick = () => bump(-1);
+  $('#c-reset').onclick = () => { S.tm.z = CLS_LABELS.map((_,i) => CLS_DEFAULT[i] ?? 0); S.tm.src = 'manual'; if (TM.running) S.tm.frozen = true; renderTM(); };
+  $('#c-freeze').onclick = () => { S.tm.frozen = !S.tm.frozen; renderTM(); };
+  $('#c-stop').onclick = () => { camOff(); S.tm.src = 'manual'; renderTM(); };
+  camPlaceholder(); buildTM();
+}
+function buildTM(){ $('#srows').innerHTML = rowsHTML(S.tm.z.length); bindTracks(S.tm, () => { if (TM.running) S.tm.frozen = true; renderTM(); }); renderTM(); }
+function camPlaceholder(){ const w = $('#camwin'); if (!w) return; w.className = '';
+  w.innerHTML = `<div class="ph"><b>${CLS_LABELS.join(' · ')}</b><br>분류 모델</div><button class="btn pri" id="c-start">카메라 켜기</button><div class="ph" style="font-size:11px;color:var(--muted)">없어도 아래 막대로<br>실험할 수 있어요</div>`;
+  $('#c-start').onclick = camOn; }
+async function camOn(){
+  const cv = await tmStart(p => { if (S.tm.frozen || S.page !== 'tm') return;
+      if (p.length !== S.tm.z.length){ S.tm.z = p.map(()=>0); buildTM(); }
+      S.tm.z = scoresFromProbs(p); S.tm.src = 'cam'; renderTM(); },
+    s => { S.tm.status = s; const e = $('#camst'); if (e) e.textContent = s; });
+  if (cv && $('#camwin')){ const w = $('#camwin'); w.className = 'live'; w.innerHTML = '<div class="lp" id="lp">실시간</div>'; w.appendChild(cv);
+    S.tm.frozen = false; S.tm.src = 'cam'; S.tm.T = 1; $('#temp').value = 1; if (S.tm.z.length !== CLS_LABELS.length) S.tm.z = CLS_LABELS.map(()=>0); buildTM(); }
+}
+function camOff(){ if (TM.running || TM.webcam) tmStop(); S.tm.frozen = false; camPlaceholder(); }
+function renderTM(){
+  const c = S.tm, sm = softmaxT(c.z, c.T), top = sm.p.indexOf(Math.max(...sm.p)), L = CLS_LABELS[top] || XYZ[top];
+  paintRows(c.z, CLS_LABELS, sm, top, false);
+  $('#form').innerHTML = formula(c.z, c.T, L, sm, top); $('#tv').textContent = c.T.toFixed(1);
+  $('#src').textContent = c.src === 'cam' ? (c.frozen ? '멈춘 순간의 점수 (모델 확률에서 거꾸로 구한 값) · 막대를 끌어 바꿔 보세요' : '카메라 실시간 점수 (모델 확률에서 거꾸로 구한 값)') : '직접 정한 점수 · 막대를 끌어 바꿔 보세요';
+  $('#rbig').textContent = L; $('#rpr').innerHTML = `확률 <b>${fmt(sm.p[top],2)}</b>`;
+  $('#rstack').innerHTML = sm.p.map((p,i)=>`<div style="width:${p*100}%;background:${COL[i]}">${p>0.2?fmt(p,2):''}</div>`).join('');
+  $('#camctl').style.visibility = TM.running ? 'visible' : 'hidden';
+  $('#c-freeze').textContent = c.frozen ? '실시간' : '멈추기'; $('#c-freeze').classList.toggle('on', c.frozen);
+  const lp = $('#lp'); if (lp) lp.style.display = TM.running && !c.frozen ? 'block' : 'none';
+  if (!TM.loading) $('#camst').textContent = TM.running ? (c.frozen ? '멈췄습니다. 점수 막대를 끌거나 +1 버튼으로 실험해 보세요.' : '손을 화면 가운데에 보여 주세요.') : (c.status || '');
+}
+
+/* ===================== STEP 4 어텐션 ===================== */
+const QK = {min:-0.6, max:1.8}, VR = {min:-0.15, max:1.15};
+function setPreset(k, w, qi){ S.attKey = k; S.att = attSetup(k, w, qi); }
+setPreset('minji');
+const px = (v,R) => 20 + (v-R.min)/(R.max-R.min)*500, py = (v,R) => 520 - (v-R.min)/(R.max-R.min)*500;
+const HALO2 = 'paint-order="stroke" stroke="#fff" stroke-width="12" stroke-linejoin="round"';
+function arrow(x1,y1,x2,y2,c,w){ const an=Math.atan2(y2-y1,x2-x1); if (Math.hypot(x2-x1,y2-y1)<2) return ''; const h=20+w*1.3, ax=x2-h*Math.cos(an), ay=y2-h*Math.sin(an);
+  return `<line x1="${x1}" y1="${y1}" x2="${ax}" y2="${ay}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"/><polygon points="${x2},${y2} ${ax+h*.5*Math.sin(an)},${ay-h*.5*Math.cos(an)} ${ax-h*.5*Math.sin(an)},${ay+h*.5*Math.cos(an)}" fill="${c}"/>`; }
+function grid(R, step, lab){ let g=''; for (let v=Math.ceil(R.min/step)*step; v<=R.max+1e-9; v+=step){ const vv=Math.round(v*100)/100, z=vv===0;
+  g+=`<line x1="${px(vv,R)}" y1="${py(R.min,R)}" x2="${px(vv,R)}" y2="${py(R.max,R)}" stroke="${z?'#8FA3AB':'#E3ECEF'}" stroke-width="${z?4:2.5}"/><line x1="${px(R.min,R)}" y1="${py(vv,R)}" x2="${px(R.max,R)}" y2="${py(vv,R)}" stroke="${z?'#8FA3AB':'#E3ECEF'}" stroke-width="${z?4:2.5}"/>`;
+  if (lab && !z && Math.abs(vv - Math.round(vv)) < 1e-9) g+=`<text x="${px(vv,R)}" y="${py(0,R)+36}" font-size="30" fill="#8FA3AB" text-anchor="middle">${vv}</text><text x="${px(0,R)-10}" y="${py(vv,R)+10}" font-size="30" fill="#8FA3AB" text-anchor="end">${vv}</text>`; } return g; }
+function placeLabels(pts){ const out=[]; pts.forEach(p=>{ let y=p.y,t=0; while(out.some(o=>Math.abs(o.x-p.x)<170&&Math.abs(o.y-y)<42)&&t<8){y+=44;t++;} out.push({x:p.x,y}); }); return out.map(o=>o.y); }
+const lbl = (x, y, s, fill, fs) => { const anc = x > 360 ? 'end' : 'start', xx = x > 360 ? x - 24 : x; return `<text x="${xx}" y="${y}" font-size="${fs||36}" font-weight="800" fill="${fill}" text-anchor="${anc}" ${HALO2}>${s}</text>`; };
+function pageAtt(){
+  $('#pg').innerHTML = `<div class="card" style="gap:9px"><div class="row" id="presets"></div><div class="wchips" id="sent"></div></div>
+    <div class="card" style="gap:9px">
+      <div class="pair"><div><div class="pt2">① 쿼리 · 키 <span>끝점을 끌어요</span></div><svg class="plane" id="svgqk" viewBox="0 0 540 540"></svg></div>
+        <div><div class="pt2">문맥 벡터 <span id="verdict"></span></div><svg class="plane" id="svgv" viewBox="0 0 540 540" style="touch-action:auto"></svg></div></div>
+      <div class="note num" id="qlab"></div>
+      <div class="trow"><label>온도 T</label><input type="range" id="temp" min="0.2" max="3" step="0.1"><div class="tv num" id="tv"></div></div>
+      <div class="row"><button class="btn" id="t-sqrt">√dₖ로 나누기</button><button class="btn" id="t-qr">↺ 쿼리 처음 값</button></div></div>
+    <div class="card"><div class="ct">② 점수 → 가중치 → 문맥 벡터</div><div id="attt"></div></div>`;
+  $('#temp').value = S.T; $('#temp').oninput = e => { S.T = +e.target.value; renderAtt(); };
+  $('#t-sqrt').onclick = () => { S.sqrt = !S.sqrt; renderAtt(); };
+  $('#t-qr').onclick = () => { S.att.q = S.att.q0.slice(); renderAtt(); };
+  const svg = $('#svgqk'); let on = false;
+  const val = e => { const p = svg.createSVGPoint(); p.x=e.clientX; p.y=e.clientY; const q = p.matrixTransform(svg.getScreenCTM().inverse());
+    let x = QK.min+(q.x-20)/500*(QK.max-QK.min), y = QK.min+(520-q.y)/500*(QK.max-QK.min);
+    x = Math.max(QK.min,Math.min(QK.max,Math.round(x/0.05)*0.05)); y = Math.max(QK.min,Math.min(QK.max,Math.round(y/0.05)*0.05)); return [Math.round(x*100)/100, Math.round(y*100)/100]; };
+  svg.addEventListener('pointerdown', e => { e.preventDefault(); on = true; svg.setPointerCapture(e.pointerId); S.att.q = val(e); renderAtt(); });
+  svg.addEventListener('pointermove', e => { if (on){ S.att.q = val(e); renderAtt(); } });
+  svg.addEventListener('pointerup', () => on = false); svg.addEventListener('pointercancel', () => on = false);
+  renderAtt();
+}
+function renderAtt(){
+  const P = ATT_PRESETS[S.attKey], st = S.att, a = attCompute(st, S.T, S.sqrt), top = a.w.indexOf(Math.max(...a.w));
+  $('#presets').innerHTML = Object.entries(ATT_PRESETS).map(([k,p])=>`<button class="btn ${k===S.attKey?'on':''}" data-k="${k}">${p.label}</button>`).join('');
+  document.querySelectorAll('#presets button').forEach(b => b.onclick = () => { setPreset(b.dataset.k); renderAtt(); });
+  $('#sent').innerHTML = st.words.map((w,i)=>{ const it = st.items.findIndex(x=>x.i===i), isQ = i===st.qi, wt = it>=0 ? a.w[it] : null;
+     const bg = (!isQ && wt!==null) ? `style="background:rgba(27,134,145,${0.08+wt*0.75});${wt>0.45?'color:#fff;':''}"` : '';
+     return `<div class="wc ${isQ?'q':''}" data-i="${i}"><b ${bg}>${w}</b><span class="num" style="${it===top&&!isQ?'color:var(--coral)':''}">${isQ?'쿼리':(wt!==null?Math.round(wt*100)+'%':'')}</span></div>`; }).join('')
+     + (S.attKey==='build' ? `<div class="wc add" id="addw"><b>＋ 단어</b><span>${st.words.length}/6</span></div>` : '');
+  document.querySelectorAll('#sent .wc[data-i]').forEach(c => c.onclick = () => { const i = +c.dataset.i;
+    if (S.attKey === 'build'){
+      openSheet(`<h4>‘${st.words[i]}’<button class="btn sq" id="sx">닫기</button></h4><div class="bs"><button class="pri" id="sq">쿼리로 정하기</button><button id="sd">문장에서 빼기</button></div>`);
+      $('#sx').onclick = closeSheet;
+      $('#sq').onclick = () => { setPreset('build', st.words, i); closeSheet(); renderAtt(); };
+      $('#sd').onclick = () => { if (st.words.length<=2) return; const ws = st.words.slice(); ws.splice(i,1); let qi = st.qi; if (i===qi) qi = Math.max(0, ws.findIndex(w=>w.startsWith('은행'))); else if (i<qi) qi--; setPreset('build', ws, Math.min(qi, ws.length-1)); closeSheet(); renderAtt(); };
+      return; }
+    if (P.fixedQuery) return; setPreset(S.attKey, st.words, i); renderAtt(); });
+  const add = $('#addw'); if (add) add.onclick = () => { const g = {mid:'은행',fin:'금융',nat:'자연',etc:'기타'};
+    openSheet(`<h4>단어 넣기 (최대 6개)<button class="btn sq" id="sx">닫기</button></h4><div class="pal">${['mid','fin','nat','etc'].map(k=>`<span>${g[k]}</span>`+Object.keys(VOCAB).filter(w=>VOCAB[w].g===k).map(w=>`<button data-w="${w}">${w}</button>`).join('')).join('')}</div>`);
+    $('#sx').onclick = closeSheet;
+    document.querySelectorAll('#sheet .pal button').forEach(b => b.onclick = () => { if (S.att.words.length < 6) setPreset('build', S.att.words.concat([b.dataset.w]), S.att.qi); closeSheet(); renderAtt(); }); };
+  // ① QK
+  let g = grid(QK, 0.5, true);
+  const qx = px(st.q[0],QK), qy = py(st.q[1],QK);
+  st.items.forEach((it,i)=>{ g += arrow(px(0,QK),py(0,QK),px(it.k[0],QK),py(it.k[1],QK), i===top?'#E07A55':'#5FB3BA', 5+a.w[i]*14); });
+  g += arrow(px(0,QK),py(0,QK),qx,qy,'#1F4E5F',10);
+  const ky = placeLabels([{x:qx, y:qy+62}].concat(st.items.map(it=>({x:px(it.k[0],QK)+14, y:py(it.k[1],QK)-16})))).slice(1);
+  st.items.forEach((it,i)=>{ if (a.w[i] >= 0.15 || st.items.length <= 4) g += lbl(px(it.k[0],QK)+14, ky[i], it.w, '#1F4E5F'); });
+  g += `<circle cx="${qx}" cy="${qy}" r="30" fill="#1B8691" stroke="#fff" stroke-width="7"/>` + lbl(qx+34, qy+62, '쿼리', '#1B8691');
+  $('#svgqk').innerHTML = g;
+  // 문맥 벡터
+  let h = grid(VR, 0.5, false);
+  if (S.attKey !== 'minji') h += `<line x1="${px(VR.min,VR)}" y1="${py(VR.min,VR)}" x2="${px(VR.max,VR)}" y2="${py(VR.max,VR)}" stroke="#B8D6DA" stroke-dasharray="16 12" stroke-width="4"/>
+     <text x="${px(1.12,VR)}" y="${py(-0.07,VR)}" font-size="30" font-weight="800" fill="#2F78B0" text-anchor="end">금융 →</text><text x="${px(-0.1,VR)}" y="${py(1.06,VR)}" font-size="30" font-weight="800" fill="#1B8691">↑ 자연</text>`;
+  st.items.forEach((it,i)=>{ h += `<line x1="${px(it.v[0],VR)}" y1="${py(it.v[1],VR)}" x2="${px(a.c[0],VR)}" y2="${py(a.c[1],VR)}" stroke="#E07A55" stroke-opacity="${0.25+a.w[i]*0.7}" stroke-width="${3+a.w[i]*24}" stroke-linecap="round"/>`; });
+  const vy = placeLabels(st.items.map(it=>({x:px(it.v[0],VR)+18, y:py(it.v[1],VR)-16})));
+  st.items.forEach((it,i)=>{ h += `<circle cx="${px(it.v[0],VR)}" cy="${py(it.v[1],VR)}" r="15" fill="#2F78B0"/>` + (a.w[i] >= 0.15 || st.items.length <= 4 ? lbl(px(it.v[0],VR)+18, vy[i], it.w, '#1F4E5F', 32) : ''); });
+  let other = '';
+  if (S.attKey === 'bank1' || S.attKey === 'bank2'){ const ok = S.attKey==='bank1' ? 'bank2' : 'bank1', oa = attCompute(attSetup(ok), S.T, S.sqrt);
+    h += `<circle cx="${px(oa.c[0],VR)}" cy="${py(oa.c[1],VR)}" r="24" fill="#fff" stroke="#8FA3AB" stroke-width="6" stroke-dasharray="9 6"/>`;
+    other = ` · 점선 원 = ${ATT_PRESETS[ok].label}의 ‘은행’ [${fmt(oa.c[0],2)}, ${fmt(oa.c[1],2)}]`; }
+  h += `<circle cx="${px(a.c[0],VR)}" cy="${py(a.c[1],VR)}" r="28" fill="#E07A55" stroke="#fff" stroke-width="7"/>`;
+  $('#svgv').innerHTML = h;
+  $('#verdict').innerHTML = (S.attKey!=='minji' && st.words[st.qi].startsWith('은행')) ? (([t,c])=>`<em class="verdict ${c}">${t.replace(' ‘은행’','')}</em>`)(bankVerdict(a.c)) : '';
+  $('#qlab').innerHTML = `쿼리 <b style="color:var(--teal)">${st.words[st.qi]} [${fmt(st.q[0],2)}, ${fmt(st.q[1],2)}]</b> → 문맥 벡터 <b style="color:var(--coral)">[${fmt(a.c[0],2)}, ${fmt(a.c[1],2)}]</b>${other}`;
+  // ② table
+  $('#attt').innerHTML = `<table class="att num"><tr><th>단어</th><th>키 k</th><th>점수 s</th><th>eˢ</th><th>가중치</th></tr>
+    ${st.items.map((it,i)=>`<tr><td class="w">${it.w}</td><td>[${fmt(it.k[0],1)}, ${fmt(it.k[1],1)}]</td><td>${fmt(a.s[i],2)}</td><td>${fmt(a.e[i],2)}</td><td><div class="wbar"><i class="${i===top?'top':''}" style="width:${Math.max(3,a.w[i]*36)}px"></i><b style="color:${i===top?'var(--coral)':'var(--ink)'}">${fmt(a.w[i],2)}</b></div></td></tr>`).join('')}
+    <tr class="tot"><td class="w">합</td><td></td><td></td><td>${fmt(a.sumE,2)}</td><td>1.00</td></tr></table>
+    <div class="ctx num" style="margin-top:10px"><span>문맥 벡터</span> = ${st.items.map((it,i)=>`${fmt(a.w[i],2)}×[${fmt(it.v[0],1)}, ${fmt(it.v[1],1)}]`).join(' + ')} = <b>[${fmt(a.c[0],2)}, ${fmt(a.c[1],2)}]</b></div>
+    <div class="note" style="margin-top:8px">점수 <b>s = q · k${S.sqrt?' ÷ √2':''}${S.T!==1?' ÷ T':''}</b> → 가중치 <b>= eˢ ÷ Σeˢ</b> → 문맥 벡터 <b>= Σ 가중치 × v</b> · ${P.note}</div>`;
+  $('#tv').textContent = S.T.toFixed(1); $('#t-sqrt').classList.toggle('on', S.sqrt);
+}
+render();
+</script>
+</body>
+</html>
