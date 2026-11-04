@@ -46,14 +46,14 @@ h1,h2,h3,p{margin:0}
 .foot{text-align:center;color:var(--muted);font-size:12.5px;margin:28px 0 10px;line-height:1.6}
 .foot .e{font-size:34px;display:block;margin-bottom:4px}
 /* ---------- topbar ---------- */
-.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;background:linear-gradient(180deg,var(--bg) 80%,rgba(238,244,246,0))}
-.top .home{flex:none;height:34px;padding:0 12px;border-radius:10px;border:1.5px solid var(--line2);background:#fff;color:var(--ink);font-size:13px;font-weight:800;display:flex;align-items:center;gap:5px}
-.top .ttl{min-width:0}
-.top .ttl b{display:block;font-size:15.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.top .ttl span{font-size:11.5px;color:var(--muted);font-weight:700}
-.top .nav{margin-left:auto;display:flex;gap:6px;flex:none}
-.top .nav button{width:34px;height:34px;border-radius:10px;border:1.5px solid var(--line2);background:#fff;color:var(--sub);font-size:16px;font-weight:800}
-.top .nav button:disabled{opacity:.3}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;background:linear-gradient(180deg,var(--bg) 80%,rgba(238,244,246,0))}
+.topbar .home{flex:none;height:34px;padding:0 12px;border-radius:10px;border:1.5px solid var(--line2);background:#fff;color:var(--ink);font-size:13px;font-weight:800;display:flex;align-items:center;gap:5px}
+.topbar .ttl{min-width:0}
+.topbar .ttl b{display:block;font-size:15.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar .ttl span{font-size:11.5px;color:var(--muted);font-weight:700}
+.topbar .nav{margin-left:auto;display:flex;gap:6px;flex:none}
+.topbar .nav button{width:34px;height:34px;border-radius:10px;border:1.5px solid var(--line2);background:#fff;color:var(--sub);font-size:16px;font-weight:800}
+.topbar .nav button:disabled{opacity:.3}
 .page{padding:4px 14px 0;display:flex;flex-direction:column;gap:12px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:16px 15px;display:flex;flex-direction:column;gap:11px}
 .eyebrow{display:inline-flex;width:fit-content;font-size:11.5px;font-weight:800;color:var(--ink);background:var(--teal-l);padding:4px 10px;border-radius:99px}
@@ -218,7 +218,7 @@ i.lg{display:inline-block;width:10px;height:10px;border-radius:3px;margin:0 3px 
 .camrow #camwin .ph{font-size:12px}
 .cres{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
 .cres .big{font-size:34px}
-.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pair{display:grid;grid-template-columns:3fr 2fr;gap:8px;align-items:start}
 .pt2{font-size:13px;font-weight:800;color:var(--ink);margin-bottom:4px;display:flex;align-items:center;gap:4px;white-space:nowrap}
 .pt2 span{font-size:11px;color:var(--muted);font-weight:700}
 .pt2 em{font-style:normal}
@@ -491,7 +491,7 @@ $('#dim').onclick = closeSheet;
 function render(){
   if (!S.page) return renderHome();
   const i = PAGES.findIndex(p => p.key === S.page), P = PAGES[i];
-  app.innerHTML = `<div class="top"><button class="home" id="home">⌂ 홈</button><div class="ttl"><b>${P.t}</b><span>${P.st.replace(/^STEP \d · /,'')} · ${P.ref}</span></div>
+  app.innerHTML = `<div class="topbar"><button class="home" id="home">⌂ 홈</button><div class="ttl"><b>${P.t}</b><span>${P.st.replace(/^STEP \d · /,'')} · ${P.ref}</span></div>
     <div class="nav"><button id="prev" ${i===0?'disabled':''}>‹</button><button id="next" ${i===PAGES.length-1?'disabled':''}>›</button></div></div><div class="page" id="pg"></div>`;
   $('#home').onclick = () => go(null);
   $('#prev').onclick = () => i > 0 && go(PAGES[i-1].key);
