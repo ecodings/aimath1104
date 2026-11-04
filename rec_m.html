@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>추천 수학 실험실</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#F5EFE7; --bg-grid:#ECE3D7;
+  --surface:#fff; --surface-2:#FAF6F0;
+  --ink:#4A3A2E; --text:#3B3029; --sub:#7A6858; --muted:#A8998A;
+  --gold:#C98F2A; --gold-l:#F6E7C8; --gold-b:#E3C68A; --gold-xl:#FBF4E6;
+  --maple:#C9573A; --maple-l:#F8E3DB; --maple-b:#EBB7A6;
+  --leaf:#5E8C61; --leaf-l:#E3EFE3;
+  --line:#E9DFD2; --line2:#D9C9B6;
+  --r-lg:20px;
+  --shadow:0 14px 34px -16px rgba(74,58,46,.25), 0 2px 8px -3px rgba(74,58,46,.10);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);background-image:linear-gradient(var(--bg-grid) 1px,transparent 1px),linear-gradient(90deg,var(--bg-grid) 1px,transparent 1px);background-size:28px 28px;
+  font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;
+  -webkit-user-select:none;user-select:none;overscroll-behavior-y:none}
+button{font-family:inherit;cursor:pointer}
+.num{font-variant-numeric:tabular-nums}
+#app{max-width:560px;margin:0 auto;min-height:100dvh;padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+/* home */
+.hero{padding:calc(env(safe-area-inset-top) + 26px) 20px 6px}
+.hero h1{margin:0;font-size:24px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
+.hero h1 .lg{width:32px;height:32px;border-radius:10px;background:var(--ink);color:var(--gold-b);font-size:17px;display:flex;align-items:center;justify-content:center}
+.hero p{margin:6px 0 0;font-size:14px;color:var(--sub);line-height:1.6}
+.hero .tag{display:inline-block;margin-top:10px;font-size:12px;font-weight:700;color:var(--ink);background:var(--gold-l);border-radius:99px;padding:4px 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 16px 0}
+.pcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:16px 14px;display:flex;flex-direction:column;gap:9px;text-align:left;min-height:170px;color:inherit}
+.pcard:active{transform:scale(.98)}
+.pcard .ic{width:42px;height:42px;border-radius:12px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800}
+.pcard .st{font-size:10.5px;font-weight:800;color:var(--muted);letter-spacing:.04em}
+.pcard .t{font-size:15px;font-weight:800;color:var(--ink);line-height:1.35}
+.pcard .d{font-size:12px;color:var(--sub);line-height:1.45}
+.pcard .ft{margin-top:auto;display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:700}
+.foot{text-align:center;color:var(--muted);font-size:12.5px;margin:26px 0 10px;line-height:1.6}
+.foot .e{font-size:32px;display:block;margin-bottom:2px}
+/* topbar */
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;background:linear-gradient(180deg,var(--bg) 80%,rgba(245,239,231,0))}
+.topbar .home{flex:none;height:34px;padding:0 12px;border-radius:10px;border:1.5px solid var(--line2);background:#fff;color:var(--ink);font-size:13px;font-weight:800}
+.topbar .ttl{min-width:0}
+.topbar .ttl b{display:block;font-size:15.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar .ttl span{font-size:11.5px;color:var(--muted);font-weight:700}
+.topbar .nav{margin-left:auto;display:flex;gap:6px;flex:none}
+.topbar .nav button{width:34px;height:34px;border-radius:10px;border:1.5px solid var(--line2);background:#fff;color:var(--sub);font-size:16px;font-weight:800}
+.topbar .nav button:disabled{opacity:.3}
+.page{padding:4px 14px 0;display:flex;flex-direction:column;gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:14px;display:flex;flex-direction:column;gap:9px}
+.ct{font-size:15.5px;font-weight:800;color:var(--ink)}
+.ct span{font-size:11.5px;color:var(--muted);font-weight:700;margin-left:4px}
+.note{font-size:12px;color:var(--muted);line-height:1.5}
+.note b{color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.btn{height:34px;border-radius:99px;border:1.5px solid var(--line2);background:#fff;color:var(--sub);font-size:13px;font-weight:700;padding:0 12px;white-space:nowrap}
+.btn.on{background:var(--gold-l);border-color:var(--gold);color:var(--ink)}
+.btn.pri{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn:disabled{opacity:.4}
+.seg{display:flex;background:var(--surface-2);border:1.5px solid var(--line2);border-radius:11px;padding:3px;gap:2px}
+.seg button{flex:1;height:30px;border:none;border-radius:8px;background:transparent;color:var(--sub);font-size:13px;font-weight:800;white-space:nowrap;padding:0 6px}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(74,58,46,.2)}
+.seg span{align-self:center;font-size:11.5px;color:var(--muted);font-weight:700;padding:0 4px;white-space:nowrap}
+.hl{color:var(--maple);font-weight:800}
+.box{border-radius:12px;padding:9px 11px;font-size:13px;line-height:1.6;background:var(--surface-2);border:1.5px solid var(--line2)}
+.box b{color:var(--ink)}
+.box.warm{background:var(--maple-l);border-color:var(--maple-b)}
+/* tables */
+table.t{width:100%;border-collapse:collapse;font-size:13.5px}
+table.t th{background:var(--ink);color:#fff;font-size:11.5px;font-weight:700;height:30px;padding:0 2px}
+table.t th:first-child{border-radius:8px 0 0 0}table.t th:last-child{border-radius:0 8px 0 0}
+table.t td{height:34px;text-align:center;border-bottom:1px solid var(--line)}
+table.t td.n{font-weight:800;color:var(--ink);text-align:left;padding-left:6px;white-space:nowrap}
+table.t td.tap{cursor:pointer}
+table.t td.q{background:var(--gold-l);color:var(--ink);font-weight:800}
+table.t tr.me td{background:var(--gold-xl)}
+table.t th.sel,table.t td.sel{box-shadow:inset 0 0 0 2px var(--maple)}
+.o{display:inline-block;width:18px;height:18px;border-radius:50%;border:2.5px solid var(--gold);vertical-align:-3px}
+.o.a{border-color:var(--maple)}
+/* metric cards */
+.mets{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.met{border:1.5px solid var(--line2);border-radius:12px;padding:8px 9px;background:var(--surface-2)}
+.met small{display:block;font-size:11.5px;font-weight:800;color:var(--sub)}
+.met i{display:block;font-style:normal;font-size:11px;color:var(--muted);margin-top:1px}
+.met b{display:block;font-size:19px;color:var(--ink);margin-top:3px}
+.met em{font-style:normal;font-size:12px;color:var(--sub);font-weight:700}
+.met.key{background:var(--maple-l);border-color:var(--maple-b)}
+.met.key b{color:var(--maple)}
+/* bars list */
+.bl{display:flex;flex-direction:column;gap:5px}
+.br{display:grid;grid-template-columns:86px 1fr 48px;gap:8px;align-items:center;font-size:13.5px}
+.br .nm{font-weight:800;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.br .tr{position:relative;height:14px;background:var(--surface-2);border-radius:7px;overflow:hidden}
+.br .tr i{position:absolute;left:0;top:0;bottom:0;border-radius:7px;background:var(--gold)}
+.br.top .tr i{background:var(--maple)} .br.top .nm,.br.top b{color:var(--maple)}
+.br b{text-align:right;color:var(--ink)}
+.br .tr .one{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink);opacity:.5}
+.stars{display:flex;gap:1px}
+.stars button{border:none;background:none;padding:0 1px;font-size:20px;line-height:1;color:var(--line2)}
+.stars button.on{color:var(--gold)}
+.mv{display:grid;grid-template-columns:1fr auto;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid var(--line)}
+.mv b{font-size:14px;color:var(--ink)}
+.mv span{font-size:11px;color:var(--muted);display:block}
+.prof{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;align-items:end;height:112px;border-bottom:1.5px solid var(--line2);padding:0 4px}
+.prof div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px}
+.prof div i{display:block;width:70%;background:var(--gold);border-radius:5px 5px 0 0}
+.prof div em{font-style:normal;font-size:11.5px;font-weight:800;color:var(--ink)}
+.profl{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;font-size:11px;color:var(--sub);font-weight:700;text-align:center}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.vs div{border:1.5px solid var(--line2);border-radius:12px;padding:8px 10px;background:var(--surface-2)}
+.vs small{font-size:11.5px;color:var(--sub);font-weight:800}
+.vs b{display:block;font-size:18px;color:var(--maple);margin:2px 0}
+.vs span{font-size:11.5px;color:var(--sub);line-height:1.45}
+svg.plane{width:100%;aspect-ratio:1/1;display:block;background:#fff;border:1.5px solid var(--line);border-radius:14px;touch-action:none}
+.spark{width:100%;height:44px;display:block}
+.cells td{font-size:13px}
+.cells td.k small{display:block;font-size:10px;color:var(--muted);line-height:1}
+.cells td.unk{background:var(--gold-l);font-weight:800;color:var(--ink)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const $ = s => document.querySelector(s);
+const app = $('#app');
+const gcd = (a,b) => b ? gcd(b, a % b) : a;
+const frac = (n,d) => { if (!d) return '—'; const g = gcd(n,d) || 1; n/=g; d/=g; return d === 1 ? String(n) : `${n}/${d}`; };
+const f2 = x => (Math.round((x + 1e-9) * 100) / 100).toFixed(2);
+const r2h = x => Math.round((x + 1e-9) * 100) / 100;
+const dot = (a,b) => a.reduce((s,v,i) => s + v*b[i], 0);
+const nrm = a => Math.sqrt(dot(a,a));
+const cos = (a,b) => { const d = nrm(a)*nrm(b); return d ? dot(a,b)/d : 0; };
+
+/* ===================== 슬라이드 데이터 ===================== */
+const G4 = ['액션','로맨스','코미디','호러'];
+const LIKE0 = { '제나':[1,1,1,0], '철수':[1,1,0,1], '영희':[1,0,1,0], '준호':[1,1,1,0], '세영':[0,1,1,0], '수진':[1,1,1,0], '지원':[1,1,1,0], '태현':[0,0,1,1] };
+const FEAT = ['액션','SF','놀란 감독','슈퍼히어로','상영시간'];
+const SEEN = [ ['어벤져스',[1,1,0,1,.7],5], ['인터스텔라',[0,1,1,0,.8],4], ['타이타닉',[0,0,0,0,.9],2], ['토이 스토리',[1,0,0,1,.6],3], ['다크 나이트',[1,0,1,1,.8],5] ];
+const UNSEEN = [ ['인셉션',[1,1,1,0,.8]], ['블레이드 러너',[1,1,0,0,.7]], ['원더우먼',[1,0,0,1,.8]], ['셰이프 오브 워터',[0,1,0,0,.6]], ['맘마미아',[0,0,0,0,.4]] ];
+const MOV = ['어벤져스','인터스텔라','타이타닉','스파이더맨','조커','기생충'];
+const MOVS = ['어벤','인터','타이','스파','조커','기생'];
+const USERS = ['제나','철수','영희','준호','세영','수진'];
+const CF0 = [[5,4,2,2,null,null],[5,5,1,1,4,3],[1,2,5,4,2,5],[3,1,3,2,5,4],[2,1,4,5,2,3],[2,4,2,5,4,2]];   // 슬라이드 23
+const MF_M = [[5,4,2,null,null,null],[5,null,1,4,4,3],[1,2,5,null,2,5],[3,1,null,2,5,4],[null,1,4,5,2,3],[2,4,2,5,null,2]]; // 슬라이드 31
+const U0 = [[2.2,1.4],[1.8,.8],[.1,2.5],[1.7,.4],[.1,1.8],[1.0,1.3]];   // 슬라이드 32
+const V0 = [[2.0,.3],[1.1,.9],[-.3,2.0],[.8,2.7],[2.1,.8],[1.2,1.6]];
+// 무작위 시작: 슬라이드 38의 제나·어벤져스·인터스텔라·타이타닉 값 + 고정된 난수
+const RU = [[.38,.95],[.62,.27],[.15,.71],[.84,.46],[.33,.12],[.57,.88]];
+const RV = [[.83,.21],[.18,.18],[.30,.53],[.66,.74],[.47,.35],[.29,.61]];
+const KP = { A:[5,5],B:[4,6],C:[1,7],D:[4,5],E:[9,2],F:[8,3],G:[7,2],H:[8,1],I:[9,3],J:[6,6],K:[7,1],L:[8,2],M:[6,4],N:[9,1],O:[2,9],P:[3,8],Q:[1,8],R:[2,7],S:[3,9],T:[5,6] };
+const KC0 = { 2:[[3,3.5],[7.5,5.5]], 3:[[3,3.5],[7.5,5.5],[5,8.5]], 4:[[3,3.5],[7.5,5.5],[5,8.5],[8.5,8.5]] };
+const KN = ['X','Y','Z','W'], KCOL = ['#C98F2A','#5E8C61','#C9573A','#7A6858'], KSOFT = ['#F6E7C8','#E3EFE3','#F8E3DB','#ECE3D7'];
+
+const PAGES = [
+  { key:'assoc', ic:'P', st:'STEP 1 · B 조건부확률', t:'연관성 분석', d:'액션을 좋아하면 로맨스도 좋아할까요? 지지도·신뢰도·향상도', ref:'슬라이드 13~16' },
+  { key:'cb',    ic:'▦', st:'STEP 2 · C 콘텐츠 기반', t:'비슷한 영화 찾기', d:'별점으로 선호 프로필을 만들고 코사인으로 순위를 매겨요.', ref:'슬라이드 20~22' },
+  { key:'cf',    ic:'≈', st:'STEP 3 · C 협업 필터링', t:'비슷한 사람 찾기', d:'취향 친구의 평점으로 제나의 평점을 예측해요.', ref:'슬라이드 23~28' },
+  { key:'mf',    ic:'U·V', st:'STEP 4 · D 행렬 분해', t:'숨은 요인 찾기', d:'사람과 영화를 한 평면에 놓고 내적으로 빈칸을 채워요.', ref:'슬라이드 31~38' },
+  { key:'km',    ic:'K', st:'STEP 5 · E 군집화', t:'K-평균 군집화', d:'가까운 중심으로 묶고, 평균으로 중심을 옮겨요.', ref:'슬라이드 41~43' }
+];
+const S = { page:null,
+  like: JSON.parse(JSON.stringify(LIKE0)), ra:0, rb:1,
+  stars: SEEN.map(x => x[2]),
+  cf: CF0.map(r => r.slice()), k:3,
+  U: U0.map(v => v.slice()), V: V0.map(v => v.slice()), mfStep:0, sse:[], mfSel:null,
+  K:3, kc:null, klab:null, khist:[], kphase:'start', knew:null, kadd:false };
+
+function go(key){ S.page = key; render(); scrollTo(0,0); }
+function render(){
+  if (!S.page) return renderHome();
+  const i = PAGES.findIndex(p => p.key === S.page), P = PAGES[i];
+  app.innerHTML = `<div class="topbar"><button class="home" id="home">⌂ 홈</button><div class="ttl"><b>${P.t}</b><span>${P.st.replace(/^STEP \d · /,'')} · ${P.ref}</span></div>
+    <div class="nav"><button id="prev" ${i===0?'disabled':''}>‹</button><button id="next" ${i===PAGES.length-1?'disabled':''}>›</button></div></div><div class="page" id="pg"></div>`;
+  $('#home').onclick = () => go(null);
+  $('#prev').onclick = () => i > 0 && go(PAGES[i-1].key);
+  $('#next').onclick = () => i < PAGES.length-1 && go(PAGES[i+1].key);
+  ({assoc:pageAssoc, cb:pageCB, cf:pageCF, mf:pageMF, km:pageKM})[S.page]();
+}
+function renderHome(){
+  app.innerHTML = `<div class="hero"><h1><span class="lg">★</span>추천 수학 실험실</h1>
+    <p>제나에게 영화 한 편을 추천하기까지, 추천 서비스 속 수학을 다섯 단계로 직접 만져 봅니다.</p><span class="tag">AI 수학 교원 연수 · 2차시 추천 서비스와 수학</span></div>
+    <div class="grid">${PAGES.map(p => `<button class="pcard" data-k="${p.key}"><div class="ic">${p.ic}</div><div><div class="st">${p.st}</div><div class="t">${p.t}</div></div><div class="d">${p.d}</div><div class="ft"><span>${p.ref}</span><span>›</span></div></button>`).join('')}</div>
+    <div class="foot"><span class="e">🍁</span>조건부확률 · 가중평균 · 코사인 · 내적 · 거리와 평균</div>`;
+  document.querySelectorAll('.pcard').forEach(b => b.onclick = () => go(b.dataset.k));
+}
+
+/* ===================== STEP 1 연관성 분석 ===================== */
+function pageAssoc(){
+  $('#pg').innerHTML = `<div class="card"><div class="ct">8명의 장르표 <span>○를 눌러 바꿔 보세요</span></div><div id="ltbl"></div>
+      <div class="row"><div class="seg" id="sa" style="flex:1"><span>A</span>${G4.map((g,i)=>`<button data-i="${i}">${g}</button>`).join('')}</div></div>
+      <div class="row"><div class="seg" id="sb" style="flex:1"><span>B</span>${G4.map((g,i)=>`<button data-i="${i}">${g}</button>`).join('')}</div></div>
+      <div class="mets" id="mets"></div><div class="note" id="mnote"></div></div>
+    <div class="card"><div class="ct" id="cmpT"></div><div class="bl" id="cmp"></div><div class="box" id="trap"></div>
+      <div class="row"><button class="btn" id="reset">↺ 슬라이드 표로</button></div></div>`;
+  document.querySelectorAll('#sa button').forEach(b => b.onclick = () => { S.ra = +b.dataset.i; if (S.rb === S.ra) S.rb = (S.ra + 1) % 4; renderAssoc(); });
+  document.querySelectorAll('#sb button').forEach(b => b.onclick = () => { if (+b.dataset.i !== S.ra){ S.rb = +b.dataset.i; renderAssoc(); } });
+  $('#reset').onclick = () => { S.like = JSON.parse(JSON.stringify(LIKE0)); renderAssoc(); };
+  renderAssoc();
+}
+function assocStats(a, b){
+  const L = Object.values(S.like), n = L.length;
+  const na = L.filter(x => x[a]).length, nb = L.filter(x => x[b]).length, nab = L.filter(x => x[a] && x[b]).length;
+  return { n, na, nb, nab, sup:nab/n, conf: na ? nab/na : null, pb: nb/n, lift: (na && nb) ? (nab*n)/(na*nb) : null };
+}
+function renderAssoc(){
+  const a = S.ra, b = S.rb, st = assocStats(a,b);
+  $('#ltbl').innerHTML = `<table class="t num"><tr><th>사용자</th>${G4.map((g,i)=>`<th class="${i===a||i===b?'sel':''}">${g}</th>`).join('')}</tr>` +
+    Object.entries(S.like).map(([u,v]) => `<tr><td class="n">${u}</td>${v.map((x,i)=>`<td class="tap" data-u="${u}" data-i="${i}">${x?`<span class="o ${v[a]&&v[b]&&(i===a||i===b)?'a':''}"></span>`:''}</td>`).join('')}</tr>`).join('') + `</table>`;
+  document.querySelectorAll('#ltbl td.tap').forEach(td => td.onclick = () => { const v = S.like[td.dataset.u]; v[+td.dataset.i] = v[+td.dataset.i] ? 0 : 1; renderAssoc(); });
+  document.querySelectorAll('#sa button').forEach(x => x.classList.toggle('on', +x.dataset.i === a));
+  document.querySelectorAll('#sb button').forEach(x => { x.classList.toggle('on', +x.dataset.i === b); x.disabled = +x.dataset.i === a; });
+  const A = G4[a], B = G4[b];
+  $('#mets').innerHTML = `<div class="met"><small>지지도</small><i>P(A ∩ B)</i><b class="num">${frac(st.nab,st.n)}</b><em class="num">${f2(st.sup)}</em></div>
+    <div class="met"><small>신뢰도</small><i>P(B | A)</i><b class="num">${st.na?frac(st.nab,st.na):'—'}</b><em class="num">${st.conf===null?'계산 불가':f2(st.conf)}</em></div>
+    <div class="met key"><small>향상도</small><i>P(B | A) ÷ P(B)</i><b class="num">${st.lift===null?'—':frac(st.nab*st.n, st.na*st.nb)}</b><em class="num">${st.lift===null?'계산 불가':f2(st.lift)}</em></div>`;
+  $('#mnote').innerHTML = `${A}를 좋아하는 <b>${st.na}명</b> 중 ${B}도 좋아하는 사람 <b>${st.nab}명</b> · ${B}를 좋아하는 사람은 전체 ${st.n}명 중 <b>${st.nb}명</b>`;
+  $('#cmpT').innerHTML = `${A} → 다른 장르 <span>막대 = 향상도 · 세로선 = 1</span>`;
+  const others = G4.map((g,i)=>i).filter(i => i !== a).map(i => ({ i, ...assocStats(a,i) }));
+  const mx = Math.max(1.5, ...others.map(o => o.lift || 0));
+  const best = others.reduce((p,o) => (o.lift||0) > (p.lift||0) ? o : p, others[0]);
+  $('#cmp').innerHTML = others.map(o => `<div class="br ${o===best?'top':''}"><div class="nm">→ ${G4[o.i]}</div><div class="tr"><i style="width:${(o.lift||0)/mx*100}%"></i><div class="one" style="left:${1/mx*100}%"></div></div><b class="num">${o.lift===null?'—':f2(o.lift)}</b></div>
+    <div class="note" style="margin:-3px 0 2px 94px">신뢰도 ${o.conf===null?'—':f2(o.conf)} · 원래 인기 P(${G4[o.i]}) = ${frac(o.nb,o.n)}</div>`).join('');
+  const sameConf = others.filter(o => o.conf !== null && Math.abs(o.conf - best.conf) < 1e-9 && o !== best);
+  $('#trap').innerHTML = sameConf.length
+    ? `<b>신뢰도의 함정</b> · ${A} → ${G4[best.i]}와 ${A} → ${sameConf.map(o=>G4[o.i]).join(', ')}는 신뢰도가 ${f2(best.conf)}로 같지만, 향상도는 ${f2(best.lift)}와 ${sameConf.map(o=>f2(o.lift)).join(', ')}로 다릅니다. ${sameConf.map(o=>G4[o.i]).join(', ')}는 원래 인기가 많아서 신뢰도가 저절로 높았습니다.`
+    : `향상도가 <b>1보다 크면</b> 우연보다 함께 좋아하는 경향이 있고, <b>1보다 작으면</b> 연관이 약합니다.`;
+}
+
+/* ===================== STEP 2 콘텐츠 기반 ===================== */
+function profile(){ const w = S.stars, sw = w.reduce((a,b)=>a+b,0); const p = FEAT.map((_,k) => SEEN.reduce((s,m,i) => s + w[i]*m[1][k], 0)); return { raw:p, sw, p: p.map(x => x/sw) }; }
+function cbRank(){ const pr = profile().p; return UNSEEN.map(([n,v]) => ({ n, v, c:cos(pr, v) })).sort((x,y) => y.c - x.c); }
+function pageCB(){
+  $('#pg').innerHTML = `<div class="card"><div class="ct">제나가 본 영화 <span>별을 눌러 평점을 바꿔 보세요</span></div><div id="seen"></div></div>
+    <div class="card"><div class="ct">선호 프로필 <span>평점을 가중치로 한 가중평균</span></div><div class="prof" id="prof"></div><div class="profl">${FEAT.map(f=>`<span>${f}</span>`).join('')}</div><div class="note num" id="pform"></div></div>
+    <div class="card"><div class="ct">아직 안 본 영화 순위 <span>프로필과의 코사인 유사도</span></div><div class="bl" id="rank"></div><div class="box" id="why"></div>
+      <div class="row"><button class="btn" id="reset">↺ 슬라이드 평점으로</button></div></div>`;
+  $('#reset').onclick = () => { S.stars = SEEN.map(x => x[2]); renderCB(); };
+  renderCB();
+}
+function renderCB(){
+  $('#seen').innerHTML = SEEN.map(([n,v],i) => `<div class="mv"><div><b>${n}</b><span>[${v.join(', ')}]</span></div><div class="stars" data-i="${i}">${[1,2,3,4,5].map(k=>`<button data-k="${k}" class="${k<=S.stars[i]?'on':''}">★</button>`).join('')}</div></div>`).join('');
+  document.querySelectorAll('.stars').forEach(g => g.querySelectorAll('button').forEach(b => b.onclick = () => { S.stars[+g.dataset.i] = +b.dataset.k; renderCB(); }));
+  const pr = profile();
+  $('#prof').innerHTML = pr.p.map(x => `<div><em class="num">${f2(x)}</em><i style="height:${Math.max(2,x*90)}px"></i></div>`).join('');
+  $('#pform').innerHTML = `(${S.stars.map((w,i)=>`${w}×${SEEN[i][0]}`).join(' + ')}) ÷ ${pr.sw}<br>= [${pr.raw.map(x=>+x.toFixed(2)).join(', ')}] ÷ ${pr.sw}`;
+  const R = cbRank();
+  $('#rank').innerHTML = R.map((r,k) => `<div class="br ${k===0?'top':''}"><div class="nm">${r.n}</div><div class="tr"><i style="width:${r.c*100}%"></i></div><b class="num">${f2(r.c)}</b></div>`).join('');
+  const t = R[0], fe = FEAT.map((f,k) => ({ f, s: pr.p[k]*t.v[k] })).filter(x => x.s > 0 && x.f !== '상영시간').sort((a,b)=>b.s-a.s).slice(0,2).map(x=>x.f);
+  $('#why').innerHTML = `<b>1위 ${t.n}</b> · 추천 이유를 말할 수 있습니다: 제나가 좋아하는 <b>${fe.join('·') || '특성'}</b> 특성과 방향이 같아서.`;
+}
+
+/* ===================== STEP 3 협업 필터링 ===================== */
+function cfCalc(){
+  const me = S.cf[0].slice(0,4);
+  const sims = USERS.slice(1).map((u,i) => ({ u, i:i+1, s: cos(me, S.cf[i+1].slice(0,4)) })).sort((a,b) => b.s - a.s);
+  const top = sims.slice(0, S.k), sw = top.reduce((a,b)=>a+b.s,0);
+  const pred = [4,5].map(j => ({ j, v: top.reduce((a,t)=>a + t.s*S.cf[t.i][j], 0) / sw }));
+  return { sims, top, sw, pred };
+}
+function pageCF(){
+  $('#pg').innerHTML = `<div class="card"><div class="ct">사람들의 평점표 <span>제나의 칸을 눌러 바꿔 보세요</span></div><div id="ctbl"></div>
+      <div class="note">앞의 4편으로 취향이 비슷한 사람을 찾고, 뒤의 2편(노란 칸)을 예측합니다.</div></div>
+    <div class="card"><div class="row" style="justify-content:space-between"><div class="ct">제나의 취향 친구</div><div class="seg" id="kseg"><span>상위</span>${[1,2,3,4,5].map(k=>`<button data-k="${k}">${k}</button>`).join('')}<span>명</span></div></div>
+      <div class="bl" id="sims"></div><div class="box num" id="pred"></div></div>
+    <div class="card"><div class="ct">두 추천 비교</div><div class="vs" id="vs"></div><div class="row"><button class="btn" id="reset">↺ 슬라이드 평점으로</button></div></div>`;
+  document.querySelectorAll('#kseg button').forEach(b => b.onclick = () => { S.k = +b.dataset.k; renderCF(); });
+  $('#reset').onclick = () => { S.cf = CF0.map(r => r.slice()); S.k = 3; renderCF(); };
+  renderCF();
+}
+function renderCF(){
+  const R = cfCalc(), topSet = new Set(R.top.map(t => t.i));
+  $('#ctbl').innerHTML = `<table class="t num"><tr><th>사용자</th>${MOVS.map(m=>`<th>${m}</th>`).join('')}</tr>` +
+    S.cf.map((r,i) => `<tr class="${i===0?'me':''}"><td class="n">${USERS[i]}${topSet.has(i)?' <span class="hl">●</span>':''}</td>${r.map((v,j)=> i===0 && j<4 ? `<td class="tap" data-j="${j}"><b>${v}</b></td>` : `<td class="${i===0?'q':''}">${v===null?'?':v}</td>`).join('')}</tr>`).join('') + `</table>`;
+  document.querySelectorAll('#ctbl td.tap').forEach(td => td.onclick = () => { const j = +td.dataset.j; S.cf[0][j] = S.cf[0][j] % 5 + 1; renderCF(); });
+  document.querySelectorAll('#kseg button').forEach(b => b.classList.toggle('on', +b.dataset.k === S.k));
+  $('#sims').innerHTML = R.sims.map(s => `<div class="br ${topSet.has(s.i)?'top':''}"><div class="nm">${s.u}</div><div class="tr"><i style="width:${s.s*100}%"></i></div><b class="num">${f2(s.s)}</b></div>`).join('');
+  const nm = ['조커','기생충'];
+  $('#pred').innerHTML = R.pred.map((p,k) => `<b>${nm[k]}</b> = (${R.top.map(t=>`${f2(t.s)}×${S.cf[t.i][p.j]}`).join(' + ')}) ÷ ${f2(R.sw)} = <span class="hl" style="font-size:16px">${p.v.toFixed(1)}</span>`).join('<br>');
+  const cbTop = cbRank()[0], best = R.pred[0].v >= R.pred[1].v ? 0 : 1;
+  $('#vs').innerHTML = `<div><small>콘텐츠 기반 1순위 (STEP 2)</small><b>${cbTop.n}</b><span>비슷한 영화 · 기존 취향 강화, 이유가 분명</span></div>
+    <div><small>협업 필터링 1순위</small><b>${nm[best]} ${R.pred[best].v.toFixed(1)}</b><span>비슷한 사람 · 취향 확장, 의외의 발견</span></div>`;
+}
+
+/* ===================== STEP 4 행렬 분해 ===================== */
+const clamp5 = x => Math.min(5, Math.max(1, Math.round(x)));
+function mfSSE(U, V){ let s = 0; MF_M.forEach((r,i) => r.forEach((v,j) => { if (v !== null){ const e = v - dot(U[i], V[j]); s += e*e; } })); return s; }
+function mfStep(alpha){
+  const U = S.U, V = S.V, dU = U.map(() => [0,0]), dV = V.map(() => [0,0]);
+  MF_M.forEach((r,i) => r.forEach((v,j) => { if (v === null) return; const e = v - dot(U[i], V[j]);
+    dU[i][0] += e*V[j][0]; dU[i][1] += e*V[j][1]; dV[j][0] += e*U[i][0]; dV[j][1] += e*U[i][1]; }));
+  S.U = U.map((u,i) => [u[0] + alpha*dU[i][0], u[1] + alpha*dU[i][1]]);
+  S.V = V.map((v,j) => [v[0] + alpha*dV[j][0], v[1] + alpha*dV[j][1]]);
+  S.mfStep++; S.sse.push(mfSSE(S.U, S.V));
+}
+let MFR = { min:-0.6, max:3 };
+function pageMF(){
+  $('#pg').innerHTML = `<div class="card"><div class="row" style="justify-content:space-between"><div class="ct">요인 공간 <span>점을 끌어 보세요</span></div><span class="note num" id="mfinfo"></span></div>
+      <svg class="plane" id="mfp" viewBox="0 0 540 540"></svg>
+      <div class="note"><b style="color:var(--maple)">●</b> 사람 (U의 줄) &nbsp; <b style="color:var(--leaf)">■</b> 영화 (V의 줄) · 점을 누르면 이름과 내적이 보입니다 (겹친 이름은 숨김)</div>
+      <div class="row"><button class="btn" id="m-slide">슬라이드 값</button><button class="btn" id="m-rand">무작위로 시작</button><button class="btn pri" id="m-step">학습 한 걸음</button><button class="btn" id="m-20">20걸음</button></div>
+      <svg class="spark" id="spark" viewBox="0 0 500 44" preserveAspectRatio="none"></svg></div>
+    <div class="card"><div class="ct">U × Vᵀ로 채운 평점표 <span>노란 칸 = 새로 예측 · 작은 숫자 = 실제</span></div><div id="mtbl"></div><div class="box num" id="mcalc"></div></div>`;
+  $('#m-slide').onclick = () => { S.U = U0.map(v=>v.slice()); S.V = V0.map(v=>v.slice()); S.mfStep = 0; S.sse = [mfSSE(S.U,S.V)]; S.mfSel = null; renderMF(); };
+  $('#m-rand').onclick = () => { S.U = RU.map(v=>v.slice()); S.V = RV.map(v=>v.slice()); S.mfStep = 0; S.sse = [mfSSE(S.U,S.V)]; S.mfSel = {t:'u',i:0}; renderMF(); };
+  $('#m-step').onclick = () => { mfStep(0.01); renderMF(); };
+  $('#m-20').onclick = () => { for (let k = 0; k < 20; k++) mfStep(0.01); renderMF(); };
+  if (!S.sse.length) S.sse = [mfSSE(S.U,S.V)];
+  const svg = $('#mfp'); let drag = null;
+  const toV = e => { const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; const q = p.matrixTransform(svg.getScreenCTM().inverse());
+    return [MFR.min + (q.x-20)/500*(MFR.max-MFR.min), MFR.min + (520-q.y)/500*(MFR.max-MFR.min)]; };
+  svg.addEventListener('pointerdown', e => { e.preventDefault(); const v = toV(e); let best = null, bd = 0.25;
+    S.U.forEach((u,i) => { const d = Math.hypot(u[0]-v[0], u[1]-v[1]); if (d < bd){ bd = d; best = {t:'u',i}; } });
+    S.V.forEach((w,j) => { const d = Math.hypot(w[0]-v[0], w[1]-v[1]); if (d < bd){ bd = d; best = {t:'v',i:j}; } });
+    if (best){ drag = best; S.mfSel = best; svg.setPointerCapture(e.pointerId); renderMF(); } });
+  svg.addEventListener('pointermove', e => { if (!drag) return; const v = toV(e).map(x => Math.round(x*10)/10); (drag.t==='u' ? S.U : S.V)[drag.i] = v; S.sse.push(mfSSE(S.U,S.V)); renderMF(); });
+  svg.addEventListener('pointerup', () => drag = null); svg.addEventListener('pointercancel', () => drag = null);
+  renderMF();
+}
+function renderMF(){
+  const all = S.U.concat(S.V); MFR = { min: Math.min(-0.6, ...all.flat()) - 0.2, max: Math.max(3, ...all.flat()) + 0.2 };
+  const px = v => 20 + (v - MFR.min)/(MFR.max-MFR.min)*500, py = v => 520 - (v - MFR.min)/(MFR.max-MFR.min)*500;
+  const H = 'paint-order="stroke" stroke="#fff" stroke-width="7" stroke-linejoin="round"';
+  let g = '';
+  for (let v = Math.ceil(MFR.min); v <= MFR.max; v++){ const z = v === 0;
+    g += `<line x1="${px(v)}" y1="${py(MFR.min)}" x2="${px(v)}" y2="${py(MFR.max)}" stroke="${z?'#A8998A':'#EFE7DC'}" stroke-width="${z?2.5:1.5}"/><line x1="${px(MFR.min)}" y1="${py(v)}" x2="${px(MFR.max)}" y2="${py(v)}" stroke="${z?'#A8998A':'#EFE7DC'}" stroke-width="${z?2.5:1.5}"/>`;
+    if (!z) g += `<text x="${px(v)}" y="${py(0)+22}" font-size="17" fill="#A8998A" text-anchor="middle">${v}</text><text x="${px(0)-8}" y="${py(v)+6}" font-size="17" fill="#A8998A" text-anchor="end">${v}</text>`; }
+  g += `<text x="512" y="${py(0)-8}" font-size="17" font-weight="700" fill="#7A6858" text-anchor="end">요인1 →</text><text x="${px(0)+8}" y="34" font-size="17" font-weight="700" fill="#7A6858">↑ 요인2</text>`;
+  const sel = S.mfSel;
+  if (sel){ const a = sel.t==='u' ? S.U[sel.i] : S.V[sel.i]; (sel.t==='u' ? S.V : S.U).forEach(b => { g += `<line x1="${px(a[0])}" y1="${py(a[1])}" x2="${px(b[0])}" y2="${py(b[1])}" stroke="#E3C68A" stroke-width="1.5" stroke-dasharray="5 5"/>`; }); }
+  const labs = [], hit = (x,y) => labs.some(o => Math.abs(o[0]-x) < 70 && Math.abs(o[1]-y) < 20), place = (x, y, force) => { for (const dy of [0, 22, -22]){ if (!hit(x, y+dy)){ labs.push([x,y+dy]); return y+dy; } } if (force){ labs.push([x,y]); return y; } return null; };
+  let shapes = '', texts = '';
+  S.U.forEach((u,i) => { const on = sel && sel.t==='u' && sel.i===i; shapes += `<circle cx="${px(u[0])}" cy="${py(u[1])}" r="12" fill="#C9573A" stroke="${on?'#4A3A2E':'#fff'}" stroke-width="${on?4:3}"/>`;
+    const x = Math.min(px(u[0])+14, 470); { const yy = place(x, py(u[1])-10, on); if (yy !== null) texts += `<text x="${x}" y="${yy}" font-size="19" font-weight="800" fill="#A9452B" ${H}>${USERS[i]}</text>`; } });
+  S.V.forEach((v,j) => { const on = sel && sel.t==='v' && sel.i===j; shapes += `<rect x="${px(v[0])-10}" y="${py(v[1])-10}" width="20" height="20" rx="4" fill="#5E8C61" stroke="${on?'#4A3A2E':'#fff'}" stroke-width="${on?4:3}"/>`;
+    const x = Math.min(px(v[0])+14, 450); { const yy = place(x, py(v[1])+20, on); if (yy !== null) texts += `<text x="${x}" y="${yy}" font-size="18" font-weight="700" fill="#3F6B42" ${H}>${MOV[j]}</text>`; } });
+  g += shapes + texts;
+  $('#mfp').innerHTML = g;
+  const sse = mfSSE(S.U,S.V);
+  $('#mfinfo').innerHTML = `${S.mfStep ? `${S.mfStep}걸음 · ` : ''}오차 제곱합 <b>${sse.toFixed(1)}</b>`;
+  const hs = S.sse.slice(-200), mx = Math.max(...hs, 1e-9);
+  $('#spark').innerHTML = hs.length > 1 ? `<polyline fill="none" stroke="#C9573A" stroke-width="2.5" points="${hs.map((v,k)=>`${k/(hs.length-1)*500},${42 - v/mx*38}`).join(' ')}"/>` : '';
+  const P = S.U.map(u => S.V.map(v => dot(u,v)));
+  $('#mtbl').innerHTML = `<table class="t cells num"><tr><th>사용자</th>${MOVS.map(m=>`<th>${m}</th>`).join('')}</tr>` +
+    P.map((r,i) => `<tr><td class="n">${USERS[i]}</td>${r.map((x,j) => { const k = MF_M[i][j]; const on = sel && ((sel.t==='u' && sel.i===i) || (sel.t==='v' && sel.i===j));
+      return k === null ? `<td class="unk ${on?'sel':''}">${clamp5(x)}</td>` : `<td class="k ${on?'sel':''}" style="color:${Math.abs(clamp5(x)-k)>=1?'var(--maple)':'var(--ink)'}">${clamp5(x)}<small>(${k})</small></td>`; }).join('')}</tr>`).join('') + `</table>`;
+  if (sel){ const a = sel.t==='u' ? S.U[sel.i] : S.V[sel.i], nm = sel.t==='u' ? USERS[sel.i] : MOV[sel.i];
+    const j = sel.t==='u' ? 4 : 0, b = sel.t==='u' ? S.V[j] : S.U[j], nb = sel.t==='u' ? MOV[j] : USERS[j];
+    $('#mcalc').innerHTML = `<b>${nm}</b> [${f2(a[0])}, ${f2(a[1])}] · <b>${nb}</b> [${f2(b[0])}, ${f2(b[1])}]<br>= ${f2(a[0])}×${f2(b[0])} + ${f2(a[1])}×${f2(b[1])} = <span class="hl">${f2(dot(a,b))}</span> → ${clamp5(dot(a,b))}점 예측`;
+  } else $('#mcalc').innerHTML = `점을 누르면 그 사람(영화)과 다른 영화(사람) 사이의 내적을 보여 줍니다. 5보다 크면 5로, 1보다 작으면 1로 맞추고 반올림합니다.`;
+}
+
+/* ===================== STEP 5 K-평균 ===================== */
+const KR = { min:0, max:10 };
+function kReset(){ S.kc = KC0[S.K].map(c => c.slice()); S.klab = null; S.khist = [S.kc.map(c=>c.slice())]; S.kphase = 'start'; }
+const d2 = (a,b) => (a[0]-b[0])**2 + (a[1]-b[1])**2;
+function kAssign(){ S.klab = Object.values(KP).map(p => { let b = 0; S.kc.forEach((c,k) => { if (d2(p,c) < d2(p,S.kc[b]) - 1e-12) b = k; }); return b; }); S.kphase = 'assigned'; }
+function kMove(){ const P = Object.values(KP); const nc = S.kc.map((c,k) => { const m = P.filter((_,i) => S.klab[i] === k); return m.length ? [m.reduce((s,p)=>s+p[0],0)/m.length, m.reduce((s,p)=>s+p[1],0)/m.length] : c.slice(); });
+  const moved = nc.some((c,k) => Math.abs(c[0]-S.kc[k][0]) > 1e-9 || Math.abs(c[1]-S.kc[k][1]) > 1e-9);
+  S.kc = nc; S.khist.push(nc.map(c=>c.slice())); S.kphase = moved ? 'moved' : 'done'; }
+function pageKM(){
+  if (!S.kc) kReset();
+  $('#pg').innerHTML = `<div class="card"><div class="row" style="justify-content:space-between"><div class="seg" id="kseg"><span>K</span>${[2,3,4].map(k=>`<button data-k="${k}">${k}</button>`).join('')}</div><span class="note" id="kst"></span></div>
+      <svg class="plane" id="kmp" viewBox="0 0 540 540"></svg>
+      <div class="row"><button class="btn pri" id="k-a">① 가까운 중심으로</button><button class="btn pri" id="k-m">② 평균으로 이동</button><button class="btn" id="k-all">끝까지</button><button class="btn" id="k-r">↺</button><button class="btn" id="k-new">새 가입자</button></div>
+      <div class="note">중심(큰 원)을 끌어 시작 위치를 바꿀 수 있습니다 · 시작점이 달라지면 결과도 달라질 수 있어요</div></div>
+    <div class="card"><div class="ct">중심의 이동</div><div id="khist"></div><div class="box num" id="kcalc"></div></div>`;
+  document.querySelectorAll('#kseg button').forEach(b => b.onclick = () => { S.K = +b.dataset.k; kReset(); S.knew = null; renderKM(); });
+  $('#k-a').onclick = () => { if (S.kphase !== 'done'){ kAssign(); renderKM(); } };
+  $('#k-m').onclick = () => { if (S.kphase === 'assigned'){ kMove(); renderKM(); } };
+  $('#k-all').onclick = () => { let n = 0; while (S.kphase !== 'done' && n++ < 30){ kAssign(); kMove(); } renderKM(); };
+  $('#k-r').onclick = () => { kReset(); S.knew = null; renderKM(); };
+  $('#k-new').onclick = () => { S.kadd = !S.kadd; renderKM(); };
+  const svg = $('#kmp'); let drag = null;
+  const toV = e => { const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; const q = p.matrixTransform(svg.getScreenCTM().inverse());
+    return [KR.min + (q.x-20)/500*(KR.max-KR.min), KR.min + (520-q.y)/500*(KR.max-KR.min)]; };
+  svg.addEventListener('pointerdown', e => { e.preventDefault(); const v = toV(e);
+    if (S.kadd){ S.knew = v.map(x => Math.round(x*2)/2); S.kadd = false; renderKM(); return; }
+    let b = -1, bd = 0.8; S.kc.forEach((c,k) => { const d = Math.hypot(c[0]-v[0], c[1]-v[1]); if (d < bd){ bd = d; b = k; } });
+    if (b >= 0 && S.kphase !== 'done' && S.khist.length === 1){ drag = b; svg.setPointerCapture(e.pointerId); } });
+  svg.addEventListener('pointermove', e => { if (drag === null) return; const v = toV(e).map(x => Math.max(0, Math.min(10, Math.round(x*2)/2))); S.kc[drag] = v; S.khist = [S.kc.map(c=>c.slice())]; S.klab = null; S.kphase = 'start'; renderKM(); });
+  svg.addEventListener('pointerup', () => drag = null); svg.addEventListener('pointercancel', () => drag = null);
+  renderKM();
+}
+const pt = c => `(${+c[0].toFixed(2)}, ${+c[1].toFixed(2)})`;
+function renderKM(){
+  document.querySelectorAll('#kseg button').forEach(b => b.classList.toggle('on', +b.dataset.k === S.K));
+  const px = v => 20 + (v - KR.min)/(KR.max-KR.min)*500, py = v => 520 - (v - KR.min)/(KR.max-KR.min)*500;
+  const H = 'paint-order="stroke" stroke="#fff" stroke-width="6" stroke-linejoin="round"';
+  let g = '';
+  for (let v = 0; v <= 10; v++){ const m = v % 5 === 0;
+    g += `<line x1="${px(v)}" y1="${py(0)}" x2="${px(v)}" y2="${py(10)}" stroke="${m?'#D9C9B6':'#F1EAE0'}" stroke-width="${m?2:1.2}"/><line x1="${px(0)}" y1="${py(v)}" x2="${px(10)}" y2="${py(v)}" stroke="${m?'#D9C9B6':'#F1EAE0'}" stroke-width="${m?2:1.2}"/>`;
+    if (m && v) g += `<text x="${px(v)}" y="${py(0)-6}" font-size="16" fill="#A8998A" text-anchor="middle">${v}</text><text x="${px(0)+6}" y="${py(v)+16}" font-size="16" fill="#A8998A">${v}</text>`; }
+  const names = Object.keys(KP), P = Object.values(KP);
+  if (S.klab) P.forEach((p,i) => { const c = S.kc[S.klab[i]]; if (S.kphase === 'assigned') g += `<line x1="${px(p[0])}" y1="${py(p[1])}" x2="${px(c[0])}" y2="${py(c[1])}" stroke="${KCOL[S.klab[i]]}" stroke-opacity=".35" stroke-width="2"/>`; });
+  if (S.khist.length > 1) S.kc.forEach((_,k) => { g += `<polyline fill="none" stroke="${KCOL[k]}" stroke-width="2.5" stroke-dasharray="6 5" points="${S.khist.map(h => `${px(h[k][0])},${py(h[k][1])}`).join(' ')}"/>`; });
+  P.forEach((p,i) => { const k = S.klab ? S.klab[i] : -1;
+    g += `<circle cx="${px(p[0])}" cy="${py(p[1])}" r="11" fill="${k>=0?KCOL[k]:'#A8998A'}" stroke="#fff" stroke-width="2.5"/><text x="${px(p[0])+13}" y="${py(p[1])-8}" font-size="16" font-weight="700" fill="#4A3A2E" ${H}>${names[i]}</text>`; });
+  S.kc.forEach((c,k) => { g += `<circle cx="${px(c[0])}" cy="${py(c[1])}" r="19" fill="${KSOFT[k]}" stroke="${KCOL[k]}" stroke-width="4"/><text x="${px(c[0])}" y="${py(c[1])+7}" font-size="19" font-weight="800" fill="${KCOL[k]}" text-anchor="middle">${KN[k]}</text>`; });
+  let nk = -1;
+  if (S.knew){ nk = 0; S.kc.forEach((c,k) => { if (d2(S.knew,c) < d2(S.knew,S.kc[nk])) nk = k; });
+    const c = S.kc[nk]; g += `<line x1="${px(S.knew[0])}" y1="${py(S.knew[1])}" x2="${px(c[0])}" y2="${py(c[1])}" stroke="${KCOL[nk]}" stroke-width="3"/><text x="${px(S.knew[0])}" y="${py(S.knew[1])+10}" font-size="30" text-anchor="middle" fill="${KCOL[nk]}" ${H}>★</text>`; }
+  $('#kmp').innerHTML = g;
+  $('#kst').innerHTML = S.kadd ? '<b style="color:var(--maple)">평면을 눌러 새 가입자를 찍으세요</b>' : ({start:'① 버튼부터 눌러 보세요', assigned:'② 버튼으로 중심을 옮기세요', moved:'다시 ①로 배정해 보세요', done:'<b style="color:var(--leaf)">중심이 더 움직이지 않습니다 → 군집 완성</b>'})[S.kphase];
+  $('#k-new').classList.toggle('on', S.kadd);
+  $('#k-a').disabled = S.kphase === 'done' || S.kphase === 'assigned';
+  $('#k-m').disabled = S.kphase !== 'assigned';
+  $('#khist').innerHTML = `<table class="t num"><tr><th></th>${S.kc.map((_,k)=>`<th>${KN[k]}</th>`).join('')}</tr>` +
+    S.khist.map((h,r) => `<tr><td class="n">${r===0?'처음':r+'차'}</td>${h.map(c=>`<td>${pt(c)}</td>`).join('')}</tr>`).join('') + `</table>`;
+  if (S.knew) $('#kcalc').innerHTML = `<b>새 가입자 ★ ${pt(S.knew)}</b> → 가장 가까운 중심 <b style="color:${KCOL[nk]}">${KN[nk]}</b> 그룹 · ${S.kc.map((c,k)=>`${KN[k]}까지 ${Math.sqrt(d2(S.knew,c)).toFixed(2)}`).join(' · ')}`;
+  else if (S.klab){ const k0 = S.klab[0];
+    $('#kcalc').innerHTML = `<b>A(5, 5)</b>에서 거리 · ${S.kc.map((c,k)=>`${KN[k]} ${Math.sqrt(d2(KP.A,c)).toFixed(2)}`).join(' · ')} → <b style="color:${KCOL[k0]}">${KN[k0]}</b> 군집<br>${S.kc.map((_,k)=>`<b style="color:${KCOL[k]}">${KN[k]}</b> = ${names.filter((_,i)=>S.klab[i]===k).join(', ') || '없음'}`).join('<br>')}`; }
+  else $('#kcalc').innerHTML = `20명을 두 요인의 좌표로 놓았습니다. 중심 X, Y, Z는 임의로 정한 위치에서 시작합니다.`;
+}
+
+render();
+</script>
+</body>
+</html>
